@@ -1,0 +1,75 @@
+Date: Fri, 12 Oct 90 18:32:47 -0400
+From: rosen@bu.edu (David B. Rosen)
+To: Rich@rice.edu
+In-Reply-To: Richard Murphey's message of Fri, 12 Oct 90 00:01:02 EST
+Subject: translation of tek4014 to unix plot format
+
+Here's the 4014 description I wrote awhile ago. It's based on a
+description that came with the manual for a 4014 emulator, not on the
+official description from tektronics. It also includes a description
+of a resolution extension I proposed, which you might not want to
+implement.
+
+--
+
+Tek 4014:
+
+Pixel scale (pixels/length) same in x as y, i.e., the aspect ratio is unity.
+1024 by 780 dots.
+(Extended (EGM) resolution: 4096 by 3120.)
+(My compatible but nonstandard extension: 16384 by 12480.)
+
+Control codes:
+	GS  (ascii 29) -  enter graphics mode
+	US  (ascii 31) -  enter alpha mode
+Escapes codes:
+	esc formfeed (ascii 12) - clear screen and enter alpha mode
+	esc `			- select normal line format
+	esc a			- select dotted line format
+	esc b			- select dot-dashed line format
+	esc c			- select short-dashed line format
+	esc d			- select long-dashed line format
+    The escape codes above are recognized from both graph and alpha state.
+
+A sequence of N endpoints to be connected by drawing N-1 lines is given as:
+<GS><endpoint1><endpoint2><endpoint3>... <endpointN>
+
+A <US> should be put in every record after the last graphics sequence
+so that if the terminal receives a broadcast message between any two
+records, it will not be in graph state, at least in in operating
+systems that do record-oriented i/o.
+
+Each line should contain 78 or fewer characters so the system does not insert
+a newline for software-wrapping terminals of 80 character width.
+
+Each endpoint is a sequence of some or all of the following bytes (in order):
+
+	  Bit:	 7(m.s.) 6	 5	 4	 3	 2	 1	 0(l.s.)
+Byte:
+A			 0	 1	-1y	-2y	-3y	-4y	-5y
+EGM Extra      	-13y	 1	 1	-13x	-11y 	-12y	-11x	-12x
+B		-14y	 1	 1	-6y	-7y	-8y	-9y	-10y
+C			 0	 1	-1x	-2x	-3x	-4x	-5x
+D		-14x	 1	 0	-6x	-7x	-8x	-9x	-10x
+
+Bit -1Y is the most significant bit of the y-coordinate, etc.  Byte D is always
+included, as it terminates the endpoint.  Bytes A and C may each be omitted if
+their five bits are the same as those in the previous endpoint. If there  is no
+change in y from the last point, then bytes A and B may be omitted.  If the EGM
+byte is omitted, then the bits it represents are assumed zero. 
+
+A byte having 0,1 in bits 6,5 is A if it is before the first 1,1
+(or if there is there is no 1,1);  otherwise it is C.
+
+This scheme represents three compatible levels of resolution:
+10 bits --  (bits -11, -12  missing on output, zero on input) --  Tek 4014/4010
+12 bits -- (bits -13, -14 constant on output, const. or zero on input) -- EGM
+14 bits --  My nonstandard extension
+
+My extension is compatible when it is used to generate output that will be the
+input to the standard schemes because the extra bits are simply ignored.  When
+used to interpret input, my extension should be compatible with the output of
+the standard schemes so long as the unused bits are constant.  In any case, the
+worst that can happen is that some insignificant bits are random instead of
+constant.
+

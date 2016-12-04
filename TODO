@@ -1,0 +1,113 @@
+This file contains all the ideas which haven't been implemented yet
+and the tasks left to be accomplished.
+
+don't permute options in xplot.
+
+add DEFS to top level Makefile to pass flags to each subdir Makefile.
+
+-geometry in xplot?  How do we ignore options using getopt?
+
+reduce all file names to 14 characters or less. (e.g. expected.output !!)
+
+---------------------------------------------------------------- Paul
+add makedepend targets to Makefiles in sub directories.  Then add
+sys-depend.h dependency.
+
+
+Vaughan <vaughan%cadillac.cad.mcc.com@mcc.com> suggests making graph
+read interactively from a pipe and write plotting commands
+incrementally to another pipe).  We could either: (1) allow the user
+to specify the limits and plot each coordinate as it is read, or (2)
+make a pass over the data and rescale and replot it every time the
+user appends more data.  This might be leading in the direction of a
+digital scope type of look-and-feel.
+
+add an option to plot2ps to merge in .clipboard files.
+
+use the 4014 description in tek2plot provided by rosen@bu.edu (David
+B. Rosen) to extend the graphics output support to 4014 rather than
+just 4010.
+
+write a graphics.config borne shell script?  Or use `make OS_NAME'?
+
+write a manual pages for plot2tek and tek2plot.
+
+Some in the future, add the plot2plot backward compatibility switch to
+graph.
+
+write a replacement for spline.
+
+graph: Add better clipping (see Cohen-sutherland clipping algorithm,
+p72 of Berger's computer graphics).
+
+Does plot2ps need any seperate include files besides include/libplot.h?
+
+add an option to specify whether output plot files contain high byte
+first of low byte first. (done for graph and xplot)
+
+add a linewidth command:
+`linewidth' (double LINEWIDTH): linewidth.
+This would set the width of subsequent lines to LINEWIDTH, measured in
+terms of the plot units.  I think the default should be 1.0, which is
+what the user expects when plotting to a plot "device".   Plot2ps
+supports line width specification on the command line.
+
+plot2plot: The emulation of rotate and alable could include (in
+increasing order of difficulty):
+1) give the user an option to omit all label commands in case they
+look so bad when converted that the user would rather just not have
+them.
+2) Emulate position of characters.
+3) Draw characters using a vector (herhsey) font.
+4) do coordinate transformations
+5) do byte order switching
+
+
+Jeffrey Templon <templon@copper.ucs.indiana.edu> suggests native
+support for error bars.  We could read in a third value with every
+coordinate pair which indicates the size of the bar.  Jeff writes:
+    the way we do it is to think of the "value" of the error bar as one
+    half its width.  speaking in terms of statistics, what we call the
+    error bar is what the statisticians call the 'standard deviation' or
+    'estimated error'.  When plotted, what we do is to have a bar than
+    extends +/- the value specified about the point.  our current package,
+    topdrawer from stanford, does this exactly as you said; the error bar
+    is specified as the half-width of the bar to plot, and it is the third
+    (usually) number on the line.  our package actually allows for
+    different ordering through the SET ORDER command - you can say SET
+    ORDER X DX Y DY where DX and DY are the error bar values.  If your
+    program which made the output (used as the graphics input coordinates)
+    happened to order differently, you could say SET ORDER X DY DUMMY
+    DUMMY Y for example, where DUMMY specifies a value you don't care
+    about.  This is handy for quick plots, where all you have to do is
+    cut-and-paste, don't need to worry about swapping and deleting columns
+    when pasting program output into the plot input file.
+
+
+xplot: implement flushing upon recieving an erase command. Then do
+reading interactively from a pipe, and finally resizing the plot
+window.  Add ability to read from a named socket, default name is
+`plotdev0' in the user's home directory, unless it alread exists and
+is alive.  In this case use the lowest numbered plotdev which doesn't
+already exist.
+
+Plot2ps: synchrods!daniel@cad.berkeley.edu and David B. Rosen
+<Rosen@bu.edu> suggest an option for centering the output on the page.
+The bounding box estimate should provide enough information to allow
+this.
+
+plot2fig:
+* figure a way to horizontally adjust text in fig or to make adjusted
+  lables appear the same in xfig as in postscript output generated using
+  transfig.
+
+* find out a way to test the color support in fig and transfig.  There is
+  a way to pass this information in the fig file, but it has not been
+   implemented yet for lack of a way to test it.
+
+tek2plot doesn't seem to generate valid output on the sequent, track
+down whether this is a byte ordering problem.
+
+add a regression test to tek2plot if we can increse the resolution to
+4096 by 3120 with 4014 extended graphics mode.
+

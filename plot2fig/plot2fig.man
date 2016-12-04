@@ -1,0 +1,124 @@
+.\"   plot, unix plot file to graphics device translators.
+.\"   Copyright (C) 1989 Free Software Foundation, Inc.
+.\"
+.\"   plot is distributed in the hope that it will be useful, but WITHOUT
+.\"   ANY WARRANTY.  No author or distributor accepts responsibility to
+.\"   anyone for the consequences of using it or for whether it serves any
+.\"   particular purpose or works at all, unless he says so in writing.
+.\"   Refer to the GNU General Public License for full details.
+.\"   
+.\"   Everyone is granted permission to copy, modify and redistribute plot,
+.\"   but only under the conditions described in the GNU General Public
+.\"   License.  A copy of this license is supposed to have been given to you
+.\"   along with plot so you can know your rights and responsibilities.  It
+.\"   should be in a file named COPYING.  Among other things, the copyright
+.\"   notice and this notice must be preserved on all copies.
+.\" plot2fig rich@rice.edu 2/10/89
+.TH PLOT 1G  "10 Feb 1989"
+.SH NAME
+plot2fig \- a unix plot file to fig code translator.
+.SH SYNOPSIS
+.B plot2fig
+[\-\fBoption\fR \fIvalue\fR] .\|.\|.
+.SH DESCRIPTION
+.IX  "plot2fig"  ""  "a unix plot file to fig code translator"
+.I plot2fig
+reads plotting instructions (see
+.I plot
+(5)) from the specified input files and/or the standard input and produces a
+.I fig
+code on it's standard output.  This output file can be edited with the fig
+(Facility for Interactive Generation of figures) graphics editor.  The output
+can subsequently be converted to pictex, postscript, latex, epic, eepic, and
+tpic languages using the
+.I transfig
+(1) translator.  Any unrecognized options on the command line are assumed to
+be input files.  The standard input is read by default only if no other files
+specified on the command line are successfully opened.  A single dash (-) on
+the command line indicates the standard input is to be read.  Each option is
+set and each file read in the order they are specified on the command line.
+.LP
+This is free software, and you are welcome to redistribute it. Type `plot2fig
+-warranty' for warranty details and copying conditions.
+.LP
+The byte ordering of two byte integers in unix plot files is machine
+dependent.  Although plot2fig applies a heuristic test to determine the byte
+ordering and adjusts automaticly, it can be fooled.  You can use the -h and -l
+options to specify the byte ordering explicitly if plot2fig fails to guess
+correctly.
+.LP
+For compatibility with pic2fig, plot2fig ignores leading white space in
+labels.  Labels containing all white space are ignored.
+.SH OPTIONS
+.IP "-fn NAME"
+.IP "-fontname NAME"
+Default: the default font of the transfig output device.  This option sets the
+font for all subsequent text to NAME.  Recognized font names are typewriter,
+modern, italic, bold, and times.  In addition, courier is an alias for
+typewriter and roman is an alias for times.  Note that the fonts are device
+dependent.
+.IP "-fs SIZE"
+.IP "-fontsize SIZE"
+Default: 12. This option sets the size of subsequent text to SIZE (in
+printer's points).
+.IP "-h"
+.IP "-high-byte-first"
+This option specifies that the byte ordering of two byte integers in the input
+unix plot file is high byte first.
+.IP "-l"
+.IP "-low-byte-first"
+This option specifies that the byte ordering of two byte integers in the input
+unix plot file is low byte first.
+.IP "-warranty"
+.IP "-copying"
+This option prints out the copying conditions and warranty information.
+.IP "-signed"
+.IP "-unsigned"
+Default: signed.  This option specifies whether two byte integers in the input
+unix plot file are unsigned or signed.
+.IP "-"
+This option specifies explicitly that the standard input should be read for
+plotting instructions.
+.SH "SEE ALSO"
+graph(1G), lpr(1), plot(3X), plot(5), plot3d(1)
+.SH EXAMPLES
+.PP
+To create a simple plot file one can use:
+.RS
+.nf
+% echo 0 0 1 1 2 0 | spline | graph | plot2fig > test.fig
+.fi
+.RE
+.PP
+To edit the plot:
+.RS
+.nf
+% fig test.fig
+.fi
+.RE
+.PP
+To convert the fig file into dvi code:
+.RS
+.nf
+% transfig -L latex test.fig
+% make test.tex
+% cat >t.tex
+\\documentstyle\[\]{article}
+\\begin{document}
+\\input{test}
+\\end{document}
+% latex t.tex
+.fi
+.RE
+.PP
+To edit a plot of data arranged in ordered pairs of x and y coordinates in
+an ascii file, one can use:
+.RS
+.nf
+% graph <asciiDataFile | plot2fig >file.fig
+% fig file.fig
+.fi
+.RE
+.SH BUGS
+This utility is still under development.  Comments are criticism are welcome.
+Richard-Murphey@Rice.edu

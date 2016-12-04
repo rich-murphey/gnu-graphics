@@ -1,0 +1,691 @@
+.TH plot2ps 1 "June 1989"
+.SH NAME
+plot2ps \- a utility for converting Unix plot files into postscript.
+.SH SYNOPSIS
+plot2ps [options] [files...]
+.SH DESCRIPTION
+.IX plot2ps \- a utility for converting Unix plot files into postscript.
+.PP
+\&\fBplot2ps\fR is a utility for converting Unix plot files into
+postscript.  The \fBplot2ps\fR utility reads plotting commands from
+named files or the standard input and writes postscript to the
+standard output.  You can then print the postscript output on a
+printer, or edit it using the \fBidraw\fR graphics editor.  You can
+also easily include the output in LaTeX documents using \fBdvi2ps\fR
+and the LaTeX command \fBpsfig\fR.
+.PP
+Why is this useful? The plot file format is a commonly supported
+format for producing graphics on Unix systems.  To produces figures
+for publication you might need to take these graphics and label them
+to make figures.  This can be done using \fBplot2ps\fR and the
+\&\fBidraw\fR editor, an interactive \f(CW\`what you see is what you
+get\'\fR graphics editor.  Last, \fBdvi2ps\fR makes it easy to include
+these figures in LaTeX documents.  All of these steps are discussed in
+the following sections, followed by a discussion of the plot file
+format and the plot library functions.
+.PP
+.SH Command\ Line\ Options
+.br
+.PP
+\&\fBplot2ps\fR is a relatively simple utility in that there are few
+command line options to choose from.  The Unix plot file format does
+not contain methods for specifying font or font size, so you must
+specify these things with options.  There are no other options for
+controlling the picture.
+.PP
+The Unix plot file format is machine dependent on the byte order of
+unformatted, signed, two byte integer coordinates contained in plot
+commands.  The \f(CW\`-high-byte-first\'\fR or \f(CW\`-low-byte-first\'\fR
+option specifies this order explicitly.  \fBplot2ps\fR attempts to
+determine the byte order from commands early in the plot file, but the
+method is heuristic and is not foolproof.  Several standard plot sizes
+specified by the \fBopen\fR command are used to recognize byte order
+by \fBplot2ps\fR.  If these sizes are recognized in byte reversed
+order, \fBplot2ps\fR adjusts accordingly.  These sizes include
+504x504, 2048x2048 (versatek plotters), 2100x2100,
+3120x3120(tektronics 4010 terminals) and 4096x4096 (gsi 300
+terminals).
+.PP
+The remaining command line options may be used specify an alternate
+postscript prologue and to print the licensing information.
+.PP
+Input plot files names may be specified anywhere on the command line.
+If no file names are specified, or the name \f(CW\`-\'\fR is specified, the
+standard input is read for plotting instructions.  Only the font or
+font size options which precede a file name will affect the text for
+that file.
+.PP
+.IP \f(CW\`-help\'\fR\ 
+.IP \f(CW\`-V\'\fR\ 
+The help option prints a summary of command line syntax for
+\&\fBplot2ps\fR, a list of the font names (the standard builtin
+postscript fonts), and version, copyright and warranty information.
+Specifying this options causes plot2ps to ignore files on the standard
+input.  You can specify a file on the standard input explicitly with
+the option \f(CW\`-\'\fR if you want it to read the standard input as
+well.
+.IP
+.IP \f(CW\`-fontsize\ \fIsize\fR\'\fR\ 
+.IP \f(CW\`-f\ \fIsize\fR\'\fR\ 
+The fontsize options specifies the default size in printer's points
+(1/72 inch) of all text appearing in the plot.  If unspecified, the
+size defaults to 14 points.
+.IP
+Some sizes are supported better than others under X windows.  The
+standard sizes distributed with X windows are 8, 10, 12, 14, 18, and
+24 points.  Text at these point sizes will display correctly in the
+\&\fBidraw\fR editor.  Other font sizes will print correctly on a
+postscript device such as the laserwriter, but may not appear at the
+correct size in the \fBidraw\fR editor.
+.IP
+.IP \f(CW\`-font\ \fIname\fR\'\fR\ 
+.IP \f(CW\`-fo\ \fIname\fR\'\fR\ 
+The font name option specifies the name of the default font for all
+text appearing in the plot.  \f(CW\`plot2ps -help\'\fR prints a listing of
+the font names on the standard output.  These names include the
+available builtin fonts on standard postscript printers.
+.IP
+.IP \f(CW\`-high-byte-first\'\fR\ 
+.IP \f(CW\`-h\'\fR\ 
+The high-byte-first option specifies explicitly that the higher order
+byte of each signed, two byte integer occurs first in the file.  It
+disables determination of byte order from the file itself.
+.IP
+.IP \f(CW\`-low-byte-first\'\fR\ 
+.IP \f(CW\`-l\'\fR\ 
+The low-byte-first option specifies explicitly that the lower order
+byte of each signed, two byte integer occurs first in the file.  It
+disables determination of byte order from the file itself.
+.IP
+.IP \f(CW\`-prologue\ \fIfilename\fR\'\fR\ 
+.IP \f(CW\`-p\ \fIfilename\fR\'\fR\ 
+The prologue option specifies the name of an alternate postscript
+prologue \fIfilename\fR to be used in place of the default
+\&\fBidraw\fR prologue.  The prologue declares procedures used to draw
+each graphic object.  The default prologue was generously provided by
+John Interante and is a part of the InterViews distribution, version
+2.5.
+.IP
+.IP \f(CW\`-copying\'\fR\ 
+.IP \f(CW\`-warranty\'\fR\ 
+The copying and warranty options print a copy of the GNU General
+Public License on the standard error output.  Included is conditions
+for copying \fBplot2ps\fR and information on the lack of any
+warranty.
+.IP
+These conditions do not cover the output of \fBplot2ps\fR.  The only
+conditions imposed on the output are those which come from the
+prologue that you are using.
+.IP
+.IP \f(CW\`-signed\'\fR\ 
+.IP \f(CW\`-unsigned\'\fR\ 
+The signed and unsigned options specify whether coordinates in the
+plot file are signed.  By convension, coordinates are always signed.
+Some plot files do not follow this convension, and you can use the
+unsigned option to convert those files.
+.IP
+.IP \f(CW\`-bbox\'\fR\ 
+The bbox option specifies that a bounding box comment will be written at
+the end of the output file.  This information is useful for document
+preparation systems which determine how to size and place the figure
+using the bounding box.  See also the atend.pl script.
+.IP
+.IP
+.PP
+.SH Examples\ Using\ \fBplot2ps\fR
+.br
+.PP
+To produce a plot of data arranged in ordered pairs of x and y
+coordinates in an ASCII file, you can use:
+.PP
+.DS
+.ft CW
+graph <asciiDataFile | plot2ps | lpr -Plw
+.DE
+.ft R
+.PP
+To create a simple postscript figure you can use:
+.PP
+.DS
+.ft CW
+echo 0 0 1 1 2 0 | spline | graph | plot2ps > test.ps
+.DE
+.ft R
+.PP
+To edit the plot:
+.PP
+.DS
+.ft CW
+idraw test.ps
+.DE
+.ft R
+.PP
+To use the previewer to look at the plot:
+.PP
+.DS
+.ft CW
+xps -c A4 test.ps
+.DE
+.ft R
+.PP
+.SH Including\ a\ Figure\ in\ an\ Article
+.br
+.PP
+This is an example of LaTeX code which places the figure generated in
+the previous example in a page of text.
+.PP
+.DS
+.ft CW
+ \&\edocumentstyle[]{article}
+ \&\einput{psfig}
+ \&\ebegin{document}
+ \&\etitle{Title of the article.}
+ \&\eauthor{The Author's name}
+ \&\emaketitle
+ This is an example of how to include postscript figures in LaTeX documents.
+ \&\ebegin{figure}[h]
+ \&\ecenterline{\epsfig{figure=test.ps,height=3in}}
+ \&\ecaption{Here is a description of the figure which will appear below it.}
+ \&\eend{figure}
+ Note that the above figure was included using dvi2ps.
+ \&\eend{document}
+.PP
+If the above LaTeX code is contained in a file called \f(CW\`mytext.tex\'\fR
+you can use the commands
+.DS
+.ft CW
+ latex mytext
+ dvi2ps <mytext.dvi >mytext.ps
+ lpr -Plw mytext.ps
+.DE
+.ft R
+ to format and print the example text.
+.DE
+.ft R
+.PP
+.SH Options\ to\ \fBpsfig\fR\ for\ Including\ Figures
+.br
+.PP
+\&\fBpsfig\fR is a LaTeX command used to insert a postscript figure
+into a document.
+.PP
+\&\fBpsfig\fR can be used to insert \fBplot2ps\fR generated postscript
+into a LaTeX document.  The placement of the \fBpsfig\fR command
+tells LaTeX where in the document to place the postscript, and
+arguments to the command give the name of the file containing the
+postscript, and the desired size of the figure.  Arguments are
+separated by commas or blanks, and are of the form
+\&\f(CW\`\fIkeyword\fR=\fIvalue\fR\'\fR.  The following is a list of valid
+arguments for the \fBpsfig\fR command:
+.PP
+.IP \fBfile=\fIname\fR\fR\ 
+The file name of the postscript figure.
+.IP
+.IP \fBheight=\fIsize\fR\fR\ 
+The height of the figure (eg. 3in).  If you specify only a height or
+only a width, the width and height are scaled equally.  If you specify
+both a width and a height the aspect ratio will be affected.
+.IP
+.IP \fBwidth=\fIsize\fR\fR\ 
+The width of the figure (eg. 3in).
+.IP
+.IP \fBbbllx=\fIcoordinate\fR\fR\ 
+The bounding box lower left-hand x coordinate.  Any postscript file
+which conforms to the postscript Document Structuring Conventions
+version 2.0 should contain a bounding box information at the head of
+the file.  \fBplot2ps\fR output conforms to the version 2.0
+conventions so that you should not need to use any of the bounding box
+options.
+.IP
+.IP \fBbblly=\fIcoordinate\fR\fR\ 
+The bounding box lower left-hand y coordinate.
+.IP
+.IP \fBbburx=\fIcoordinate\fR\fR\ 
+The bounding box upper right-hand x coordinate.
+.IP
+.IP \fBbbury=\fIcoordinate\fR\fR\ 
+The bounding box upper right-hand y coordinate.
+.IP
+.IP \fBrheight=\fIsize\fR\fR\ 
+Horizontal space to reserve for the figure.
+.IP
+.IP \fBrwidth=\fIsize\fR\fR\ 
+Vertical space to reserve for the figure.
+.IP
+.IP \fBclip=\fR\ 
+Clip the figure.  \fBclip=\fR is a switch and takes no value, but the
+\&\f(CW\`=\'\fR must be present.  This option is useful for including
+postscript figures which use the size of the clipping path to size
+themselves.
+.PP
+.SH atend.pl
+.br
+.PP
+atend.pl is a perl script which moves the bounding box comment
+from the trailer to the header.  Although either is legal, most document
+perparation software, such as psfig, will only accept bounding
+box comments in the header.  If you use psfig and the
+bbox option togeather, run atend.pl on the output of
+plot2ps before importing the graphics using psfig.
+.PP
+.SH How\ to\ Get\ \fBdvi2ps\fR
+.br
+.PP
+The \fBdvi2ps\fR utility mentioned previously is used convert dvi
+files generated by LaTeX into post-script.  It also has support for
+inclusion of postscript figures into LaTeX documents.  It is available
+via anonymous ftp from \f(CW\`june.cs.washington.edu\'\fR (128.95.1.4).
+Look for \f(CW\`tex/w_dvi2ps.tar.Z\'\fR.
+.PP
+.PP
+.SH How\ to\ Get\ \fBidraw\fR
+.br
+.PP
+The \fBidraw\fR utility mentioned previously is an interactive
+graphics editor which is distributed with InterViews.  InterViews is
+available via anonymous ftp from \f(CW\`interviews.stanford.edu\'\fR
+(36.22.0.175) in the file \f(CW\`InterViews/2.5.tar.Z\'\fR.
+.PP
+.SH How\ to\ Get\ \fBxps\fR
+.br
+.PP
+The \fBxps\fR utility mentioned previously is a postscript previewer for X
+windows written by Crispin Goswell.  \fBxps\fR is available via anonymous ftp
+from \f(CW\`ai.toronto.edu\'\fR (128.100.1.65) in \f(CW\`pub/X/xps.tar.Z\'\fR and from
+\&\f(CW\`qed.rice.edu\'\fR (128.42.4.38) in the file \f(CW\`pub/x11/xps.tar.Z\'\fR.
+.PP
+The original distribution of \fBxps\fR is available via anonymous ftp from
+\&\f(CW\`uunet.uu.net\'\fR (192.48.96.2) in the directory
+\&\f(CW\`comp.sources.unix/volume12/postscript\'\fR.  You can also find \fBxps\fR
+on the host \f(CW\`j.cc.purdue.edu\'\fR (128.210.9.2) in the directory
+\&\f(CW\`comp.sources.Unix/volume12\'\fR in the files \f(CW\`v12i050.Z\'\fR through
+\&\f(CW\`v12i067.Z\'\fR.  Patches for \fBxps\fR are also available via anonymous ftp
+from both \f(CW\`uunet.uu.net\'\fR in the directory mentioned above and
+\&\f(CW\`z.andrew.cmu.edu\'\fR (128.2.30.8) in the directory \f(CW\`psdiffs\'\fR.
+.PP
+Ghostscript is another postscript previewer supporting X windows.
+Version 1.2 does not yet support all of the features used by
+\&\fBplot2ps\fR.  It is available via anonymous ftp from
+\&\f(CW\`prep.ai.mit.edu\'\fR (18.71.0.38) - Look for
+\&\f(CW\`pub/gnu/ghostscript-1.2.tar.Z\'\fR.
+.PP
+.SH Acknowledgements
+.br
+.PP
+Many thanks to Richard Stallman for his helpful discussions of the
+program and documentation.  Also, thanks to John Interrante for
+generously providing the postscript prologue and helpful comments on
+the program.
+.PP
+.bp
+.SH \&\fBlibps\fR,\ a\ Library\ of\ Unix\ Plot\ Functions
+.br
+.PP
+Libps is a library of Unix plot functions for drawing graphic object
+using postscript.  Before drawing any objects or using any of the
+other functions, a program should call \fBopenpl\fR.  Before exiting
+and after all other libps calls a program should call
+\&\fBclosepl\fR.
+.PP
+.PP
+.PP
+.PP
+.PP
+.SH \&\fBalabel\fR
+.br
+.PP
+int \fBalabel\fR (char \fIx_justify\fR, char \fIy_justify\fR, char \fI*label\fR);
+.PP
+\&\fBalabel\fR takes three arguments \fIx_justify\fR, \fIy_justify\fR,
+and \fIlabel\fR and places the label according to the x and y axis
+adjustments specified in \fIx_justify\fR and \fIy_justify\fR
+respectively.  \fIx_justify\fR is a character containing either
+\&\f(CW\`l\'\fR, \f(CW\`c\'\fR, or \f(CW\`r\'\fR for left, center or right justified
+with respect to the current x coordinate.  \fIy_justify\fR is a
+character containing either \f(CW\`b\'\fR, \f(CW\`c\'\fR, or \f(CW\`t\'\fR for
+placing the bottom center or top of the label even with the current y
+coordinate.  \fI*label\fR is a string containing the label.  The
+current point is moved to follow the end of the text.
+.PP
+See section fontname on how to change the default font.
+See section fontsize on how to change the font size.
+.PP
+.SH \&\fBarc\fR
+.br
+.PP
+int \fBarc\fR (int \fIx\fR, int \fIy\fR, int \fIx0\fR, int \fIy0\fR, int \fIx1\fR, int \fIy1\fR)
+.PP
+\&\fBarc\fR takes six integer arguments specifying the coordinates of
+the center (\fIx\fR, \fIy\fR), beginning (\fIx1\fR, \fIy1\fR), and
+ending (\fIx\fR, \fIy\fR) of a circular arc.  The current point
+becomes (\fIx\fR, \fIy\fR).
+.PP
+.SH \&\fBcircle\fR
+.br
+.PP
+int \fBcircle\fR (int \fIx\fR, int \fIy\fR, int \fIr\fR)
+.PP
+\&\fBcircle\fR takes three integer arguments specifying the center
+(\fIx\fR, \fIy\fR) of the circle and its radius (\fIr\fR).  The
+current point becomes (\fIx\fR, \fIy\fR).
+.PP
+.SH \&\fBclosepl\fR
+.br
+.PP
+int \fBclosepl\fR ()
+.PP
+\&\fBclosepl\fR takes no arguments.  It merely outputs the postscript
+trailer containing a \fBshowpage\fR command.
+.PP
+.SH \&\fBcolor\fR
+.br
+.PP
+int \fBcolor\fR (int \fIred\fR, int \fIgreen\fR, int \fIblue\fR);   
+.PP
+\&\fBcolor\fR sets the foreground color of all the following objects.
+The arguments \fIred\fR, \fIgreen\fR and \fIblue\fR indicate the
+intensity of red, green and blue components of the foreground color
+respectively.  Each is a unsigned integer specifying an intensity in
+the range from 0 to 0xFFFF.  A value of (0, 0, 0) represents black and
+a value of (0xFFFF, 0xFFFF, 0xFFFF) indicates white.
+.PP
+.SH \&\fBcont\fR
+.br
+.PP
+int \fBcont\fR (int \fIx\fR, int \fIy\fR)
+.PP
+\&\fBcont\fR takes two integer arguments specifying the coordinate
+(\fIx\fR, \fIy\fR) for the continuation of a line.  This draws a line
+segment from the current point to the point (\fIx\fR, \fIy\fR).  The
+current point then becomes (\fIx\fR, \fIy\fR).
+.PP
+.SH \&\fBerase\fR
+.br
+.PP
+int \fBerase\fR ()
+.PP
+\&\fBerase\fR normally erases all the graphics from the display before
+a plot is viewed.  Since we start off with a blank page in postscript
+and \fBidraw\fR this function does nothing.
+.PP
+.SH \&\fBfill\fR
+.br
+.PP
+int \fBfill\fR (int \fIlevel\fR);   
+.PP
+\&\fBfill\fR sets the intensity of the filler for closed paths.  The
+argument \fIlevel\fR indicates the grey level of the fill pattern.
+It's value ranges from 1 to 0xFFFF.  A value of 1 represents black and
+a value of 0xFFFF indicates white.  A value of 0 represents no fill,
+or transparent.
+.PP
+.SH \&\fBfontname\fR
+.br
+.PP
+int \fBfontname\fR (char \fI*font_name\fR);
+.PP
+\&\fBfontname\fR takes a single string argument, \fIfont_name\fR,
+specifying the name of the font to be used for following text.  The
+laser writer builtin fonts are supported:
+.PP
+.DS
+.ft CW
+        courier-bold
+        courier-boldoblique
+        courier-oblique
+        courier
+        helvetica-bold
+        helvetica-boldoblique
+        helvetica-oblique
+        helvetica
+        symbol
+        times-bold
+        times-bolditalic
+        times-italic
+        times-roman
+.DE
+.ft R
+.PP
+.SH \&\fBfontsize\fR
+.br
+.PP
+int \fBfontsize\fR (int \fIsize\fR);
+.PP
+\&\fBfontsize\fR takes a single integer argument \fIsize\fR in
+printer's points (1/72 inch) and sets the font size
+accordingly.
+.PP
+.SH \&\fBlabel\fR
+.br
+.PP
+int \fBlabel\fR (char \fI*s\fR)
+.PP
+\&\fBlabel\fR takes a single string argument \fIs\fR and draws the text
+contained in \fIs\fR at the most recently used coordinate in the
+current font.  By default the text is left justified and centered
+vertically with respect to the current coordinate.
+.PP
+.SH \&\fBline\fR
+.br
+.PP
+int \fBline\fR (int \fIx1\fR, int y\fI1\fR, int \fIx2\fR, int \fIy2\fR)
+.PP
+\&\fBline\fR takes four integer arguments specifying the beginning
+(\fIx1\fR, \fIy1\fR) and ending (\fIx2\fR, \fIy2\fR) points of a line.
+The current point becomes (\fIx2\fR, \fIy2\fR).
+.PP
+See section linemod for how to specify the style or pattern of line.
+.PP
+.SH \&\fBlinemod\fR
+.br
+.PP
+int \fBlinemod\fR (char \fI*s\fR)
+.PP
+\&\fBlinemod\fR takes a single string arguement \fIs\fR containing the
+name of the line style desired.  The names supported are longdashed,
+disconnected, dotdashed, dotted, solid and shortdashed.  These
+correspond to the following patterns:
+.PP
+.DS
+.ft CW
+ solid             ----------------
+ longdashed        -------
+ disconnected      -
+ dotdashed         -----------  -
+ dotted            - - - - - - - - 
+ shortdashed       --
+.DE
+.ft R
+.PP
+.SH \&\fBmove\fR
+.br
+.PP
+int \fBmove\fR (int \fIx\fR, int \fIy\fR)
+.PP
+\&\fBmove\fR takes two integer arguments specifying the coordinate
+(\fIx\fR, \fIy\fR) for the beginning of a new line.  This is
+equivalent to lifting the pen on a plotter and moving it to a new
+position without drawing any line.  The current point becomes
+(\fIx\fR, \fIy\fR).
+.PP
+.SH \&\fBopenpl\fR
+.br
+.PP
+int \fBopenpl\fR ()
+.PP
+\&\fBopenpl\fR normally opens the device.  For postscript we just print
+out the postscript prologue.  The following global variables defined
+in \fBopenpl\fR specify what prologue is written to the
+output.
+.PP
+\&\fIuser_has_prologue\fR is a flag.  If it is non-zero then the open
+routine should output the user specified prologue contained in the
+file specified in the string \fIusers_prologue\fR.
+.PP
+\&\fIusers_prologue\fR is a string containing the file name for any user
+specified postscript prologue.  This file is a substitute for the
+default prologue.
+.PP
+.SH \&\fBpoint\fR
+.br
+.PP
+int \fBpoint\fR (int \fIx\fR, int \fIy\fR)
+.PP
+\&\fBpoint\fR takes a pair of integer arguments specifying the
+coordinate (\fIx\fR, \fIy\fR) for a single point.  The current point
+then becomes (\fIx\fR, \fIy\fR).
+.PP
+.SH \&\fBrotate\fR
+.br
+.PP
+int \fBrotate\fR (int \fIw\fR, int \fIh\fR, int \fIangle\fR);  
+.PP
+\&\fBrotate\fR takes three integer arguments.  The last argument,
+\&\fIangle\fR, specifies the angle in degrees counter-clockwise from the
+x (horizontal) axis following text.  \fIw\fR and \fIh\fR are not
+currently used, but may be used in future.
+.PP
+.SH \&\fBspace\fR
+.br
+.PP
+int \fBspace\fR (int \fIx0\fR, int \fIy0\fR, int \fIx1\fR, int \fIy1\fR)
+.PP
+\&\fBspace\fR takes two pair of integers arguments specifying the
+lower, left-hand and upper, right-hand limits of the range of plot
+coordinates.  The scaling of input to output coordinate conversion is
+adjusted to fit these ranges into the page.  Note however that if the
+ranges of x and y coordinates are different the smallest scaling of
+the two is used to avoid affecting the aspect ratio of the plot.  This
+means that although the plot is scaled to fit on the page, the axes
+are not streched with respect to each other.
+.PP
+.bp
+.SH The\ Unix\ Plot\ File\ Format
+.br
+.PP
+The Unix plot file is a set of plotting commands and data.  Each command is
+a single ascii character indicating which operation is to be
+performed.  The data following a command is either a newline
+terminated ascii string or several signed, two byte integers in
+binary format.  For example, the command to move the current point
+to the coordinate (3,5) would be \fBm\e000\e003\e000\e005\fR.
+.PP
+Note that the byte order of the binary representation of the signed,
+two byte integers is machine dependent, so on some machines, this
+command might appear as \fBm\e003\e000\e005\e000\fR.  \fBplot2ps\fR
+tries to guess the byte order from the arguments to the \fBopenpl\fR
+command and adjust the order accordingly.
+.PP
+The following table lists each single character commands followed by
+the name of the corresponding libps function called to handle the data
+and a description of the command and data.
+.PP
+.IP \f(CW\`Command\'\fR\ 
+Description
+.IP
+.IP \f(CW\`a\'\fR\ 
+The arc command is followed by three pair of signed, two byte integers
+indicating the center, starting and ending points for a circular arc.
+The center becomes the the current point.  This is equivalent to the
+\&\fBarc\fR function (see section arc).
+.IP
+.IP \f(CW\`c\'\fR\ 
+The circle command is followed by three signed, two byte integers.  The
+first two indicate the x and y coordinates of the center of the circle
+and the third indicates the radius of the circle.  The center becomes the
+the current point.  This is equivalent to the \fBcircle\fR function
+(see section circle).
+.IP
+.IP \f(CW\`C\'\fR\ 
+The color command is followed by three unsigned, two byte integer which
+indicate the intensity of \fIred\fR, \fIgreen\fR and \fIblue\fR
+components respectively of the background color.  For each component the
+range of intensity is from 0 to 65535.  A value of (\fI0\fR, \fI0\fR,
+\&\fI0\fR) represents black and (\fI65535\fR, \fI65535\fR, \fI65535\fR)
+represents white. This is equivalent to the \fBcolor\fR function
+(see section color).
+.IP
+.IP \f(CW\`e\'\fR\ 
+The erase command is followed by no data.  The erase command is not
+needed since in \fBidraw\fR and postscript we start off with a blank
+page.  For this reason the erase command does not actually output any
+postscript. This is equivalent to the \fBerase\fR function
+(see section erase).
+.IP
+.IP \f(CW\`f\'\fR\ 
+The linemod command is followed by a newline terminated string containing
+the name of the line mode (or style) for all subsequent lines, circles
+and arcs. This is equivalent to the \fBlinemod\fR function
+(see section linemod) which describes the line styles and thier names.
+.IP
+.IP \f(CW\`F\'\fR\ 
+The the fontname command is followed by a newline terminated string
+containing the name of the font to be used for all subsequent text. This
+is equivalent to the \fBfontname\fR function (see section fontname).
+.IP
+.IP \f(CW\`l\'\fR\ 
+The line command is followed by two pair of signed, two byte integers
+which indicate the starting and ending points of the line.  The second
+pair becomes the the current point. This is equivalent to the \fBline\fR
+function (see section line).
+.IP
+.IP \f(CW\`L\'\fR\ 
+The fill command is followed by an unsigned, two byte integer indicating
+the intensity of the fill for closed paths.  A value of 1 represents
+black and a value of 0xFFFF indicates white.  The value 0 is special in
+that is indicates that no solid fill should occur, and that the interior
+of the respective path is transparent. This is equivalent to the
+\&\fBfill\fR function (see section fill).
+.IP
+.IP \f(CW\`m\'\fR\ 
+The move command is followed by a pair of signed, two byte integers
+containing the location of the new current point.  No line is drawn to
+this point as opposed to the continue command (\fBc\fR) which draws a
+line.  This is equivalent to the \fBmove\fR function (see section move).
+.IP
+.IP \f(CW\`n\'\fR\ 
+The continue command is followed by pair of signed, two byte integers
+containing the coordinates of the endpoint of a line segment.  A line is
+drawn from the previous current point if it was set using a command such
+as move or continue.  This then becomes the the current point. This is
+equivalent to the \fBcont\fR function (see section cont).
+.IP
+.IP \f(CW\`p\'\fR\ 
+The point command is followed by pair of signed, two byte integers
+containing the location of single point to be drawn.  This then becomes
+the the current point. This is equivalent to the \fBpoint\fR function
+(see section point).
+.IP
+.IP \f(CW\`r\'\fR\ 
+The rotate command is followed by three signed, two byte integers.  The
+third indicates the rotation of all subsequent text.  The rotation is in
+degrees counter-clockwise from the x (horizontal) axis. This is
+equivalent to the \fBrotate\fR function (see section rotate).
+.IP
+.IP \f(CW\`s\'\fR\ 
+The space command is followed by two pair of signed, two byte integers
+which indicate the the lower right-hand and upper left-hand corners of
+the range of plot coordinate space.  \fBplot2ps\fR uses the third
+signed, two byte integer (the right-hand limit) to try to determine the
+byte order. This is equivalent to the \fBspace\fR function
+(see section space) which describes the recognized sizes.
+.IP
+.IP \f(CW\`S\'\fR\ 
+The fontsize command is followed by an signed, two byte integer
+containing the size in printers points of all subsequent text. This is
+equivalent to the \fBfontsize\fR function (see section fontsize).
+.IP
+.IP \f(CW\`t\'\fR\ 
+The label command is followed by a newline terminated string contains a
+label which is printed at the current point.  It is left justified and
+centered vertically with respect to the current point.  The current point
+is then set at the end of the text. This is equivalent to the
+\&\fBlabel\fR function (see section label).
+.IP
+.IP \f(CW\`T\'\fR\ 
+The adjusted label command is followed by two characters which indicate
+the horizontal and vertical justification respectively and a newline
+terminated string containing the label.  The label is drawn with the
+specified justification and the current point is set at the end of the
+text.  This is equivalent to the \fBalabel\fR function (see section alabel)
+which describes how to specify justification.

@@ -1,0 +1,4 @@
+Wed Oct 17 22:31:41 1990  Richard Murphey  (rich at tahomah)
+
+	* tek2.c: -help and -V report the version number. This is 0.1.
+

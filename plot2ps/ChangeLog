@@ -1,0 +1,70 @@
+Mon Mar 11 11:08:40 1991  Richard Murphey  (rich at kappa)
+
+	* plot.c: use getopt. Version 0.4
+
+Sun Feb 10 18:26:07 1991  Rich Murphey  (murphey at cns16)
+
+	* drawline.c, alabel.c, circle.c, added code to center
+	the plot vertically on the page.
+
+Sat Feb  9 21:51:12 1991  Rich Murphey  (murphey at cns15)
+
+	* libplot.h: Changed value of SCALING to 1 for compatibility
+	with idraw version 7.  Changed max x and y_output_max values
+	in drawline.c accordingly.
+
+Thu Oct 18 11:09:32 1990  Richard Murphey  (rich at tahomah)
+
+	* plot.c: fixed bug in arguments to erase. This is version 0.3.
+
+Wed Oct 17 22:30:42 1990  Richard Murphey  (rich at tahomah)
+
+	* plot.c: -help and -V report the version number. This is 0.1.
+
+Sun Oct 14 15:35:54 1990  Richard Murphey  (rich at tahomah)
+
+	* plot2ps.man: added description of atend.pl and -bbox
+	* open.c close.c plot3.h: #define SCALING to be the scale
+	  factor in the postscript CTM now that it is used widely
+	  in bounding box computation.
+
+Fri Oct 12 13:02:30 1990  Richard Murphey  (rich at tahomah)
+
+	* header.c: squezed the idraw version 7 prolog down to 100 lines
+	  using Tom Rokicki's squeze program (see divps).  Sun's compiler
+	  can handle the length of the string much easier in this form.
+
+Mon Sep 10 09:51:18 1990  Richard Murphey  (rich at unicorn)
+
+	* range.c: added code to determine the max and min coordinates.
+	* plot.c: added -bbox option. -bbox specifies that a eps bounding
+          box comment is to be written at the end of the file, in the trailer.
+	* open.c, close.c: added code to write the bounding box.
+	* plot2ps.texinfo: added description of -bbox and atend.pl.
+
+Tue May 15 15:05:52 1990  Rich Murphey  (rich at kalliope)
+
+	* open.c: added a space after %! in `%!PS-Adobe-2.0 EPSF-1.2'.
+	  Some printers (LW IINT, QMSPS810) need it.
+
+	* plot2ps.tex: compare output files sizes of plot2ps and
+	  other converters. We could cull out unused code from the
+ 	  prolog. Thanks synchrods!daniel@cad.berkeley.edu.
+
+Thu Nov  9 11:01:35 1989  Richard Murphey  (rich at kappa)
+
+	* plot2ps.tex: removed mentions of un*x in the documentation.
+
+	* plot.c: added the `-line-width' option. The argument is the
+	  integer valued width of lines drawn in the plot.  Values of
+	  0 were causing problems for idraw. Added a note about this
+	  to the documentation for `-line-width'.
+
+Sun Sep 10 18:55:43 1989  Richard Murphey  (rich at kappa)
+
+	* removed postscript hardcopy documentation and texinfo.tex
+	from the distributed sources to reduce the size.  The hardcopy
+	is now a seperately distributed file.
+
+	* added testdist target to makefile.
+

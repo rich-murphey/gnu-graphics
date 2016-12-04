@@ -1,0 +1,120 @@
+.\" -*- nroff -*-
+.TH DOUBLE 1  "22 February 1989"
+.SH NAME
+double \- filter for converting and editing double precision data
+.SH SYNOPSIS
+.B double
+[\-\fBoption\fR [\fIvalue\fR]] ...
+.SH DESCRIPTION
+.IX double \- filter for converting, scaling and cutting double precision data
+.I double
+copies double precision data from the standard input to the standard output.
+The user can specify optional scaling, editing and merging of additional data
+from specified files.
+.PP
+If you specify more than one operation on the command line, they will be
+applied in the following order.  See `OPTIONS' for a more complete description
+of these.  The specified
+.I offset
+number of values are skipped.
+While there is still data on the standard input one value is read.
+One value from the
+.I add
+file is read and added to the value if present.
+One value from the
+.I mult
+file is read and the value is multiplied by it if present.
+The value is multiplied by the
+.I scale
+value if present.  The
+.I baseline
+value, if present, is added to the value.
+The value is writen to the standard output.
+One value is read from the
+.I join
+file if present and written to the standard output.
+Last,
+.I count
+values in the standard input are skipped.
+.PP
+The user can achieve an arbitrary order by implementing each operation as
+a single invocation of
+.I double
+in a multiple stage pipline.
+.SH OPTIONS
+.TP 20
+.BI bi
+the input contains binary (unformatted double precision) data.
+.TP 
+.BI bo
+the output will contain binary (unformatted double precision) data.
+.TP 
+.BI "add FILE"
+add the next input value from
+.I FILE
+to each output value.
+.TP 
+.BI "baseline DOUBLE"
+add
+.I  DOUBLE
+to each output value (default 0.0).
+.TP 
+.BI "copy INTEGER"
+copy 
+.I INTEGER
+values to the output each time around (default 1).
+.TP 
+.BI "join FILE"
+ merge one value from
+.I FILE
+into output with each other output value.
+.TP 
+.BI "mult FILE"
+file - multiply each output value with the next value from
+.I FILE.
+.TP 
+.BI "offset INTEGER"
+skip
+.I  INTEGER
+values from the beginning of the the input file before
+beginning to copy (default 0).
+.TP 
+.BI "scale DOUBLE"
+scale every output value by
+.I  DOUBLE
+(default 1.0).
+.TP 
+.BI "skip INTEGER"
+skip
+.I INTEGER
+values after copying each cycle(default 0).
+.SH EXAMPLES
+.nf
+
+      vector scalar product bvec[i] = 5.0 * avec[i]:
+      double -scale 5.0 <avec >bvec
+
+      vector addition cvec[i] = avec[i] + bvec[i]:
+      double -add avec <bvec >cvec
+
+      vector multiplication cvec[i] = avec[i] * bvec[i]:
+      double -mult avec <bvec >cvec
+      
+      vector editing:
+      bvec[i] = avec[2i]
+      double -skip 1 <avec >bvec
+
+      bvec[i] = avec[i+5]
+      double -offset 5 <avec >bvec
+
+      bvec[i] = avec[2i]
+      bvec[i+1] = avec[2i+1]
+      double -copy 2 -skip 2 <avec >bvec
+
+.fi
+.SH "SEE ALSO"
+csh(1), sh(1)
+.SH BUGS
+This is virtually untested and still undergoing developmental changes.
+Please mail any bugs reports or comments to rich@rice.edu, and I'll
+provide support if I can.

@@ -1,0 +1,7 @@
+       INCLUDES = -I$(TOP) -I$(TOP)/usr/include -I$(TOP)/usr/include/X11 -DVERS="0.4"
+LOCAL_LIBRARIES = $(XAWLIB) $(XMULIB) $(XTOOLLIB) $(XLIB)
+  SYS_LIBRARIES = -lm
+           SRCS = xplot.c alabel.c
+           OBJS = xplot.o alabel.o
+
+ComplexProgramTarget(xplot)

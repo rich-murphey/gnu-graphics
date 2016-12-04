@@ -1,0 +1,82 @@
+Wed Mar 27 12:42:25 1991  Richard Murphey  (rich at tahomah)
+
+	* graphics.texinfo: added a note about using `which graph' to
+	check whether /bin/graph is being mistakenly used.  Removed
+	references to `unix' where unnecessary.
+
+Fri Mar 15 15:12:11 1991  Richard Murphey  (rich at tahomah)
+
+	* graphics.texinfo: Tektronix was spelled improperly.
+
+Tue Mar 12 01:30:15 1991  Richard Murphey  (rich at kappa)
+
+	* regresstion tests on sun3, sun4 and sequent pass. This si
+	version 0.16. double 0.13 graph 0.15 plot2fig 0.4 plot2plot 0.1
+	plot2ps 0.4 plot2tek 0.3 tek2plot 0.1 xplot 0.4
+
+Tue Mar  5 14:58:25 1991  Richard Murphey  (rich at kappa)
+
+	* graphics.texinfo: added more examples for graph.
+	graph.c: added warning if margins are to small for labels.
+	version 0.15: double 0.13 graph 0.15 plot2fig 0.3 plot2plot 0.1
+	plot2ps 0.3 plot2tek 0.2 tek2plot 0.1 xplot 0.3
+
+Sun Mar  3 12:22:42 1991  Richard Murphey  (rich at kappa)
+
+	* added byte ordering code to allow for a default host dependent
+	byte ordering.  This should be more compatible with byte ordering
+	of plot files in other versions of the plot utilities. This is
+	version 0.14:
+	double 0.13 graph 0.14 plot2fig 0.3 plot2plot 0.1 plot2ps 0.3
+	plot2tek 0.2 tek2plot 0.1 xplot 0.3
+
+	* We were announced on comp.archives today, so this is a good
+	time to clean up and release: version 0.13:
+	double 0.13 graph 0.14 plot2fig 0.3 plot2plot 0.1 plot2ps 0.3
+	plot2tek 0.2 tek2plot 0.1 xplot 0.2
+
+Sat Feb  9 15:01:20 1991  Rich Murphey  (murphey at cns15)
+
+	* graphics.texinfo: added description of -N and -R options.
+
+Thu Nov  8 00:09:57 1990  Richard Murphey  (rich at kappa)
+
+	* cleaned up regression tests and makefiles. Version 0.10
+
+Wed Nov  7 11:31:05 1990  Richard Murphey  (rich at kappa)
+
+	* graphics.texinfo: added Ray's description of long option names.
+	* graph: more fixes to arguement parsing. This is version 0.9.
+
+	* merged Ray's fixes for plto2tek, plot2plot, and graph as well
+	as lots of new code.  This is version 0.8.
+
+Tue Nov  6 13:52:06 1990  Ray Toy  (toy at dino.ecse.rpi.edu)
+
+	* Added support for log axes in graph.c and write_plot.c.
+	Doesn't quite work when margin != 0, though.  Added some
+	info about it in graph.texinfo.
+
+	* plot2plot modified to use GNU getopt.
+
+Wed Oct 31 23:24:09 1990  Richard Murphey  (rich at tahomah)
+
+	* wrote plot2plot which reads and writes plot files in both
+	ascii and binary formats and provides backward compatibility.
+	* Seperated the copying message out of each program and had
+	each include it from the COPYING file. This is version 0.7.
+	* graphics.texinfo: condensed documentation into one file.
+
+Mon Oct 29 13:44:49 1990  Richard Murphey  (rich at tahomah)
+
+	* added changes contributed by Ray Toy <toy@dino.ecse.rpi.edu>
+	to graph.  This is version 0.5
+
+Thu Oct 18 11:02:18 1990  Richard Murphey  (rich at tahomah)
+
+	* added prototypes to all library routine declarations and
+	removed lint from much of the code. This is version 0.3.
+
+	* Makefile: added Ultrix Vax target from Jeff Templon.
+
+

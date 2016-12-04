@@ -1,0 +1,5 @@
+Sun Nov  4 19:15:26 1990  Richard Murphey  (rich at kappa)
+
+	* getopt.c: removed CONST to avoid type clash on
+	_getopt_long_options definition.
+	* getopt.h: moved struct option declaration here from getopt.c.

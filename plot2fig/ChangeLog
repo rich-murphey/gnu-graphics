@@ -1,0 +1,47 @@
+Mon Mar 11 11:09:26 1991  Richard Murphey  (rich at kappa)
+
+	* plot.c: use the copy in ../plot2tek.  This uses getopt now.
+	This is version 0.4.
+
+Tue Nov 20 11:43:14 1990  Richard Murphey  (rich at tahomah)
+
+	* arc.c: revised for transfig 2.1 compatibility.  You have to
+	specify nonzero line thickness for a line to be visible.
+	this is version 0.3
+
+Sun Nov 18 22:15:46 1990  Richard Murphey  (rich at tahomah)
+
+	* cont.c, alabel.c: revised for transfig 2.0 compatibility.
+	this is version 0.2
+
+Wed Oct 17 22:22:08 1990  Richard Murphey  (rich at tahomah)
+
+	* plot.c: -help and -V report the version number. This is 0.1.
+
+Wed May 16 11:23:12 1990  Richard Murphey  (rich at kappa)
+
+	* space.c: David Dalton (dalton@geop.ubc.ca) suggested centering the
+	  plot in the fig window.
+
+Fri May 11 09:28:54 1990  Richard Murphey  (rich at kappa)
+
+	* linemod.c: added dot-dashed, short-dashed, and long-dashed as
+	  aliases.  Solid lines are used when unrecognized line modes
+	  are requested. Thanks David Dalton (dalton@geop.ubc.ca)!
+
+
+Sept 13 Richard Murphey  (rich at kappa)
+
+	* Thanks to Micah Beck for helpful discussions and suggestions!
+
+	* alabel.c: The function alabel ignores leading white space and
+	  only outputs labels which contain non-white space characters.
+	  This is compatible with the behavior of pic2fig which also
+	  remove leading white space and ignores empty text.
+
+	* space.c: The range of coordinates on the output is reduced to
+	  (0-480) to allow the graphics to fit in a 6 inch square.  This
+	  will avoid surprises for the user when latex is unable to fit
+	  larger graphics within the margins.
+
+

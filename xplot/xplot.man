@@ -1,0 +1,94 @@
+.TH XPLOT 1 "6 Setpember 1990" "X Version 11"
+.SH NAME
+xplot - plot(5) filter for X
+.SH SYNOPSIS
+.B xplot
+[-\fItoolkitoption\fP ...] [-option ...]
+.SH DESCRIPTION
+.I xplot 
+reads plot(4) commands from its standard input and draws the
+resulting graphics in an X window.  The window is updated after
+each flush or pipe full of data, and upon end-of-file on the input.
+
+After xplot reaches the end-of-file on the input, it puts itself in
+the bacground (forks).  Control returns to the calling program, while
+xplot continues, remaining on screen.
+
+To exit, click the left mouse button in the xplot window.  Note that
+xplot ignores SIGHUP signals, so you must use another signal to kill
+xplot if necessary.
+.SH OPTIONS
+.I Xplot
+accepts all of the standard X toolkit command line options, and the initial
+geometry specification determines the resolution, with a default
+geometry of 500x500 pixels.
+.PP
+The following standard X Toolkit command line arguments may be used with 
+.I xplot:
+.TP 8
+.B \-bg \fIcolor\fP
+This option specifies the color to use for the background of the window.  
+The default is \fIwhite\fP.
+.TP 8
+.B \-bd \fIcolor\fP
+This option specifies the color to use for the border of the window.
+The default is \fIblack\fP.
+.TP 8
+.B \-bw \fInumber\fP
+This option specifies the width in pixels of the border surrounding the window.
+.TP 8
+.B \-fg \fIcolor\fP
+This option specifies the color to use for displaying text.  The default is 
+\fIblack\fP.
+.TP 8
+.B \-fn \fIfont\fP
+This option specifies the font to be used for displaying normal text.  The
+default is \fI6x10\fP.
+.TP 8
+.B \-rv
+This option indicates that reverse video should be simulated by swapping
+the foreground and background colors.
+.TP 8
+.B \-geometry \fIgeometry\fP
+This option specifies the prefered size and position of the plot window.
+.TP 8
+.B \-display \fIhost\fP:\fIdisplay\fP
+This option specifies the X server to contact.
+.TP 8
+.B \-xrm \fIresourcestring\fP
+This option specifies a resource string to be used.
+.SH X DEFAULTS
+This program uses the 
+.I Command
+widget in the X Toolkit.  It understands all of the core resource names and
+classes as well as:
+.PP
+.TP 8
+.B reverseVideo (\fPclass\fB ReverseVideo)
+Specifies that the foreground and background colors should be reversed.
+.PP
+.TP 8
+.B EXAMPLE
+The resources:
+
+Xplot.font: 6x9
+
+Xplot.geometry: 300x300
+
+will set the font used in the plot window to `6x9' and the size of the
+window to 300 by 300 pixels.
+.SH "SEE ALSO"
+X(1), plot(4), plot(5), graph(1), axis(1), Athena Command widget
+.SH BUGS
+Note that the byte order in the plot(4) file format is architecture
+dependent in practice.  For some simple and/or standard values of
+plot's space command, the program will automaticly determine the byte
+order.  However, there is no guarantee that plot files are portable
+across architectures.  On some systems, the plottoa and atoplot
+commands are available and can be used to work around this problem by
+traslating plot files to and from a portable ascii format.
+.PP
+.SH AUTHORS
+Arthur Smith (Lassp, Cornell University) <arthur@helios.tn.cornell.edu>
+
+Rich Murphey (ECE, Rice University) <Rich@Rice.edu>

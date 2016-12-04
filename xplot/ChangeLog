@@ -1,0 +1,76 @@
+Thu Mar 14 17:36:26 1991  Richard Murphey  (rich at omicron)
+
+	* Imakefile: Richard Roy <dick@isl.stanford.edu>
+	adds alabel.o to OBJ and alable.c to SRC.
+
+Mon Mar 11 11:05:05 1991  Richard Murphey  (rich at kappa)
+
+	* xplot.c: use getopt. added +catch-sighup and
+	+dont-fork options.  This required moving the `signal()'
+	to follow the option parsing.  Are there cases where
+	the signal needs to be ignored sooner? Version 0.4
+
+Sun Mar  3 15:09:49 1991  Richard Murphey  (rich at kappa)
+
+	* alabel.c: load the default font if a named font does not
+	exist in the server. This is version 0.3
+
+Sat Nov 10 10:44:59 1990  Richard Murphey  (rich at kappa)
+
+	* xplot.c: added program name to error message.
+
+Wed Oct 17 22:02:32 1990  Richard Murphey  (rich at tahomah)
+
+	* xplot.c: fixed font resource bug in fallback_resources.
+	Thanks to David W. Forslund <dwf%hope.ACL@lanl.gov> for catching it!
+	* xplot.c, Makefile: added -v option which reports the version
+	number. This is version 0.2.
+
+Thu Sep 13 12:40:22 1990  Richard Murphey  (rich at kappa)
+
+	* rewrote the X initialization code in openpl again in order to
+	  avoid the bug in the Sun4 SunOS 4.1 kernel.  This time we
+	  are reading the whole plot file into a buffer befor opening
+	  any windows.  That seems to help.  It still needs to handle
+	  resize events.
+
+rich@rice.edu 7/29/89
+
+* added file alabel.c containing plot functions for extended plot file
+  format.
+
+* changed label so that it calls alabel.
+
+* added extensions to the main loop which reads in the plot file.
+
+* added the `-debug' option.  The output is similar to the output
+  of plottoa. So, except for the extensions we should be able to
+  filter the output with /usr/bin/atoplot and then other plot filters
+  to make debugging easier.
+
+rich@rice.edu 8/13/90
+
+* rewrote much of the X initialization code in openpl in order to
+  avoid what seems to be a bug in the Sun4 SunOS 4.1 kernel.  If xplot
+  crashes the OS with `bad trap' and `data fault' messages, you have been
+  bit by this bug.
+
+* changed from a label widget to a command widget.  This makes naturally makes
+  the left button `QUIT' -- exit and close the window.
+
+* keep all of the input read from stdin in a buffer.  Later on we can
+  add a resize method which redraws the window using this data.
+
+* Use XClearWindow after reaching the end each pipe full of data and after 
+  the pipe is closed to force the display to expose all newly drawn lines and
+  text in the pixmap.
+
+* fork() after the end of file is reached, so that the parent process
+  can continue while the window stays on the screen.
+
+----------------------------------------------------------------
+ACKNOWLEDGEMENTS:
+
+This program was originally written by Arthur Smith.
+	(arpanet)  arthur@helios.tn.cornell.edu
+	(bitnet)   arthur@crnlassp

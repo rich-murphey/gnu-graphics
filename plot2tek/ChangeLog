@@ -1,0 +1,4 @@
+Mon Mar 11 11:08:02 1991  Richard Murphey  (rich at kappa)
+
+	* plot.c: use getopt. Version 0.3
+

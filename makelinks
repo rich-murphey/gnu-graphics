@@ -1,0 +1,7 @@
+#!/bin/csh
+set dirs = `(cd ../graphics; find . -type d -print)`
+mkdir $dirs
+foreach i ($dirs)
+  (cd $i; ln -s `find ../../graphics/$i -type f -print` .)
+end
+ln -s ../graphics/* .

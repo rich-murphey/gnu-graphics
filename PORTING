@@ -1,0 +1,15 @@
+If your machine type is not specified in the Makefile, there are
+several files you may need to edit in order to install GNU graphics.
+
+Makefile: You will need to edit the Makefile to define a target for
+your machine type.
+
+include/sys-defines.h: Each source file which needs system include
+files such as stdio.h, ctype.h, math.h, and string.h include the file
+include/sys-defines.h.  You can edit the file include/sys-defines.h in
+order to specify the proper system include files for most the source
+files here.
+
+xplot/Makefile: You may have to modify the makefile to specify the
+location of the X include files and libraries if they are not in
+/usr/include/X11 and /usr/lib/X11.

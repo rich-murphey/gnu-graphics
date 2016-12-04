@@ -1,0 +1,183 @@
+Thu Mar 28 23:10:45 1991  Richard Murphey  (rich at kappa)
+
+	* graph.c: rewrote loop termination test for labeling the
+	axes.  It failed on NeXT.
+
+Tue Mar 26 11:33:56 1991  Richard Murphey  (rich at tahomah)
+
+	* graph.c: Let the option `-a 0' diable automatic generation of
+	the abscissa.  That is, after `-a 0', abscissal values are read
+	from the following data files.  This also resets the default
+	sampling interval and starting x value to 1 and 0, respectively.
+
+	* graph.c: missing break between parsing -l and -N
+	options is added.
+
+Thu Mar  7 16:02:18 1991  Richard Murphey  (rich at kappa)
+
+	* graph.c, read_file.c: added -c option.  `-c string' defines
+	string as the default label for each point.
+	
+	* graph.c, read_file.c: added -t option which transposes the axes.
+	After specifying -t, options applying the the x and y axes are
+	reversed.  Thus -x, -X and -lx apply to the y axis when -t is specified.
+
+	* these are all the options documented for other versions of
+	graph.  So, we ought to be able to claim some compatibility.
+		
+Tue Mar  5 14:52:30 1991  Richard Murphey  (rich at kappa)
+
+	* graph.c: warn the user if one of the margins is too narrow for a
+	label. Version 0.15
+
+Sun Feb 10 17:04:14 1991  Rich Murphey  (murphey at cns16)
+
+	* write_plot.c: commented out rotatation of Y axis label.
+	Bug in y_label position fixed.
+
+Sat Feb  9 15:01:20 1991  Rich Murphey  (murphey at cns15)
+
+	* graph.c, extern.h, write_plot.c: rounding the limits
+	of the axes is now the default.  Added code for `-N[x|y]' which
+	omits labels from the tick marks.
+
+Sun Dec  2 22:16:28 1990  Richard Murphey  (rich at kappa)
+
+	* write_plot.c: added more graphical symbols (box, diamond, etc).
+
+Wed Nov 14 00:51:56 1990  Richard Murphey  (rich at taj)
+
+	* graph.c: added -R option to specify that the limits of the
+	x and y axes should be rounded (extended) to the next tick mark.
+	This is version 0.14.
+
+	* write_plot.c: fixed bug in code for margin option. margin
+	extends log axes by a power of the ratio of the limits.  Aack.
+
+	* graph.c: report an error if integer options don't begin with a digit.
+	This is version 13.
+
+	* write_plot.c: take ceiling of before converting to int for lower
+	limit on each axis.
+	Also, relaxed the restrictions on the limits: min and max limits
+	for the axes can be reversed.
+
+Sat Nov 10 11:22:30 1990  Richard Murphey  (rich at kappa)
+
+	* write_plot.c: throw away points which fall outsice the limits of
+	the plot and break lines when this occurrs.
+	Omit code for rounding limits to nearest tick mark.  We should
+	make this a non-default option.
+
+Fri Nov  9 00:05:54 1990  Richard Murphey  (rich at tahomah)
+
+	* graph.c: fixed bug when +margin nonzero is specified.
+
+Thu Nov  8 16:03:42 1990  Richard Murphey  (rich at tahomah)
+
+	* write_plot.c: added clipping in macros.  rewrote part
+	of the code for determining values at tick marks to use
+	integer artithmentic.  This will avoid compound round-off
+	errors associated with floating point arithmetic.
+
+	* graph.c, write_plot.c: moved break_flag, m_break_flag and
+	linemode_index into the argument list for write_plot so that
+	it can be used in other programs without depending on as much
+	static data.
+
+	* graph.c: arguements to -a, -x, -y, and -S are optional.  This
+	looks a little easier to implement cleanly.  Added support for
+	`-x l' and `-y l' which specify logarithmic x and y axes
+	respectively.  This is version 0.11.
+
+Wed Nov  7 14:45:56 1990  Richard Murphey  (rich at tahomah)
+
+	* write_plot.c:  According to the texinfo file, a grid spec of 0
+	(no grid) should have no axes, ticks or labels.  It does that now.
+
+	* graph.c:  Swapped meanings of -l and -L:  -l is for log axes,
+	and -L is for the top label.  Changed option names of some long 
+	options and their values to better names and more intuitive values.
+
+Wed Nov  7 11:12:53 1990  Richard Murphey  (rich at kappa)
+
+	* max.c: return a range of (-1, 1) for zero lentgh arrays.
+	This is consistent with the behavior of other versions of graph.
+
+Tue Nov  6 20:12:37 1990  Ray Toy  (toy at dino.ecse.rpi.edu)
+
+	* graph.c:  added -L/+log-axis to allow plotting data on log
+	axes.  Either x, y, or both x and y axes may be log axes.
+	* write_plot.c:  Added support for plotting on log axes.  Axis
+	labels are also written.  Changed computation of max and min
+	values so that the bounding box always has an axis label on it.
+	Using +margin and log axes produces funny tick marks.
+
+Thu Nov  1 23:52:41 1990  Richard Murphey  (rich at tahomah)
+
+	* read_file.c: fixed bug in reading binary float and double.
+
+Wed Oct 31 22:18:59 1990  Richard Murphey  (rich at tahomah)
+
+	* read_file.c: fixed "%f " bug.  Read labels only for ascii input.
+	* graph.c: added `-margin N' option to specify the margin between
+	data and the edges of the box.  Fixed bug in `-a' where defaults
+	were not set for missing arguments.
+
+Tue Oct 30 22:46:01 1990  Richard Murphey  (rich at kappa)
+
+	* graph.c: optimize move after symbols, and empty labels.
+	* graph.c: replaced tick spacing algorithm with one contributed
+	by Ray Toy <toy@dino.ecse.rpi.edu>.  Nice stuff Roy!!!
+	* read_file.c: binary data input support also from Roy.
+
+	* graph.c: Added code for -b, -M and -m options. This is
+	version 0.6.  Thanks to Dave Rosen for catching these!
+
+Sun Oct 28 17:43:16 1990  Richard Murphey  (rich at tahomah)
+
+	* This is version 0.5
+	* Changes contributed by Ray Toy <toy@dino.ecse.rpi.edu>:
+
+	* graph.c:  graph dumps core on bad options, So we
+	added a macro IF_ARGOK(option) which makes sure
+	we have not gone past the end of the arguemnts (argv) and
+	prints an error message if so.  Graph should not core dump
+	if a an argument to an option is omitted.
+
+	* The texinfo file for graph seems to imply that -a may have
+	0, 1, or 2 parameters following it.  I've fixed it so this
+	is true.  If no parameters are given, the defaults are used.
+
+	* All error messages (hopefully!) now include the program name
+	in the message so you can find out who printed the message.
+	Useful when graph is used inside of complex scripts and pipes.
+
+	* Not all compilers that recognize void recognize void *.  So,
+	#define VOIDPTR if your compiler recognizes void *.  If it
+	doesn't, char * is used instead.
+
+	* Added some support if you have ANSI compliant .h files.  Use
+	STDC_HEADERS to get this.
+
+	* extern.h read_file.c: pass the address of the pointer to
+	point_struct so that when the array of points is realloced,
+	read_file can the pointer to it's new location.
+	Also, the test to determine if the array should be enlarged
+	has been moved to the beginning of the while loop.
+
+
+Fri Oct 19 01:14:40 1990  Richard Murphey  (rich at kappa)
+
+	* graph.c: added the xyXYTwhur and l options.
+	* graph.texinfo: documented them and cleaned up.
+	This is version 0.4.
+
+Thu Oct 18 11:15:09 1990  Richard Murphey  (rich at tahomah)
+
+	* *.c *.h: chaged (void*) to (char*) to avoid complaints
+	  from the ultrix C compiler. This is version 0.3.
+
+Wed Oct 17 22:28:10 1990  Richard Murphey  (rich at tahomah)
+
+	* graph.c: -help and -V report the version number. This is 0.1.

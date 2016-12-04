@@ -1,0 +1,12 @@
+dir ../tek2plot
+dir ../getopt
+#br main
+#br read_file
+#br array_min
+#br array_max
+#br cont
+br write_plot
+#br find_tick
+#run -debug <data
+#run -a 1 1 -xl 1 100 ../test/spline.y.dat
+run -S ../test/label.tst

@@ -1,0 +1,1450 @@
+\input texinfo   @c -*-texinfo-*-
+@setfilename graphics.info
+@settitle graphics
+
+@ifinfo
+This file documents GNU graphics.
+
+Copyright @copyright{} 1989 Free Software Foundation, Inc.
+@end ifinfo
+
+@titlepage
+@sp 10
+@center @titlefont{GNU graphics}
+@sp 2
+@center Utilities for plotting scientific data
+@sp 2
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1989 Free Software Foundation
+@end titlepage
+
+@node Top,,, (dir)
+
+@menu
+* introduction::         About the GNU graphics utilities
+* graph examples::       Using Graph to create plot files from data
+* graph invocation::     Command line options for Graph.
+* plot2ps examples::     converting plot files to PostScript
+* plot2ps invocation::   Plot2ps Command Line Options
+* xplot::                a plot file previewer for X11
+* xplot invocation::     xplot command line options and X11 resources
+* plot2fig examples::    converting plot files to Fig graphics editor format
+* plot2fig invocation::  command line options for plot2fig
+* plot2tek invocation::  Tektronix 4010 output
+* latex example::        Including a Figure in an Article
+* psfig::                Options to @code{psfig} for Including Figures
+* atend.pl::             A perl script for use with psfig
+* dvips::                How to Get @code{dvips}
+* idraw::                How to Get @code{idraw}
+* ghostscript::          an X11 PostScript interpreter/previewer
+* libps::                The Library of Plot Functions for PostScript Output
+* files::                The Plot File Format
+* Acknowledgements::     The Contributors
+* Function Index::       An Index to the libps Functions
+@end menu
+
+@node introduction, graph examples, , Top
+@chapter The GNU Graphics Utilities
+
+The GNU graphics utilities are a set of programs for plotting scientific
+data.  The program @code{graph} reads data files and writes a stream of
+plotting commands in a device independent format refered to below as a
+GNU plot file.  The remaining programs provide support for displaying GNU
+plot files on tektronix 4010, PostScript (TM)*, and X window system
+compatible output devices.@refill
+
+@code{graph} reads both ascii and binary data files and writes a plot
+file with or without axes and labels.  You can specify labels and ranges
+for the axes, and you can set the sizes and position of the plot on the
+page.  Each invocation of graph produces a plot with single set of axes
+and data.  You can place an arbitrary number of plots on the page by
+concatenating the plot output of several invocations.@refill
+
+@code{plot2ps} is a utility for converting plot files into PostScript.
+The @code{plot2ps} utility reads plotting commands from named files or
+the standard input and writes PostScript to the standard output.  You
+can then print the PostScript output on a printer, or edit it using the
+@code{idraw} graphics editor.  You can also easily include
+the output in LaTeX documents using @code{dvips} and the LaTeX command
+@code{psfig}.@refill
+
+Why is this useful? The plot file format is a common standard on un*x
+systems.  To produces figures for publication, you might need to take
+data sets, and produce labeled figures from them.  This can be done using
+@code{graph}, @code{plot2ps} and the @code{idraw} editor.  You can also
+include these figures in LaTeX documents using the @code{dvips} utility.
+All of these utilities, as well as the plot file format and plot
+library, are discussed in the following sections.@refill
+
+This documentation is under revision.  Any comments, suggestions, or
+additions would greatly benifit GNU users.  Please mail them to either
+@samp{bug-gnu-utils@@prep.ai.mit.edu} or @samp{Rich@@Rice.edu}.@refill
+
+* PostScript is a trademark of Adobe Systems Incorporated.
+
+@node graph examples, graph invocation, introduction, Top
+@section @code{graph} Examples
+
+
+Each invocation of @code{graph} plots data read from stdin or named
+files togeather in a single plot with or without axes and labels.  The
+following sections show common usage of @code{graph}.
+
+@menu
+* Invocation::		Simple examples using graph
+* Input Files::		What the input looks like
+* Overlaying::		Combining several data sets in one plot
+* Multiple Plots::	Multiple plots on one page
+* Binary Data::		Reading other data formats
+@end menu
+
+@node Invocation, Input Files, , graph examples
+@section Simple examples using graph
+
+By default, @code{graph} reads ascii data from the standard input or
+files specified on the command line.  @code{graph} reads pairs of
+values, x and y coordinates:@refill
+
+@example
+0.0  0.0
+1.0  0.2
+2.0  0.0
+3.0  0.4
+4.0  0.2
+5.0  0.6
+@end example
+
+To plot this data, you might use
+
+@example
+graph < ascii_data_file |plot
+@end example
+
+where ascii_data_file could contain data similar to the above example.
+You can replace the command @code{plot} with @code{plot2tek} if you have
+a tektronix 4010 compatible graphics terminal, @code{plot2ps} if you
+have a postscript compatible printer or previewer, or @code{xplot} if
+you have an X window system display.@refill
+
+Note that @code{graph} is commonly supplied with some operating systems.
+If so, some confusion may arise if the system supplied version is
+executed mistakenly.  On unix systems, you can determine which version
+you invoke by typing the command @code{which graph}, which prints the
+file name of the version you invoke by default.@refill
+
+To reduce the change the size of the plot and position it in the middle
+of the display, you could use
+
+@example
+graph -h .4 -w .4 -r .2 -u .2 < ascii_data_file |plot
+@end example
+
+where @code{h} and @code{w} are the height and width of the plot and
+@code{r} and @code{u} indicate how far up and to the right the plot is
+positioned.
+
+You can put symbols at each data point using
+
+@example
+graph -S 2 .01 < ascii_data_file |plot
+@end example
+
+where 2 indicates which symbol to plot, and .01 indicates it's size.
+
+You can choose the type of line draw on each curve:
+
+@example
+graph -m 2 < ascii_data_file |plot
+@end example
+
+where 2 indicates what kind of line connects the data points.
+
+
+@node Input Files, Overlaying, Invocation, graph examples
+@section The format of input to @code{graph}
+
+As mentioned above, by default @code{graph} reads ascii pairs of values,
+x and y coordinates, from the standard input or files specified on the
+command line.  Optional labels may be placed after each coordinate in
+the data file.  The label ends at the end of the line:@refill
+
+@example
+3.0  0.4 this is a label for point (3.0, 0.4).
+@end example
+
+The label must be enclosed in double quotes if it would otherwise be
+appear to be a coordinate:
+
+@example
+3.0  0.4 "5.0 looks like a value."
+@end example
+
+You can use the @samp{-b} to break lines after each label in the input.
+Use a pair of empty double quotes if you need to break a line, but do
+not need a label.@refill
+
+@example
+0.0  0.0
+2.0  0.0
+1.0  0.2
+""
+0.0  0.1
+2.0  0.2
+4.0  0.3
+@end example
+
+You can also break cuves using @samp{-M} option to break lines whenever
+the abscissal values between successive pairs of points decrease.  When
+using @samp{-M}, each continuous curve has monotonicly increasing
+abscissal values.@refill
+
+@example
+0.0  0.0 first data set
+2.0  0.0
+4.0  0.2
+0.0  0.1 second data set
+2.0  0.2
+4.0  0.3
+@end example
+
+@code{graph} will automaticly generate abscissal values for you if you
+specify the @samp{-a} option.  Only ordinate values are given in the
+data, and the data is then assumed to be equally sampled along the
+abscissa.  The values following @samp{-a} on the command line specify
+the sampling interval and the abscissal value of the first data
+point.@refill
+
+@example
+0.0
+0.1
+0.2 label for point (2.0, 0.2)
+0.3
+0.2
+0.3
+@end example
+
+@node Overlaying, Multiple Plots, Input Files, graph examples
+@section Combining several data sets in one plot
+
+There are cases where you will want to superimpose several data sets or
+several plots on top of each other.  If for example, the data sets are
+in seperate files, you can specify each by it's name on the command
+line.  Since @code{graph} reads the standard input only if no files are
+named on the command line, you must add the name @code{--} if you want
+@code{graph} to read the standard input as well.@refill
+
+@example
+graph data-file-one data-file-two data-file-three |plot
+@end example
+
+For comparison sake, you might wish to distinguish the data in one set
+from another either by using different symbols at each point or by
+distinguishing the type of line draw.  You can do this by preceeding
+each file name with options affecting the synbol or line style used to
+plot that data.@refill
+
+@example
+graph -S 1 data-file-one -S 3 data-file-two -S 4 data-file-three |plot
+
+or
+
+graph -m 1 data-file-one -m 3 data-file-two -S 4 data-file-three |plot
+@end example
+
+If you need to superimpose several data sets, but must invoke graph
+seperately for each, you will have to specify the limits of the
+axes.@refill
+
+@example
+graph -x 0 100 -y -3 3 -S 3 -m -1 < ascii_data_file_1 >> plot_file
+@end example
+
+where @code{-x 0 100} specifies the limits on the x axis, @code{-y -3 3}
+specifies the limits on the y axis, @code{-S 2} specifies a box to be
+drawn at each point, and @code{-m -1} specifies that no line is to be
+draw connecting the points.  You can overlay a second data set on the first
+by using:@refill
+
+@example
+graph -s -g 0 -x 0 100 -y -3 3 -m 0 < ascii_data_file_1 >> plot_file
+@end example
+
+where @code{-s} avoids erasing the page, @code{-g 0} avoids drawing the
+axis, tick marks and labels which were drawn previously, and @code{-m 0}
+specifies that solid lines are draw connecting the points.@refill
+
+@node Multiple Plots, Binary Data, Overlaying, graph examples
+@section How to put multiple plots on one page
+
+The command
+@example
+graph -h .4 -w .4 -r .1 -u .1 < ascii_data_file_1 >  plot_file
+@end example
+
+will put a single box containing the plot in the lower left hand
+quarter of the page.  You can add another plot to the upper left hand
+corner of the page using the command
+
+@example
+graph -s -h .4 -w .4 -r .1 -u .6 < ascii_data_file_2 >> plot_file
+@end example
+
+Be sure you use the @code{-s} option so the the first plot isn't
+erased.
+
+Likewise you can add plots to the right hand side of the page using
+
+@example
+graph -s -h .4 -w .4 -r .6 -u .1 < ascii_data_file_3 >> plot_file
+graph -s -h .4 -w .4 -r .6 -u .6 < ascii_data_file_4 >> plot_file
+@end example
+
+The tick marks can be moved inside the box and labels moved to the
+opposite sides using
+
+@example
+graph -T -.005 < ascii_data_file >> plot_file
+@end example
+
+@node Binary Data, , Multiple Plots, graph examples
+@section Reading other data formats
+
+@code{graph} will read binary data in integer, short integer, float, and
+double float format when you use the @code{-d} option followed by
+@code{f}, or @code{d}, respectively.  There are two advantage to using
+binary data: 1) @code{graph} runs significantly faster because the
+computational overhead for converting data from ascii to binary is
+eliminated, and 2) the input files can be significantly smaller than the
+ascii format would be.  Double float is the fastest format to read,
+while short integer is the most space conservative.  If you have very
+large data sets, using a binary format can reduce storage and runtime
+costs.@refill
+
+For example, you can create double float data as output from C language
+programs:@refill
+
+@example
+#include <stdio.h>
+void write_point (x, y)
+  double x, y;
+@{
+  fwrite(&x, sizeof (double), 1, stdout);
+  fwrite(&y, sizeof (double), 1, stdout);
+@}
+@end example
+
+You can then plot data written this way using:
+
+@example
+graph -d d <datafile >plotfile
+@end example
+
+@node graph invocation, plot2ps examples, graph examples, Top
+@section Graph Command Line Options
+
+The following table describes each of the command line arguments to graph.
+Each option which takes an argument is followed by the type and default
+values of the argument in parentheses.@refill
+
+@table @samp
+@item -a [@var{step_size} [@var{lower_limit}]]
+@itemx +auto-abscissa [@var{step_size} [@var{lower_limit}]]
+(floats, defaults 1 and 0) Automaticly generate abscissa (x) values.
+This option specifies that the data contains only ordinate (y) values.
+The difference between successive x values will be @var{step_size}, and
+the first x value will be @var{lower_limit}.  To return to reading
+abscissal values from the input you can specify @code{-a 0}, which
+disables automatic generation of the abscissa and returns
+@var{step_size} and @var{lower_limit} to their default values.@refill
+@item -b
+@itemx +break-on-labels
+Assumes multiple data sets are in the data file, and the data sets are
+separated by a label.  The default is don't break on labels.@refill
+@item -M
+@itemx +break-non-monotone
+When successive abscissa (x) values decrease, a separate data set
+is assumed.  This allows multiple data sets in each file.  Similar to
+@code{-b}.@refill
+@item -f @var{size}
+@itemx +fontsize @var{size}
+Specify the size of the desired font as @var{size} points.  Not all display
+devices will honor this command.@refill
+@item -N @var{x|y}
+@itemx +no-label @var{x|y}
+By default, values at each tick mark are labeled beside the axis. This
+option removes the labeling of the tick marks on the specified
+axis.@refill
+@item -R
+@itemx +dont-round-to-next-tick
+By default, the ends of the axes are extended to the next tick mark.
+This option prohibits rounding the limits of the axes to the next tick
+mark.@refill
+@item -c @var{string}
+@itemx +point-label @var{string}
+This option defines @var{string} as the default label for each point.
+Any label in the input will override this default.@refill
+@item -S @var{symbol_number} [@var{symbol_size}]
+@itemx +symbol @var{symbol_number} [@var{symbol_size}]
+(integer and float, defaults -1 and 0.01) Draw a symbol at each point in
+the data. @var{symbol_number} specifies the shape of the symbol
+according to the following table and @var{symbol_size} specifies the
+fractional size of the symbol with respect to the height and width of
+the plot.  Note that you can specify symbols to be drawn without any line
+connecting them by specifying the option @code{-m -1}.@refill
+@table @asis
+@item -1 no symbol at all
+@item 0 plus sign (+)
+@item 1 cross (x)
+@item 2 star (*)
+@item 3 box
+@item 4 diamond
+@item 5 circle
+@end table
+@item -T @var{tick_size}
+@itemx +ticksize @var{tick_size}
+(float, default .01) @var{tick_size} is the fractional size of the tick
+marks on each axis.  A value of 1.0 produces tick marks on the x (y)
+axis whose length is equal to the width (height) of the plot.@refill
+@item -X @var{x_label}
+@itemx +xtitle @var{x_label}
+(string, default blank) @var{x_label} is a label printed below the x
+axis.@refill
+@item -Y @var{y_label}
+@itemx +ytitle @var{y_label}
+(string, default blank) @var{y_label} is a label printed to the right of
+the y axis.@refill
+@item -d @var{data-format}
+@itemx +data-format @var{data-format}
+This specifies what format the input data is in.  Note labels can be
+used only in ascii format input files.
+@table @samp
+@item a
+@itemx A
+ascii data
+@item i
+@itemx I
+binary integer data
+@item s
+@itemx S
+binary short integer data
+@item f
+@itemx F
+binary float data
+@item d
+@itemx D
+binary double data
+@end table
+@item +debug
+Debugging information, including the data read in, is sent to the
+standard error output.@refill
+@item -g @var{grid_style}
+@itemx +grid @var{grid_style}
+(integer, default 1) @var{grid_style} specifies the type of box framing
+the plot and whether grid lines are drawn inside the box.@refill
+@table @asis
+@item 0 no box around plot, no axes, no labels.
+@item 1 box containing a grid and axes with tick marks and labels.
+@item 2 box around plot, tick marks around the box and labels.
+@item 3 box around plot, ticks on left and lower sides only and labels.
+@item 4 axes intersect at the origin without a box or grid.
+@end table
+@item -h @var{height}
+@itemx +height-plot @var{height}
+(float, default 0.8) @var{height} specifies the fractional height of the
+plot with respect to the height of the plotting area.  A value of 1.0
+will produce a box which fills the available area.  Note that the tick
+marks and labels are outside this area so that values less than 1.0 are
+generally used.@refill
+@item -L @var{top_label}
+@itemx +toptitle @var{top_label}
+(string, default blank) @var{top_label} is a label placed above the
+plot.@refill
+@item -m @var{line_mode}
+@itemx +linestyle @var{line_mode}
+(integer, default 0) @var{line_mode} specifies the mode (or style) of
+lines drawn between data points.@refill
+@table @asis
+@item -1 no line at all
+@item 0 solid
+@item 1 dotted
+@item 2 shortdashed
+@item 3 dotdashed
+@item 4 longdashed
+@item 5 disconnected
+@end table
+@item -r @var{right}
+@itemx +right-margin-posn @var{right}
+(float, default 0.1) Move the plot to the right by a fractional amount
+@var{right} with respect to the width of the plotting area.  This
+produces a margin on the left hand side of the plot.  A value of 0.5
+will produce a margin half the width of the available area.  Note that
+the tick marks and labels are drawn in the margin.@refill
+@item -u @var{up}
+@itemx +bottom-margin-posn @var{up}
+(float, default 0.1) Move the plot up by a fractional amount @var{up}
+with respect to the height of the plotting area.  This produces a margin
+below the plot.  A value of 0.5 will produce a margin half the height of
+the available area.  Note that the tick marks and labels are drawn in
+the margin.@refill
+@item -s
+@itemx +save-screen
+Save the screen. This option prevent graph from erasing the previous
+contents of the graphics window or device.@refill
+@item -t
+@itemx +transpose
+Transpose the abscissa and ordinate.  This option causes the axes to be
+interchanged, and the options which apply to each axis to be applied to
+the opposite axis.  That is, data is read in as (y, x) pairs and
+@samp{-x}, @samp{-X} and @samp{-lx} apply to the y axis.@refill
+@item -w @var{width}
+@itemx +width-plot @var{width}
+(float, default 0.8) @var{width} specifies the fractional width of the
+plot with respect to the width of the plotting area.  A value of 1.0
+will produce a box which fills the available area.  Note that the tick
+marks and labels are outside this area, so values less than 1.0 are
+generally used.@refill
+@item -x @var{lower_limit} @var{upper_limit}
+@itemx +xlimits @var{lower_limit} @var{upper_limit}
+(floats) The arguments @var{lower_limit} and @var{upper_limit} specify
+the limits of the x axis. By default the upper and lower limits are
+taken from the data.  If unspecified the limits of the data are
+used.@refill
+@item -y @var{lower_limit} @var{upper_limit}
+@itemx +ylimits @var{lower_limit} @var{upper_limit}
+These arguments specify the scale and limits of the y axis as for the x
+axis above.@refill
+@item -l @var{x|y}
+@itemx +log-axis @var{x|y}
+The argument indicates which axis should be a log axis.  Either one or
+both x- and y-axes can be specified by using the appropriate letter.  Use
+@var{xy} or @var{yx} to specify both.@refill
+@item +high-byte-first
+@itemx +low-byte-first
+These options force graph to use the specified byte order when writing
+out the plot file.  By default the byte order is host dependent.
+@end table
+
+@node plot2ps examples, plot2ps invocation, graph invocation, Top
+@section Examples Using @code{plot2ps}
+
+To produce a plot of data arranged in ordered pairs of x and y
+coordinates in an ASCII file, you can use:@refill
+
+@example
+graph <asciiDataFile | plot2ps | lpr -Plw
+@end example
+
+To create a simple PostScript figure you can use:
+
+@example
+echo 0 0 1 1 2 0 | spline | graph | plot2ps > test.ps
+@end example
+
+To edit the plot:
+
+@example
+idraw test.ps
+@end example
+
+To use the previewer to look at the plot:
+
+@example
+gs test.ps
+@end example
+
+@node plot2ps invocation, xplot, plot2ps examples, Top
+@section Plot2ps Command Line Options
+
+@code{plot2ps} is a relatively simple utility in that there are few
+command line options to choose from.  The plot file format does
+not contain methods for specifying font or font size, so you must
+specify these things with options.  There are no other options for
+controlling the picture.@refill
+
+The plot file format is machine dependent on the byte order of
+unformatted, signed, two byte integer coordinates contained in plot
+commands.  The @samp{-high-byte-first} or @samp{-low-byte-first}
+option specifies this order explicitly.  @code{plot2ps} attempts to
+determine the byte order from commands early in the plot file, but the
+method is heuristic and is not foolproof.  Several standard plot sizes
+specified by the @code{open} command are used to recognize byte order
+by @code{plot2ps}.  If these sizes are recognized in byte reversed
+order, @code{plot2ps} adjusts accordingly.  These sizes include
+504x504, 2048x2048 (versatek plotters), 2100x2100,
+3120x3120(tektronix 4010 terminals) and 4096x4096 (gsi 300
+terminals).@refill
+
+The remaining command line options may be used specify an alternate
+PostScript prologue and to print the licensing information.@refill
+
+Input plot files names may be specified anywhere on the command line.
+If no file names are specified, or the name @samp{-} is specified, the
+standard input is read for plotting instructions.  Only the font or
+font size options which precede a file name will affect the text for
+that file.@refill
+@table @samp
+@item -H
+@itemx +help
+The help option prints a summary of command line syntax for
+@code{plot2ps}, a list of the font names (the standard builtin
+PostScript fonts), and version, copyright and warranty information.
+Specifying this options causes plot2ps to ignore files on the standard
+input.  You can specify a file on the standard input explicitly with
+the option @samp{-} if you want it to read the standard input as
+well.@refill
+@item -v
+@itemx -V
+@itemx +version
+This option prints version, copyright and warranty information.@refill
+@item -fontsize @var{size}
+@itemx -f @var{size}
+The fontsize options specifies the default size in printer's points
+(1/72 inch) of all text appearing in the plot.  If unspecified, the
+size defaults to 14 points.@refill
+
+Some sizes are supported better than others under X windows.  The
+standard sizes distributed with X windows are 8, 10, 12, 14, 18, and
+24 points.  Text at these point sizes will display correctly in the
+@code{idraw} editor.  Other font sizes will print correctly on a
+PostScript device such as the laserwriter, but may not appear at the
+correct size in the @code{idraw} editor.@refill
+@item -font @var{name}
+@itemx -fo @var{name}
+The font name option specifies the name of the default font for all
+text appearing in the plot.  @samp{plot2ps -help} prints a listing of
+the font names on the standard output.  These names include the
+available builtin fonts on standard PostScript printers.@refill
+@item -high-byte-first
+@itemx -h
+The high-byte-first option specifies explicitly that the higher order
+byte of each signed, two byte integer occurs first in the file.  It
+disables determination of byte order from the file itself.@refill
+@item -line-width @var{width}
+@var{width} is the width of lines drawn in the plot, and defaults to a
+value of 0.  A value of 0 will produce the thinest line possible in a
+device dependent fashion, however this is known to cause problems for
+older versions of idraw.  The line width is device independent for a
+positive values of @var{width}.@refill
+@item -low-byte-first
+@itemx -l
+The low-byte-first option specifies explicitly that the lower order
+byte of each signed, two byte integer occurs first in the file.  It
+disables determination of byte order from the file itself.@refill
+@item -prologue @var{filename}
+@itemx -p @var{filename}
+The prologue option specifies the name of an alternate PostScript
+prologue @var{filename} to be used in place of the default
+@code{idraw} prologue.  The prologue declares procedures used to draw
+each graphic object.  The default prologue was generously provided by
+John Interante and is a part of the InterViews distribution, version
+2.5.@refill
+@item -copying
+@itemx -warranty
+The copying and warranty options print a copy of the GNU General
+Public License on the standard error output.  Included is conditions
+for copying @code{plot2ps} and information on the lack of any
+warranty.@refill
+
+These conditions do not cover the output of @code{plot2ps}.  The only
+conditions imposed on the output are those which come from the
+prologue that you are using.@refill
+@item -signed
+@itemx -unsigned
+The signed and unsigned options specify whether coordinates in the
+plot file are signed.  By convention, coordinates are always signed.
+Some plot files do not follow this convention, and you can use the
+unsigned option to convert those files.@refill
+
+@item -bbox
+The bbox option specifies that a bounding box comment will be written at
+the end of the output file.  This information is useful for document
+preparation systems which determine how to size and place the figure
+using the bounding box.  See also the atend script.@refill
+@end table
+
+@node xplot, xplot invocation, plot2ps invocation, Top
+@section A plot file previewer for X11
+
+@code{xplot} is a plot file previewer for the X window system.  It reads
+GNU plot commands from its standard input and draws the resulting
+graphics in an X window.@refill
+
+After xplot reaches the end-of-file on the input, it puts itself in
+the background (forks).  Control returns to the calling program, while
+xplot continues, remaining on screen.@refill
+
+To exit, click the left mouse button in the xplot window.  Note that
+xplot ignores SIGHUP signals, so you must use another signal to kill
+xplot if necessary.@refill
+
+@node xplot invocation, Plot2fig Examples, xplot, Top
+@section Xplot Options
+
+@code{xplot} accepts all of the standard X toolkit command line options,
+and the initial geometry specification determines the resolution, with a
+default geometry of 500x500 pixels.@refill
+
+The following standard X Toolkit command line arguments may be used with
+@code{xplot}:@refill
+@table @samp
+@item -bg @var{color}
+This specifies the color to use for the background of the window.  
+The default is @var{white}.
+@item -bd @var{color}
+This specifies the color to use for the border of the window.
+The default is @var{black}.
+@item -bw @var{number}
+This specifies the width in pixels of the border surrounding the window.
+@item -fg @var{color}
+This specifies the color to use for displaying text.  The default is 
+@var{black}.
+@item -fn @var{font}
+This specifies the font to be used for displaying normal text.  The
+default is @var{6x10}.
+@item -rv
+This indicates that reverse video should be simulated by swapping
+the foreground and background colors.
+@item -geometry @var{geometry}
+This specifies the preferred size and position of the plot window.
+@item -display @var{host}:@var{display}
+This specifies the X server to contact.
+@item -xrm @var{resourcestring}
+This specifies a toolkit resource property.  See the manual page for xrdb.
+@end table
+
+@code{xplot} uses the athena Command widget in the X Toolkit.  So, it
+understands all of the core resource names and classes as well
+as:@refill
+@table @samp
+@item reverseVideo
+(class ReverseVideo)
+Specifies that the foreground and background colors should be reversed.
+@end table
+
+@subsection Example
+The resources:
+
+@example
+Xplot.font: 6x9
+Xplot.geometry: 300x300
+@end example
+
+will set the font used in the plot window to `6x9' and the size of the
+window to 300 by 300 pixels.
+
+@node Plot2fig Examples, plot2fig invocation, xplot invocation, Top
+@section Using Plot2fig
+
+To create a simple plot file one can use:
+
+@example
+echo 0 0 1 1 2 0 | spline | graph | plot2fig > test.fig
+@end example
+
+To edit the plot:
+
+@example
+fig test.fig
+@end example
+
+To convert the fig file into dvi code, create a latex file containing 
+a document which includes the figure:@refill
+
+@example
+\\documentstyle\[\]@{article@}
+\\begin@{document@}
+\\input@{test@}
+\\end@{document@}
+@end example
+
+Then, run transfig on the figure and latex on the document:
+
+@example
+% transfig -L latex test.fig
+% make test.tex
+% latex t.tex
+@end example
+
+To edit a plot of data arranged in ordered pairs of x and y coordinates in
+an ascii file, one can use:@refill
+
+@example
+% graph <asciiDataFile | plot2fig >file.fig
+% fig file.fig
+@end example
+
+
+@node plot2fig invocation, plot2tek invocation, plot2fig examples, Top
+@section A plot file to fig file translator
+
+@code{plot2fig} reads plotting instructions from the specified input
+files and/or the standard input and produces @code{Fig} compatible code
+on it's standard output.  This output file can be edited with the fig
+(Facility for Interactive Generation of figures) graphics editor.  The
+output can subsequently be converted to pictex, PostScript, latex, epic,
+eepic, and tpic languages using the @code{transfig} translator.@refill
+
+Any unrecognized options on the command line are assumed to be input
+files.  The standard input is read by default only if no other files
+specified on the command line are successfully opened.  A single dash
+(-) on the command line indicates the standard input is to be read.
+Each option is set and each file read in the order they are specified on
+the command line.@refill
+
+For compatibility with pic2fig, plot2fig ignores leading white space in
+labels.  Labels containing all white space are ignored.@refill
+
+@table @samp
+@item -fn @var{name}
+@itemx -fontname @var{name}
+Default: the default font of the transfig output device.  This option
+sets the font for all subsequent text to @var{name}.  Recognized font
+names are typewriter, modern, italic, bold, and times.  In addition,
+courier is an alias for typewriter and roman is an alias for times.
+Note that the fonts are device dependent.
+@item -fs @var{size}
+@itemx -fontsize @var{size}
+Default: 12. This option sets the size of subsequent text to @var{size}
+(in printer's points).
+@item -h
+@itemx -high-byte-first
+This option specifies that the byte ordering of two byte integers in the
+input plot file is high byte first.
+@item -l
+@itemx -low-byte-first
+This option specifies that the byte ordering of two byte integers in the
+input plot file is low byte first.
+@item -warranty
+@itemx -copying
+This option prints out the copying conditions and warranty information.
+@item -signed
+@itemx -unsigned
+Default: signed.  This option specifies whether two byte integers in the
+input plot file are unsigned or signed.
+@item -
+This option specifies explicitly that the standard input should be read for
+plotting instructions.
+@end table
+
+@node plot2tek invocation, latex example, plot2fig invocation, Top
+@section Tektronix 4010 output
+
+@table @samp
+@item -H
+@itemx +help
+The help option prints a summary of command line syntax, a list of the
+known font names, and version, copyright and warranty information.
+Specifying this options causes plot to ignore the standard input, so you
+must specify the option @samp{-} if you want it to read the standard
+input as well.@refill
+@item -v
+@itemx -V
+@itemx +version
+This option prints version, copyright and warranty information.@refill
+@item -f @var{size}
+@itemx +fontsize @var{size}
+The fontsize options specifies the default size in printer's points
+(1/72 inch) of all text appearing in the plot.  If unspecified, the
+size defaults to 14 points.@refill
+@item +high-byte-first
+@itemx +low-byte-first
+These options force graph to use the specified byte order when writing
+out the plot file.  By default the byte order is host dependent.
+@item -F @var{name}
+@itemx +fontname @var{name}
+The font name option specifies the name of the default font for all
+text appearing in the plot.  @samp{plot -help} prints a listing of
+the font names on the standard output.  These names include the
+available builtin fonts on standard PostScript printers.@refill
+@item -h
+@itemx +high-byte-first
+The high-byte-first option specifies explicitly that the higher order
+byte of each signed, two byte integer occurs first in the file.  It
+disables determination of byte order from the file itself.@refill
+@item -l
+@itemx +low-byte-first
+The low-byte-first option specifies explicitly that the lower order
+byte of each signed, two byte integer occurs first in the file.  It
+disables determination of byte order from the file itself.@refill
+@item -p @var{filename}
+@itemx +prologue @var{filename}
+The prologue option specifies the name of an alternate PostScript
+prologue @var{filename} to be used in place of the default
+@code{idraw} prologue.  The prologue declares procedures used to draw
+each graphic object.  The default prologue was generously provided by
+John Interante and is a part of the InterViews distribution, version
+2.5.@refill
+@item +copying
+@itemx +C
+@itemx +warranty
+@itemx +W
+The copying and warranty options print a copy of the GNU General
+Public License on the standard error output.  Included is conditions
+for copying @code{plot} and information on the lack of any
+warranty.@refill
+@item -s
+@itemx +signed-input
+@itemx -u
+@itemx +unsigned-input
+The signed and unsigned options specify whether coordinates in the
+plot file are signed.  By convention, coordinates are always signed.
+Some plot files do not follow this convention, and you can use the
+unsigned option to convert those files.@refill
+@end table
+
+@node latex example, psfig, plot2tek invocation, Top
+@section Including a Figure in an Article
+
+This is an example of LaTeX code which places the figure generated in
+the previous example in a page of text.@refill
+
+@example
+\documentstyle[]@{article@}
+\input@{psfig@}
+\begin@{document@}
+\title@{Title of the article.@}
+\author@{The Author's name@}
+\maketitle
+This is an example of how to include PostScript figures in LaTeX documents.
+\begin@{figure@}[h]
+\centerline@{\psfig@{figure=test.ps,height=3in@}@}
+\caption@{Here is a description of the figure which will appear below it.@}
+\end@{figure@}
+Note that the above figure was included using dvips.
+\end@{document@}
+@end example
+
+If the above LaTeX code is contained in a file called @file{mytext.tex}
+you can use the commands@refill
+
+@example
+latex mytext
+dvips mytext.dvi >mytext.ps
+lpr -Plw mytext.ps
+@end example
+
+to format and print the example text.
+
+@node psfig, atend.pl, latex example, Top
+@section Options to @code{psfig} for Including Figures
+
+@code{psfig} is a LaTeX command used to insert a PostScript figure
+into a document.@refill
+
+@code{psfig} can be used to insert @code{plot2ps} generated PostScript
+into a LaTeX document.  The placement of the @code{psfig} command
+tells LaTeX where in the document to place the PostScript, and
+arguments to the command give the name of the file containing the
+PostScript, and the desired size of the figure.  Arguments are
+separated by commas or blanks, and are of the form
+@samp{@var{keyword}=@var{value}}.  The following is a list of valid
+arguments for the @code{psfig} command:@refill
+
+@table @code
+@item file=@var{name}
+The file name of the PostScript figure.
+@item height=@var{size}
+The height of the figure (eg. 3in).  If you specify only a height or
+only a width, the width and height are scaled equally.  If you specify
+both a width and a height the aspect ratio will be affected.@refill
+@item width=@var{size}
+The width of the figure (eg. 3in).@refill
+@item bbllx=@var{coordinate}
+The bounding box lower left-hand x coordinate.  Any PostScript file
+which conforms to the PostScript Document Structuring Conventions
+version 2.0 should contain a bounding box information at the head of
+the file.  @code{plot2ps} output conforms to the version 2.0
+conventions so that you should not need to use any of the bounding box
+options.@refill
+@item bblly=@var{coordinate}
+The bounding box lower left-hand y coordinate.
+@item bburx=@var{coordinate}
+The bounding box upper right-hand x coordinate.
+@item bbury=@var{coordinate}
+The bounding box upper right-hand y coordinate.
+@item rheight=@var{size}
+Horizontal space to reserve for the figure.
+@item rwidth=@var{size}
+Vertical space to reserve for the figure.
+@item clip=
+Clip the figure.  @code{clip=} is a switch and takes no value, but the
+@samp{=} must be present.  This option is useful for including
+PostScript figures which use the size of the clipping path to size
+themselves.@refill
+@end table
+
+@node atend.pl, dvips, psfig, Top
+@section A perl script for use with psfig
+
+@code{atend.pl} is a perl script which moves the bounding box comment
+from the trailer to the header.  Although either is legal, most document
+preparation software, such as @code{psfig}, will only accept bounding
+box comments in the header.  If you use @code{psfig} and the
+@code{-bbox} option togeather, run @code{atend.pl} on the output of
+@code{plot2ps} before importing the graphics using @code{psfig}.@refill
+
+@code{atend.pl} can be used as a filter:
+
+@example
+echo 0 0 1 1 2 0 | spline | graph >spline.pl
+plot2ps -bbox |atend.pl - >spline.ps
+@end example
+
+Or, @code{atend.pl} can be used to fix the output file in place:
+
+@example
+echo 0 0 1 1 2 0 | spline | graph |plot2ps -bbox >spline.ps
+atend.pl spline.ps
+@end example
+
+@node dvips, idraw, atend.pl, Top
+@section How to Get @code{dvips}
+
+The @code{dvips} utility mentioned previously is used convert dvi files
+generated by LaTeX into post-script.  It also has support for inclusion
+of PostScript figures into LaTeX documents.  It is available via
+anonymous ftp from @samp{labrea.stanford.edu} (36.8.0.47).  Look for
+@file{pub/dvips.tar.Z}.@refill
+
+
+@node idraw, ghostscript, dvips, Top
+@section How to Get @code{idraw}
+
+The @code{idraw} utility mentioned previously is an interactive
+graphics editor which is distributed with InterViews.  InterViews is
+available via anonymous ftp from @samp{interviews.stanford.edu}
+(36.22.0.175) in the file @file{InterViews/2.5.tar.Z}.@refill
+
+@node ghostscript, libps, idraw, Top
+@section How to Get @code{ghostscript}
+
+Ghostscript is a previewer which is intended to be compatible with the
+PostScript language.  It supports several output devices including the X
+window system and ega displays.  Version 2.0 is suitable for previewing
+LaTeX documents with imbedded encapsulated PostScript figures, the type
+of PostScript figures generated by plot2ps and idraw.  It is available
+via anonymous ftp from @samp{prep.ai.mit.edu} (18.71.0.38) - Look for
+@file{pub/gnu/ghostscript.tar.Z}.@refill
+
+@node libps, files, ghostscript, Top
+@section @code{libps}, a Library of Plot Functions
+
+Libps is a library of plot functions for drawing graphic object
+using PostScript.  Before drawing any objects or using any of the
+other functions, a program should call @code{openpl}.  Before exiting
+and after all other libps calls a program should call
+@code{closepl}.@refill
+
+@menu
+The standard plot library includes:
+
+* arc::          draw an arc
+* circle::       draw a circle
+* closepl::      close the device for output
+* cont::	 continue a line
+* erase::        erase the page
+* label::        print a label
+* line::         draw a line
+* linemod::      change the line mode (style)
+* move::         move to a new coordinate
+* openpl::       open the device for output
+* point::        draw a point
+* space::        define the user's plot space (size)
+
+The extensions provided only in libps to take advantage of PostScript
+features include:@refill
+
+* alabel::       print a vertically or horizontally justified label
+* color::        change the color
+* fill::         fill pattern for closed paths
+* fontname::     set the font name
+* fontsize::     set the font size
+* rotate::       rotate subsequent text
+@end menu
+
+@node alabel, arc, , libps
+@subsection @code{alabel}
+@findex @code{alabel} (char @var{x_justify}, char @var{y_justify}, char @var{*label})
+
+int @code{alabel} (char @var{x_justify}, char @var{y_justify}, char @var{*label});
+
+@code{alabel} takes three arguments @var{x_justify}, @var{y_justify},
+and @var{label} and places the label according to the x and y axis
+adjustments specified in @var{x_justify} and @var{y_justify}
+respectively.  @var{x_justify} is a character containing either
+@samp{l}, @samp{c}, or @samp{r} for left, center or right justified
+with respect to the current x coordinate.  @var{y_justify} is a
+character containing either @samp{b}, @samp{c}, or @samp{t} for
+placing the bottom center or top of the label even with the current y
+coordinate.  @var{*label} is a string containing the label.  The
+current point is moved to follow the end of the text.@refill
+
+@xref{fontname} on how to change the default font.
+@xref{fontsize} on how to change the font size.
+
+@node arc, circle, alabel, libps
+@subsection @code{arc}
+@findex @code{arc} (int @var{x}, int @var{y}, int @var{x0}, int @var{y0}, int @var{x1}, int @var{y1})
+
+int @code{arc} (int @var{x}, int @var{y}, int @var{x0}, int @var{y0}, int @var{x1}, int @var{y1})
+
+@code{arc} takes six integer arguments specifying the coordinates of
+the center (@var{x}, @var{y}), beginning (@var{x0}, @var{y0}), and
+ending (@var{x1}, @var{y1}) of a circular arc.  The current point
+becomes (@var{x}, @var{y}).@refill
+
+@node circle, closepl, arc, libps
+@subsection @code{circle}
+@findex @code{circle} (int @var{x}, int @var{y}, int @var{r})
+
+int @code{circle} (int @var{x}, int @var{y}, int @var{r})
+
+@code{circle} takes three integer arguments specifying the center
+(@var{x}, @var{y}) of the circle and its radius (@var{r}).  The
+current point becomes (@var{x}, @var{y}).@refill
+
+@node closepl, color, circle, libps
+@subsection @code{closepl}
+@findex @code{closepl} ()
+
+int @code{closepl} ()
+
+@code{closepl} takes no arguments.  It merely outputs the PostScript
+trailer containing a @code{showpage} command.@refill
+
+@node color, cont, closepl, libps
+@subsection @code{color}
+@findex @code{color} (int @var{red}, int @var{green}, int @var{blue})
+
+int @code{color} (int @var{red}, int @var{green}, int @var{blue});   
+
+@code{color} sets the foreground color of all the following objects.
+The arguments @var{red}, @var{green} and @var{blue} indicate the
+intensity of red, green and blue components of the foreground color
+respectively.  Each is a unsigned integer specifying an intensity in
+the range from 0 to 0xFFFF.  A value of (0, 0, 0) represents black and
+a value of (0xFFFF, 0xFFFF, 0xFFFF) indicates white.@refill
+
+@node cont, erase, color, libps
+@subsection @code{cont}
+@findex @code{cont} (int @var{x}, int @var{y})
+
+int @code{cont} (int @var{x}, int @var{y})
+
+@code{cont} takes two integer arguments specifying the coordinate
+(@var{x}, @var{y}) for the continuation of a line.  This draws a line
+segment from the current point to the point (@var{x}, @var{y}).  The
+current point then becomes (@var{x}, @var{y}).@refill
+
+@node erase, fill, cont, libps
+@subsection @code{erase}
+@findex @code{erase}()
+
+int @code{erase} ()
+
+@code{erase} normally erases all the graphics from the display before
+a plot is viewed.  Since we start off with a blank page in PostScript
+and @code{idraw} this function does nothing.@refill
+
+@node fill, fontname, erase, libps
+@subsection @code{fill}
+@findex @code{fill} (int @var{level})
+
+int @code{fill} (int @var{level});   
+
+@code{fill} sets the intensity of the filler for closed paths.  The
+argument @var{level} indicates the grey level of the fill pattern.
+It's value ranges from 1 to 0xFFFF.  A value of 1 represents black and
+a value of 0xFFFF indicates white.  A value of 0 represents no fill,
+or transparent.@refill
+
+@node fontname, fontsize, fill, libps
+@subsection @code{fontname}
+@findex @code{fontname} (char @var{*font_name})
+
+int @code{fontname} (char @var{*font_name});
+
+@code{fontname} takes a single string argument, @var{font_name},
+specifying the name of the font to be used for following text.  The
+laser writer builtin fonts are supported:@refill
+
+@example
+        courier-bold
+        courier-boldoblique
+        courier-oblique
+        courier
+        helvetica-bold
+        helvetica-boldoblique
+        helvetica-oblique
+        helvetica
+        symbol
+        times-bold
+        times-bolditalic
+        times-italic
+        times-roman
+@end example
+
+@node fontsize, label, fontname, libps
+@subsection @code{fontsize}
+@findex @code{fontsize} (int @var{size})
+
+int @code{fontsize} (int @var{size});
+
+@code{fontsize} takes a single integer argument @var{size} in
+printer's points (1/72 inch) and sets the font size
+accordingly.@refill
+
+@node label, line, fontsize, libps
+@subsection @code{label}
+@findex @code{label} (char @var{*s})
+
+int @code{label} (char @var{*s})
+
+@code{label} takes a single string argument @var{s} and draws the text
+contained in @var{s} at the most recently used coordinate in the
+current font.  By default the text is left justified and centered
+vertically with respect to the current coordinate.@refill
+
+@node line, linemod, label, libps
+@subsection @code{line}
+@findex @code{line} (int @var{x1}, int y@var{1}, int @var{x2}, int @var{y2})
+
+int @code{line} (int @var{x1}, int y@var{1}, int @var{x2}, int @var{y2})
+
+@code{line} takes four integer arguments specifying the beginning
+(@var{x1}, @var{y1}) and ending (@var{x2}, @var{y2}) points of a line.
+The current point becomes (@var{x2}, @var{y2}).@refill
+
+@xref{linemod} for how to specify the style or pattern of line.
+
+@node linemod, move, line, libps
+@subsection @code{linemod}
+@findex @code{linemod} (char @var{*s})
+
+int @code{linemod} (char @var{*s})
+
+@code{linemod} takes a single string argument @var{s} containing the
+name of the line style desired.  The names supported are longdashed,
+disconnected, dotdashed, dotted, solid and shortdashed.  These
+correspond to the following sixteen bit patterns:@refill
+
+@example
+solid             --------------------------------
+longdashed        -------         -------         
+disconnected      -               -               
+dotdashed         -----------  -  -----------  -  
+dotted            - - - - - - - - - - - - - - - - 
+shortdashed       --              --              
+@end example
+
+@node move, openpl, linemod, libps
+@subsection @code{move}
+@findex @code{move} (int @var{x}, int @var{y})
+
+int @code{move} (int @var{x}, int @var{y})
+
+@code{move} takes two integer arguments specifying the coordinate
+(@var{x}, @var{y}) for the beginning of a new line.  This is
+equivalent to lifting the pen on a plotter and moving it to a new
+position without drawing any line.  The current point becomes
+(@var{x}, @var{y}).@refill
+
+@node openpl, point, move, libps
+@subsection @code{openpl}
+@findex @code{openpl}()
+
+int @code{openpl} ()
+
+@code{openpl} normally opens the device.  For PostScript we just print
+out the PostScript prologue.  The following global variables defined
+in @code{openpl} specify what prologue is written to the
+output.@refill
+
+@var{user_has_prologue} is a flag.  If it is non-zero then the open
+routine should output the user specified prologue contained in the
+file specified in the string @var{users_prologue}.@refill
+
+@var{users_prologue} is a string containing the file name for any user
+specified PostScript prologue.  This file is a substitute for the
+default prologue.@refill
+
+@node point, rotate, openpl, libps
+@subsection @code{point}
+@findex @code{point} (int @var{x}, int @var{y})
+
+int @code{point} (int @var{x}, int @var{y})
+
+@code{point} takes a pair of integer arguments specifying the
+coordinate (@var{x}, @var{y}) for a single point.  The current point
+then becomes (@var{x}, @var{y}).@refill
+
+@node rotate, space, point, libps
+@subsection @code{rotate}
+@findex @code{rotate} (int @var{w}, int @var{h}, int @var{angle})
+
+int @code{rotate} (int @var{angle});  
+
+@code{rotate} takes three integer arguments.  The last argument,
+@var{angle}, specifies the angle in degrees counter-clockwise from the
+x (horizontal) axis following text.@refill
+
+@node space, , rotate, libps
+@subsection @code{space}
+@findex @code{space} (int @var{x0}, int @var{y0}, int @var{x1}, int @var{y1})
+
+int @code{space} (int @var{x0}, int @var{y0}, int @var{x1}, int @var{y1})
+
+@code{space} takes two pair of integers arguments specifying the
+lower, left-hand and upper, right-hand limits of the range of plot
+coordinates.  The scaling of input to output coordinate conversion is
+adjusted to fit these ranges into the page.  Note however that if the
+ranges of x and y coordinates are different the smallest scaling of
+the two is used to avoid affecting the aspect ratio of the plot.  This
+means that although the plot is scaled to fit on the page, the axes
+are not stretched with respect to each other.@refill
+
+@node files, Acknowledgements, libps, Top
+@section The Plot File Format
+
+The plot file is a set of plotting commands and data.  Each command is
+a single ascii character indicating which operation is to be
+performed.  The data following a command is either a newline
+terminated ascii string or several signed, two byte integers in
+binary format.  For example, the command to move the current point
+to the coordinate (3,5) would be @code{m\000\003\000\005}.@refill
+
+Note that the byte order of the binary representation of the signed,
+two byte integers is machine dependent, so on some machines, this
+command might appear as @code{m\003\000\005\000}.  @code{plot2ps}
+tries to guess the byte order from the arguments to the @code{openpl}
+command and adjust the order accordingly.@refill
+
+The following table lists each single character commands followed by
+the name of the corresponding libps function called to handle the data
+and a description of the command and data.@refill
+
+@table @samp
+@item Command
+Description
+@item a
+The arc command is followed by three pair of signed, two byte integers
+indicating the center, starting and ending points for a circular arc.
+The center becomes the the current point.  This is equivalent to the
+@code{arc} function (@pxref{arc}).@refill
+@item c
+The circle command is followed by three signed, two byte integers.  The
+first two indicate the x and y coordinates of the center of the circle
+and the third indicates the radius of the circle.  The center becomes the
+the current point.  This is equivalent to the @code{circle} function
+(@pxref{circle}).@refill
+@item C
+The color command is followed by three unsigned, two byte integer which
+indicate the intensity of @var{red}, @var{green} and @var{blue}
+components respectively of the background color.  For each component the
+range of intensity is from 0 to 65535.  A value of (@var{0}, @var{0},
+@var{0}) represents black and (@var{65535}, @var{65535}, @var{65535})
+represents white. This is equivalent to the @code{color} function
+(@pxref{color}).@refill
+@item e
+The erase command is followed by no data.  The erase command is not
+needed since in @code{idraw} and PostScript we start off with a blank
+page.  For this reason the erase command does not actually output any
+PostScript. This is equivalent to the @code{erase} function
+(@pxref{erase}).@refill
+@item f
+The linemod command is followed by a newline terminated string containing
+the name of the line mode (or style) for all subsequent lines, circles
+and arcs. This is equivalent to the @code{linemod} function
+(@pxref{linemod}) which describes the line styles and their names.@refill
+@item F
+The the fontname command is followed by a newline terminated string
+containing the name of the font to be used for all subsequent text. This
+is equivalent to the @code{fontname} function (@pxref{fontname}).@refill
+@item l
+The line command is followed by two pair of signed, two byte integers
+which indicate the starting and ending points of the line.  The second
+pair becomes the the current point. This is equivalent to the @code{line}
+function (@pxref{line}).@refill
+@item L
+The fill command is followed by an unsigned, two byte integer indicating
+the intensity of the fill for closed paths.  A value of 1 represents
+black and a value of 0xFFFF indicates white.  The value 0 is special in
+that is indicates that no solid fill should occur, and that the interior
+of the respective path is transparent. This is equivalent to the
+@code{fill} function (@pxref{fill}).@refill
+@item m
+The move command is followed by a pair of signed, two byte integers
+containing the location of the new current point.  No line is drawn to
+this point as opposed to the continue command (@code{c}) which draws a
+line.  This is equivalent to the @code{move} function (@pxref{move}).
+@refill
+@item n
+The continue command is followed by pair of signed, two byte integers
+containing the coordinates of the endpoint of a line segment.  A line is
+drawn from the previous current point if it was set using a command such
+as move or continue.  This then becomes the the current point. This is
+equivalent to the @code{cont} function (@pxref{cont}).@refill
+@item p
+The point command is followed by pair of signed, two byte integers
+containing the location of single point to be drawn.  This then becomes
+the the current point. This is equivalent to the @code{point} function
+(@pxref{point}).@refill
+@item r
+The rotate command is followed by one signed, two byte integer.  It
+indicates the rotation of all subsequent text.  The rotation is in
+degrees counter-clockwise from the x (horizontal) axis. This is
+equivalent to the @code{rotate} function (@pxref{rotate}).@refill
+@item s
+The space command is followed by two pair of signed, two byte integers
+which indicate the the lower right-hand and upper left-hand corners of
+the range of plot coordinate space.  @code{plot2ps} uses the third
+signed, two byte integer (the right-hand limit) to try to determine the
+byte order. This is equivalent to the @code{space} function
+(@pxref{space}) which describes the recognized sizes.@refill
+@item S
+The fontsize command is followed by an signed, two byte integer
+containing the size in printers points of all subsequent text. This is
+equivalent to the @code{fontsize} function (@pxref{fontsize}).@refill
+@item t
+The label command is followed by a newline terminated string contains a
+label which is printed at the current point.  It is left justified and
+centered vertically with respect to the current point.  The current point
+is then set at the end of the text. This is equivalent to the
+@code{label} function (@pxref{label}).@refill
+@item T
+The adjusted label command is followed by two characters which indicate
+the horizontal and vertical justification respectively and a newline
+terminated string containing the label.  The label is drawn with the
+specified justification and the current point is set at the end of the
+text.  This is equivalent to the @code{alabel} function (@pxref{alabel})
+which describes how to specify justification.@refill
+@end table
+
+@node Acknowledgements, Function Index, files, Top
+@section Acknowledgements
+
+Rich Murphey <Rich@@Rice.edu> wrote the first version of the graph,
+plot2tek, plot2ps and tek2plot and the documentation.  Richard Stallman
+<Rms@@ai.mit.edu> further directed development of the programs and
+editorial support for the documentation.  John Interrante generously
+provided the PostScript prologue and helpful comments on the
+program.@refill
+
+Arthur Smith (Lassp, Cornell University) <arthur@@helios.tn.cornell.edu>
+has generously provided his code for the xplot utility.@refill
+
+Ray Toy <toy@@dino.ecse.rpi.edu> provided code for graph and tek 4011
+and rewrote the tick mark spacing code, incorporated gnu getopt and
+provided the statistics package.@refill
+
+David B. Rosen <rosen@@bu.edu>, jeffrey templon
+<templon@@copper.ucs.indiana.edu> and David W. Forslund
+<dwf%hope.ACL@@lanl.gov> tested alpha versions.@refill
+
+@node Function Index, , Acknowledgements, Top
+@section Function Index
+
+@printindex fn
+
+@contents
+@bye

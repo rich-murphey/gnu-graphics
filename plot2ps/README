@@ -1,0 +1,18 @@
+This is the README file for plot2ps, a utility for converting unix
+plot files to postscript.  See plot2ps.texinfo, the manual, for a more
+complete description of plot2ps.
+
+The makefile has instructions for installing plot2ps.  For many
+machines you can just type `make' and should expect the message `The
+regression test of plot2ps PASSED.' at the end of the compillation.
+
+Many thanks to Richard Stallman for his helpful discussions of the
+program and editing the documentation.  Also, thanks to John
+Interrante for generously providing the postscript prologue and
+helpful comments on the program.
+
+Any comments or suggestions on improvements to plot2ps are welcome.
+Richard-Murphey@Rice.edu       Electrical & Computer Engineering Dept.
+
+
+
