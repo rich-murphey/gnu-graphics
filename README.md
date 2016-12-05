@@ -26,7 +26,7 @@ the output in LaTeX documents using `dvips` and the LaTeX command
 
 Rich Murphey wrote graph, plot2tek, plot2ps and tek2plot, the
 documentation, build, packaging and regression testing in
-1990-1991 produce the graphics for his dissertation. He assigned
+1990-1991 to produce graphics for his dissertation. He assigned
 the copyright to the Free Software Foundation.  
 
 Richard Stallman <Rms@ai.mit.edu> further directed development
@@ -45,7 +45,7 @@ David B. Rosen <rosen@bu.edu>, jeffrey templon
 <templon@copper.ucs.indiana.edu> and David W. Forslund
 <dwf%hope.ACL@lanl.gov> tested alpha versions.
 
-'Gnu Graphics was later extended and renamed 'Gnu Plotutils'.
+Gnu Graphics was later extended and renamed Gnu Plotutils.
 
 ## graph Examples
 
