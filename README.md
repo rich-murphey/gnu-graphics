@@ -24,7 +24,7 @@ the output in LaTeX documents using `dvips` and the LaTeX command
 
 ## Authors
 
-Rich Murphey is the original author of gnu graphics. He wrote graph, 
+Rich Murphey is the original author of Gnu Graphics. He wrote graph, 
 plot2tek, plot2ps and tek2plot, the documentation, build, packaging 
 and regression testing in 1990-1991 to produce graphics for his 
 dissertation. He later assigned the copyright to the Free Software Foundation.  
@@ -46,7 +46,7 @@ David B. Rosen <rosen@bu.edu>, jeffrey templon
 <dwf%hope.ACL@lanl.gov> tested alpha versions.
 
 Gnu Graphics was later extended and renamed Gnu Plotutils which
-retained the Free Software Foundataion copyright inherited
+has retained the Free Software Foundataion copyright inherited
 from Gnu Graphics.
 
 ## graph Examples
