@@ -34,7 +34,7 @@ can then print the PostScript output on a printer, or edit it using the
 the output in LaTeX documents using `dvips` and the LaTeX command
 `psfig`.
 
-## Authors
+## Acknowlegements
 
 Rich Murphey initially wrote the entire suite, including graph,
 plot2tek, plot2ps, tek2plot, plot2fig, the C language API, the
