@@ -1,11 +1,20 @@
 ## Gnu Graphics
 
-GNU graphics is a set of programs for plotting scientific
-data.  The program `graph` reads data files and writes a stream of
-plotting commands in a device independent format refered to below as a
-GNU plot file.  The various `plot` programs provide display
-plot files on tektronix 4010, postscript, and X window system
-compatible output devices.
+GNU Graphics is a standard Unix Version 7 graph and plot tool
+written by Rich Murphey, initially to produce graphics for his
+doctoral dissertation.  It adopts the unix tool philosophy of
+small simple commands which can be piped together in various
+ways to ccomplish more complext tasks.  Unix Version 7 defined a
+device independent plot file format.  This facilitated
+developing support for new output devices, and specifically for
+his disseration, output to document preparation systems such as
+LaTeX.
+
+The program `graph` reads data files and writes a stream of
+commands in a device independent GNU plot file.  The various
+`plot` programs provide display plot files on X windows,
+postscript printers, desktop publishing systems such as LaTeX or
+Interviews, ando other compatible output devices.
 
 `graph` reads both ascii and binary data files and writes a plot
 file with or without axes and labels.  You can specify labels and ranges
@@ -24,15 +33,20 @@ the output in LaTeX documents using `dvips` and the LaTeX command
 
 ## Authors
 
-Rich Murphey is the original author of Gnu Graphics. He wrote graph, 
-plot2tek, plot2ps and tek2plot, the documentation, build, packaging 
-and regression testing in 1990-1991 to produce graphics for his 
-dissertation. He later assigned the copyright to the Free Software Foundation.  
+Rich Murphey initially wrote the entire suite, including graph,
+plot2tek, plot2ps, tek2plot, plot2fig, the C language API, the
+documentation, build, packaging and regression testing in
+1990-1991 produce the graphics for his dissertation. He
+assigned the copyright to the Free Software Foundation.  
 
-Richard Stallman <Rms@ai.mit.edu> further directed development
-of the programs and editorial support for the documentation.
-John Interrante generously provided the PostScript prologue and
-helpful comments on the program.
+Richard Stallman <Rms@ai.mit.edu> provided valuable feedback
+such as avoiding static limits on file size or dimensional
+attributes, and editorial support for the documentation.  
+
+plot2ps was designed to interoperate with the Interviews vector
+graphics edtitor and its other graphics production tools.
+Interviews author John Interrante provided the PostScript
+prologue and feedback.
 
 Arthur Smith (Lassp, Cornell University) <arthur@helios.tn.cornell.edu>
 has generously provided his code for the xplot utility.
@@ -45,9 +59,7 @@ David B. Rosen <rosen@bu.edu>, jeffrey templon
 <templon@copper.ucs.indiana.edu> and David W. Forslund
 <dwf%hope.ACL@lanl.gov> tested alpha versions.
 
-Gnu Graphics was later extended and renamed Gnu Plotutils which
-has retained the Free Software Foundataion copyright inherited
-from Gnu Graphics.
+'Gnu Graphics was later extended and renamed 'Gnu Plotutils'.
 
 ## graph Examples
 
