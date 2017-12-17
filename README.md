@@ -2,13 +2,16 @@
 
 GNU Graphics is a standard Unix Version 7 graph and plot tool
 written by Rich Murphey, initially to produce graphics for his
-doctoral dissertation.  It adopts the unix tool philosophy of
-small simple commands which can be piped together in various
-ways to ccomplish more complext tasks.  Unix Version 7 defined a
-device independent plot file format.  This facilitated
-developing support for new output devices, and specifically for
-his disseration, output to document preparation systems such as
-LaTeX.
+doctoral dissertation.  He assigned the copyright to the Free
+Software Foundation, and it was later extended and renamed GNU
+Plotutils.
+
+It adopts the unix tool philosophy of small simple commands
+which can be piped together in various ways to ccomplish more
+complext tasks.  Unix Version 7 defined a device independent
+plot file format.  This facilitated developing support for new
+output devices, and specifically for his disseration, output to
+document preparation systems such as LaTeX.
 
 The program `graph` reads data files and writes a stream of
 commands in a device independent GNU plot file.  The various
