@@ -1,6 +1,6 @@
 ## Gnu Graphics
 
-GNU Graphics is a standard Unix Version 7 graph and plot tool
+GNU Graphics is a standard Unix Version 7 plotting utility
 written by Rich Murphey, initially to produce graphics for his
 doctoral dissertation.  He assigned the copyright to the Free
 Software Foundation, and it was later extended and renamed GNU
