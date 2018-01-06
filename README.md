@@ -33,12 +33,11 @@ the output in LaTeX documents using `dvips` and the LaTeX command
 
 ## Acknowlegements
 
-Rich Murphey is the original author of GNU Graphics. He developed it to produce
-graphics for for his doctoral disseration. 
+Rich Murphey is the original author of GNU Graphics. He developed it in
+1990 to produce graphics for for his doctoral disseration. 
 He wrote the the suite of commands, including graph,
 plot2tek, plot2ps, tek2plot, plot2fig, the C language API, the
-documentation, build, packaging and regression testing in
-1990-1991 produce the graphics for his dissertation. 
+documentation, build, packaging and regression testing.
 He assigned the copyright to the 
 [Free Software Foundation](http://www.fsf.org/), 
 and years later, it was later extended and renamed GNU Plotutils.  
