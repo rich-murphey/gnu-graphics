@@ -28,9 +28,9 @@ concatenating the plot output of several invocations.
 The `plot2ps` utility reads plotting commands from named files or
 the standard input and writes PostScript to the standard output.  You
 can then print the PostScript output on a printer, or edit it using the
-`idraw` graphics editor.  You can also easily include
-the output in LaTeX documents using `dvips` and the LaTeX command
-`psfig`.
+[idraw](http://ivtools.sourceforge.net/ivtools/idraw.html) graphics editor.  
+You can also easily include the output in LaTeX documents using `dvips` 
+and the LaTeX command `psfig`.
 
 ## Acknowlegements
 
