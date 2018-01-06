@@ -10,11 +10,6 @@ plot file format](https://www.unix.com/man-page/v7/5/plot/), and an
 This approach simplifies developing support for new output devices and
 integration with desktop publishing software.
 
-Rich Murphey is the original author of GNU Graphics. He developed it to produce
-graphics for for his doctoral disseration. He assigned the copyright to the 
-[Free Software Foundation](http://www.fsf.org/), and it was later extended and renamed GNU
-Plotutils.
-
 The program `graph` reads data files and writes a stream of
 commands in a device independent GNU plot file.  The various
 `plot` programs provide display plot files on X windows,
@@ -38,11 +33,15 @@ the output in LaTeX documents using `dvips` and the LaTeX command
 
 ## Acknowlegements
 
-Rich Murphey initially wrote the entire suite, including graph,
+Rich Murphey is the original author of GNU Graphics. He developed it to produce
+graphics for for his doctoral disseration. 
+He wrote the the suite of commands, including graph,
 plot2tek, plot2ps, tek2plot, plot2fig, the C language API, the
 documentation, build, packaging and regression testing in
-1990-1991 produce the graphics for his dissertation. He
-assigned the copyright to the Free Software Foundation.  
+1990-1991 produce the graphics for his dissertation. 
+He assigned the copyright to the 
+[Free Software Foundation](http://www.fsf.org/), 
+and years later, it was later extended and renamed GNU Plotutils.  
 
 Richard Stallman <Rms@ai.mit.edu> provided valuable feedback
 such as avoiding static limits on file size or dimensional
