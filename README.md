@@ -11,8 +11,8 @@ This approach simplifies developing support for new output devices and
 integration with desktop publishing software.
 
 Rich Murphey is the original author of GNU Graphics. He developed it to produce
-graphics for for his doctoral disseration. He assigned the copyright to the Free
-Software Foundation, and it was later extended and renamed GNU
+graphics for for his doctoral disseration. He assigned the copyright to the 
+[Free Software Foundation](http://www.fsf.org/), and it was later extended and renamed GNU
 Plotutils.
 
 The program `graph` reads data files and writes a stream of
