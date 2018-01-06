@@ -7,10 +7,10 @@ of commands that have minimalist, modular approach.
 Seventh Edition Unix defined an interface betwwen them, the [device independent
 plot file format](https://www.unix.com/man-page/v7/5/plot/), and an 
 [API for generating plot files](https://www.unix.com/man-page/v7/3X/plot/).
-This facilitated developing support for new output devices, and
-integrating it with other software, such as desktop publishing.
+This approach simplifies developing support for new output devices and
+integration with desktop publishing software.
 
-Rich Murphey is the original author. He developed it to produce
+Rich Murphey is the original author of GNU Graphics. He developed it to produce
 graphics for for his doctoral disseration. He assigned the copyright to the Free
 Software Foundation, and it was later extended and renamed GNU
 Plotutils.
