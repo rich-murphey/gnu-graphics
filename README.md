@@ -1,12 +1,13 @@
 ## Gnu Graphics
 
-GNU Graphics is a standard Unix Version 7 plotting utility
-written by Rich Murphey, initially to produce graphics for his
+GNU Graphics is a workalike open-source replacemenmt for the
+Unix Version 7 OS plotting utilities, written by Rich Murphey.\
+He wrote them initially to produce graphics for his
 doctoral dissertation.  He assigned the copyright to the Free
 Software Foundation, and it was later extended and renamed GNU
 Plotutils.
 
-It adopts the unix tool philosophy of small simple commands
+They adopt the unix tool philosophy of small simple commands
 which can be piped together in various ways to ccomplish more
 complext tasks.  Unix Version 7 defined a device independent
 plot file format.  This facilitated developing support for new
