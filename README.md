@@ -14,7 +14,8 @@ The program `graph` reads data files and writes a stream of
 commands in a device independent GNU plot file.  The various
 `plot` programs provide display plot files on X windows,
 postscript printers, desktop publishing systems such as LaTeX or
-Interviews, ando other compatible output devices.
+[Interviews](http://ivtools.sourceforge.net/ivtools/interviews.html), 
+and other compatible output devices.
 
 `graph` reads both ascii and binary data files and writes a plot
 file with or without axes and labels.  You can specify labels and ranges
@@ -46,8 +47,8 @@ Richard Stallman <Rms@ai.mit.edu> provided valuable feedback
 such as avoiding static limits on file size or dimensional
 attributes, and editorial support for the documentation.  
 
-plot2ps was designed to interoperate with the Interviews vector
-graphics edtitor and its other graphics production tools.
+plot2ps was designed to interoperate with the [Interviews]([Interviews](http://ivtools.sourceforge.net/ivtools/interviews.html))
+vector graphics edtitor and its other graphics production tools.
 Interviews author John Interrante provided the PostScript
 prologue and feedback.
 
