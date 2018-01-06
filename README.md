@@ -3,7 +3,7 @@
 GNU Graphics is a workalike open-source replacement for the
 [Bell Labs Seventh Edition Unix OS plotting utilities](https://www.unix.com/man-page/v7/1G/graph/).
 The 'graph' and 'plot' commands conform to the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)
-of commands that have minimalist, modular approach.
+of minimalist, modular commands that can be combined to accomplish more complex tasks.
 Seventh Edition Unix defined an interface betwwen them, the [device independent
 plot file format](https://www.unix.com/man-page/v7/5/plot/), and an 
 [API for generating plot files](https://www.unix.com/man-page/v7/3X/plot/).
