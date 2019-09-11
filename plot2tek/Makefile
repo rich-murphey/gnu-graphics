@@ -1,4 +1,5 @@
-defines = # -DSTDC_HEADERS -DHAVE_VOIDPTR
+defines = -DSTDC_HEADERS
+#  -DHAVE_VOIDPTR
 CC=cc
 COPTS=-O
 CFLAGS=$(COPTS) $(defines)

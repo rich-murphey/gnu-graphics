@@ -419,7 +419,7 @@ read_plot_ascii_out (in_stream, buffer, buffer_length)
 	  printf("%c %d %d\n", CONT, x0, y0);
 	  break;
 	case ERASE:
-	  printf("%c\n", ERASE, buffer);
+	  printf("%c\n", ERASE);
 	  break;
 	case FILL:
 	  x0 = coord (in_stream);
@@ -590,7 +590,7 @@ main (argc, argv)
       
       if (!show_version)
 	display_version();
-      for (k = 0; copy_notice[k] != '\0'; k++) {
+      for (k = 0; copy_notice[k][0] != '\0'; k++) {
 	  (void) fputs(copy_notice[k], stderr);
       }
       exit(0);

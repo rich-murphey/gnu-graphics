@@ -16,8 +16,8 @@
 
 /* This file is the main routine for graph. */
 
-#include "getopt.h"
 #include "sys-defines.h"
+#include "getopt.h"
 #include "libplot.h"
 #include "extern.h"
 #include "../COPYING"

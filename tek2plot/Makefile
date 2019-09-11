@@ -1,6 +1,6 @@
 # This is the make file for tek2plot, a tek4010 to plot file translator.
 CC=gcc
-CFLAGS=-Wall
+CFLAGS=-Wall -DSTDC_HEADERS
 LDLIBS=-lm
 GETOPT=../getopt
 #----------------------------------------------------------------
@@ -27,6 +27,7 @@ realclean : clean
 #----------------------------------------------------------------
 $(DEV)2plot : $(DEV)2.o $(GETOPT)/getopt.o $(GETOPT)/getopt1.o libplot.a
 	$(CC) $(CFLAGS) -I$(GETOPT) -I../include -o $(DEV)2plot $(DEV)2.o $(GETOPT)/getopt.o $(GETOPT)/getopt1.o libplot.a $(LDLIBS)
+	./$(DEV)2plot <../test/spline.tek >tek2plot.test
 
 $(GETOPT)/getopt.o $(GETOPT)/getopt1.o : $(GETOPT)/getopt.c $(GETOPT)/getopt1.c
 	cd $(GETOPT); make all CC="$(CC)" CFLAGS="$(CFLAGS)"

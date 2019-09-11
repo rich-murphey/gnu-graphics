@@ -37,7 +37,7 @@ tek2plot.test: ../tek2plot/tek2plot tek2plot.expected.output spline.tek
 	    || echo FAILED.
 	@echo
 
-tek2plot.expected.output : spline.tek
+tek2plot.expected.output :
 	../tek2plot/tek2plot <spline.tek >tek2plot.expected.output
 
 spline.tek : spline.plt ../plot2tek/plot2tek
@@ -88,7 +88,7 @@ plot2plot.test : ../plot2plot/plot2plot plot2plot.expected.output spline.plt
 	@echo
 
 plot2plot.expected.output :
-	-../plot2plot/plot2plot +output-as-ascii <spline.plt >plot2plot.expected.output
+	-../plot2plot/plot2plot +output-as-ascii  <spline.plt >plot2plot.expected.output
 #----------------------------------------------------------------
 ../graph/graph ../tek2plot/tek2plot ../xplot/xplot ../plot2plot/plot2plot \
     ../plot2tek/plot2tek ../plot2ps/plot2ps :
@@ -108,17 +108,17 @@ plot2tek.diff plot2ps.diff \
 plot2fig.diff plot2plot.diff
 
 graph.diff : graph.expected.output graph.test
-	diff -cb graph.expected.output graph.test >$@
+	-diff -cb graph.expected.output graph.test >$@
 tek2plot.diff : tek2plot.expected.output tek2plot.test
-	diff -cb tek2plot.expected.output tek2plot.test >$@
+	-diff -cb tek2plot.expected.output tek2plot.test >$@
 plot2tek.diff : plot2tek.expected.output plot2tek.test
-	diff -cb plot2tek.expected.output plot2tek.test >$@
+	-diff -cb plot2tek.expected.output plot2tek.test >$@
 plot2ps.diff : plot2ps.expected.output plot2ps.test
-	diff -cb plot2ps.expected.output plot2ps.test >$@
+	-diff -cb plot2ps.expected.output plot2ps.test >$@
 plot2fig.diff : plot2fig.expected.output plot2fig.test
-	diff -cb plot2fig.expected.output plot2fig.test >$@
+	-diff -cb plot2fig.expected.output plot2fig.test >$@
 plot2plot.diff : plot2plot.expected.output plot2plot.test
-	diff -cb plot2plot.expected.output plot2plot.test >$@
+	-diff -cb plot2plot.expected.output plot2plot.test >$@
 #----------------------------------------------------------------
 report : clean
 	make test diff >$@

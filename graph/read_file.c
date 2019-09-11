@@ -129,6 +129,8 @@ read_file (in_stream, p, length, no_of_points, auto_abscissa,
 	  else
 	    no_read = read_number (in_stream, data_spec, &(*p)[*no_of_points].x);
 	  if (no_read == 0 && data_spec == ASCII_DATA)
+            break;           /* Note: need study this */
+#if 0
 	    {
 	      char *newline;
 
@@ -141,6 +143,7 @@ read_file (in_stream, p, length, no_of_points, auto_abscissa,
 			      progname, input_string);
 	      exit (-1);
 	    }
+#endif
 	}
       if (transpose_axes)
 	no_read = read_number (in_stream, data_spec, &(*p)[*no_of_points].x);

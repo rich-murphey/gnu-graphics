@@ -20,9 +20,9 @@
 int
 getopt_long (argc, argv, options, long_options, opt_index)
      int argc;
-     char **argv;
+     char *const*argv;
      CONST char *options;
-     CONST struct option *long_options;
+     const struct option *long_options;
      int *opt_index;
 {
   int val;
@@ -42,9 +42,9 @@ getopt_long (argc, argv, options, long_options, opt_index)
 int 
 getopt_long_only (argc, argv, options, long_options, opt_index)
      int argc;
-     char **argv;
+     char *const*argv;
      CONST char *options;
-     CONST struct option *long_options;
+     const struct option *long_options;
      int *opt_index;
 {
   int val;

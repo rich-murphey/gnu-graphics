@@ -67,7 +67,7 @@ struct option
   int val;
 };
 
-extern struct option *_getopt_long_options;
+const extern struct option *_getopt_long_options;
 
 /* If nonzero, tell getopt that '-' means a long option.
    Set by getopt_long_only.  */
@@ -88,9 +88,9 @@ extern char *_getopt_option_name;
 extern int option_index;
 
 #ifdef __STDC__
-int getopt (int, char **, const char *);
-int getopt_long (int, char **, const char *, const struct option *, int *);
-int getopt_long_only (int, char **, const char *, const struct option *, int *);
+int getopt (int, char *const*, const char *);
+int getopt_long (int, char *const*, const char *, const struct option *, int *);
+int getopt_long_only (int, char *const*, const char *, const struct option *, int *);
 #else
 int getopt ();
 int getopt_long ();

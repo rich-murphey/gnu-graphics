@@ -2,9 +2,7 @@
 <arthur@helios.tn.cornell.edu>.  It has been further modified by Rich
 Murphey <Rich@rice.edu>.*/
 
-
 #include "sys-defines.h"
-
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
 #include <X11/Shell.h>
@@ -15,7 +13,6 @@ Murphey <Rich@rice.edu>.*/
 #include "libplot.h"
 #include "getopt.h"
 
-FILE *ostrm = stderr;
 int fork_flag = 1;		/* nonzero means fork before exit. */
 #ifdef DEBUG
 int debug_flag = 0;		/* nonzero means output debugging info. */
@@ -63,6 +60,60 @@ char **nargv;
 char *startup_font = "";	/* null string means use sever default */
 int high_byte_first = 0;
 char *progname;			/* argv[0] or the name of this program */
+
+int getcoords (x, n)
+     int *x;
+     int n;
+{
+  unsigned char c, d;
+  int i;
+
+  if ((b_out - b_in) < 2*n) 
+    return 0;
+  for (i = 0; i < n; i++)
+    {
+      if (high_byte_first)
+	{
+	  d = b[b_in++];
+	  c = b[b_in++];
+	}
+      else
+	{
+	  c = b[b_in++];
+	  d = b[b_in++];
+	}
+      x[i] = (int) ((d << 8) | c);
+#ifdef DEBUG
+      if (debug_flag) fprintf (stderr, " %d", x[i]);
+#endif
+    }
+#ifdef DEBUG
+  if (debug_flag) fprintf (stderr, "\n");
+#endif
+  return 1;
+}
+
+int getstring ()
+{
+  char *string_end;
+  int string_length;
+
+  if ((string_end = index (&b[b_in], '\n')) == NULL)
+    return 0;
+
+  string_length = string_end - &b[b_in];
+  while (string_length >= sbuf_length)
+    { sbuf_length *= 2;
+      sbuf = (char*) realloc (sbuf, sbuf_length);}
+  bcopy (&b[b_in], sbuf, string_length);
+  sbuf[string_length] = 0;
+  b_in += string_length + 1;
+
+#ifdef DEBUG
+  if (debug_flag) fprintf (stderr, " %s\n", sbuf);
+#endif
+  return string_length;
+}
 
 void
 display_version ()
@@ -185,7 +236,7 @@ main (argc, argv)
 
 	    do {
 #ifdef DEBUG
-	      if (debug_flag) fprintf (ostrm, "input buffer: %d %d %d %d\n", b, b_in, b_out, b_length);
+	      if (debug_flag) fprintf (stderr, "input buffer: %d %d %d %d\n", b, b_in, b_out, b_length);
 #endif
 	      bytes_recieved = fread(&b[b_out], sizeof(char), b_length - b_out, data_file);
 	      b_out += bytes_recieved > 0 ? bytes_recieved : 0;
@@ -226,16 +277,16 @@ main (argc, argv)
   if (debug_flag)
     {
       int i;
-      fprintf (ostrm, "input buffer: %d %d %d %d\n", b, b_in, b_out, b_length);
+      fprintf (stderr, "input buffer: %d %d %d %d\n", b, b_in, b_out, b_length);
       for (i=0; i<argc; i++)
-	fprintf (ostrm, "args %d %s\n", i, argv[i]);
+	fprintf (stderr, "args %d %s\n", i, argv[i]);
     }  
 #endif
   nargc = argc;
   nargv = argv;
 
   if (b_out==0)
-    fprintf (ostrm, "%s: Abort: zero bytes read from input.\n", argv[0]);
+    fprintf (stderr, "%s: Abort: zero bytes read from input.\n", argv[0]);
   else
     openpl ();
   return 0;
@@ -268,7 +319,7 @@ int openpl ()
     yfactor = win_height;
 
 #ifdef DEBUG
-  if (debug_flag) fprintf (ostrm, "pixmap: %d x %d\n", win_width, win_height);
+  if (debug_flag) fprintf (stderr, "pixmap: %d x %d\n", win_width, win_height);
 #endif
 				/* create the bitmap */
   pixmap = XCreatePixmap(dpy, DefaultRootWindow (dpy), win_width, win_height, 1);
@@ -276,7 +327,7 @@ int openpl ()
 				/* install the bitmap in the command widget */
   XtSetArg (wargs[0], XtNbitmap, pixmap);
   XtSetValues(child, wargs, ONE);
-  XtAddCallback(child, XtNcallback, Quit, NULL);
+  XtAddCallback(child, XtNcallback, (void*)Quit, NULL);
 
   erase ();			/* erase the window */
   fontname (startup_font);	/* set the default font */
@@ -303,7 +354,7 @@ do_plot (data, fd, id)
     {
       c = b[b_in++];
 #ifdef DEBUG
-      if (debug_flag) fprintf (ostrm, "%c", c);
+      if (debug_flag) fprintf (stderr, "%c", c);
 #endif
       switch (c)
 	{
@@ -333,7 +384,7 @@ do_plot (data, fd, id)
 	    x_justify = b[b_in++];
 	    y_justify = b[b_in++];
 #ifdef DEBUG
-	    if (debug_flag) fprintf (ostrm, " %c %c", x_justify, y_justify);
+	    if (debug_flag) fprintf (stderr, " %c %c", x_justify, y_justify);
 #endif
 	    if (getstring ())
 	      alabel (x_justify, y_justify, sbuf);
@@ -349,7 +400,7 @@ do_plot (data, fd, id)
 	  break;
 	case 'e':		/* Erase */
 #ifdef DEBUG
-	  if (debug_flag) fprintf (ostrm, "\n");
+	  if (debug_flag) fprintf (stderr, "\n");
 #endif
 	  erase ();
 	  break;
@@ -383,7 +434,7 @@ do_plot (data, fd, id)
 	  break;
 	default:
 #ifdef DEBUG
-	  fprintf (ostrm, "Unrecognized plot command `%c' (%o octal) ignored.\n", 
+	  fprintf (stderr, "Unrecognized plot command `%c' (%o octal) ignored.\n", 
 		  c, c&0xFF);
 #endif
 	  break;
@@ -392,6 +443,7 @@ do_plot (data, fd, id)
   XClearArea (dpy, XtWindow (child), 0, 0, 0, 0, True);
 }
 
+void
 drawellipse (x, y, r1, r2)
      int x, y, r1, r2;
 {
@@ -562,7 +614,7 @@ space (x0, y0, x1, y1)
       high_byte_first = high_byte_first > 0 ? -1 : 1;
     }
 #ifdef DEBUG
-  if (debug_flag) fprintf (ostrm, "%s byte first -> %d %d %d %d\n",
+  if (debug_flag) fprintf (stderr, "%s byte first -> %d %d %d %d\n",
 			   (high_byte_first > 0 ? "high" : "low"),
 			   xmin, ymin, xmax, ymax);
 #endif
@@ -584,60 +636,6 @@ closepl ()
   XFreePixmap (dpy, pixmap);
   XtDestroyWidget (toplevel);
   return 0;
-}
-
-int getcoords (x, n)
-     int *x;
-     int n;
-{
-  unsigned char c, d;
-  int i;
-
-  if ((b_out - b_in) < 2*n) 
-    return 0;
-  for (i = 0; i < n; i++)
-    {
-      if (high_byte_first)
-	{
-	  d = b[b_in++];
-	  c = b[b_in++];
-	}
-      else
-	{
-	  c = b[b_in++];
-	  d = b[b_in++];
-	}
-      x[i] = (int) ((d << 8) | c);
-#ifdef DEBUG
-      if (debug_flag) fprintf (ostrm, " %d", x[i]);
-#endif
-    }
-#ifdef DEBUG
-  if (debug_flag) fprintf (ostrm, "\n");
-#endif
-  return 1;
-}
-
-int getstring ()
-{
-  char *string_end;
-  int string_length;
-
-  if ((string_end = index (&b[b_in], '\n')) == NULL)
-    return 0;
-
-  string_length = string_end - &b[b_in];
-  while (string_length >= sbuf_length)
-    { sbuf_length *= 2;
-      sbuf = (char*) realloc (sbuf, sbuf_length);}
-  bcopy (&b[b_in], sbuf, string_length);
-  sbuf[string_length] = 0;
-  b_in += string_length + 1;
-
-#ifdef DEBUG
-  if (debug_flag) fprintf (ostrm, " %s\n", sbuf);
-#endif
-  return string_length;
 }
 
 static XtCallbackProc 

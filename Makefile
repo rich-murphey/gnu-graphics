@@ -22,18 +22,21 @@
 #----------------------------------------------------------------
 #    Specify CC and CFLAGS according to your machine architecture.
 #----------------------------------------------------------------
-# sun3, sun4, sequent, mips, next, and hp9000:
+# linux, freebsd
 CC=cc
-CFLAGS=-O
+CFLAGS=-O -DSTDC_HEADERS
+
+# sun3, sun4, sequent, mips, next, and hp9000:
+# CC=cc
+# CFLAGS=-O
 
 # ultrix:
-#CC=gcc
-#CFLAGS=-O
+# CC=gcc
+# CFLAGS=-O
 
 # for debugging:
-#CC=gcc
-#CFLAGS="-g -DDEBUG"
-
+# CC=gcc
+# CFLAGS=-g -DDEBUG
 #----------------------------------------------------------------
 #    Specify the directories where binaries and documentation are installed:
 #----------------------------------------------------------------
@@ -85,6 +88,6 @@ realclean clean ::
 	cd test; make clean
 
 test : all
-	cd test; make test
+	cd test; make test diff
 xplot :
 	cd $@; make $(MFLGS)

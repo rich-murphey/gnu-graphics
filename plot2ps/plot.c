@@ -474,7 +474,7 @@ main (argc, argv)
       int k;
       if (!show_version)
 	display_version ();
-      for (k = 0; copy_notice[k] != '\0'; k++) {
+      for (k = 0; copy_notice[k][0] != '\0'; k++) {
 	(void) fputs (copy_notice[k], stderr);
       }
       closepl ();

@@ -30,7 +30,6 @@ extern GC gc;
 #ifdef DEBUG
 extern int debug_flag;		/* nonzero means output debugging info. */
 #endif
-extern FILE *ostrm;		/* stream for error messages */
 
 extern int xmin, xmax, ymin, ymax;
 extern double xfactor, yfactor;
@@ -148,7 +147,7 @@ alabel (x_justify, y_justify, s)
     {
 #ifdef DEBUG
       if (debug_flag)
-	fprintf(ostrm, "warning: null font_struct\n");
+	fprintf(stderr, "warning: null font_struct\n");
 #endif
       alabel_width = alabel_height = alabel_decent = 0;
     }
@@ -168,7 +167,7 @@ alabel (x_justify, y_justify, s)
     y = (int) (MAPY (last_y) + y_char_offset * alabel_height - alabel_decent + .5);
 #ifdef DEBUG
     if (debug_flag)
-      fprintf(ostrm, "drawstring %d %d %d %s\n", gc, x, y, s);
+      fprintf(stderr, "drawstring %d %d %d %s\n", gc, x, y, s);
 #endif
     XDrawString (dpy, pixmap, gc, x, y, s, strlen (s));
   }
@@ -184,7 +183,7 @@ int set_font_and_size (name, size)
 
 #ifdef DEBUG
   if (debug_flag)
-    fprintf(ostrm, "fontname `%s' size %d\n", name ? name : "", size);
+    fprintf(stderr, "fontname `%s' size %d\n", name ? name : "", size);
 #endif
 
   /* If the name is null or zero length, use the default: */
@@ -203,7 +202,7 @@ int set_font_and_size (name, size)
 	  XSetFont (dpy, gc, font_struct->fid);
 #ifdef DEBUG
 	  if (debug_flag)
-	    fprintf(ostrm, "Font `%s' %d\n", name, font_struct);
+	    fprintf(stderr, "Font `%s' %d\n", name, font_struct);
 #endif
 	  return 1;		/* font found */
 	}
@@ -259,7 +258,7 @@ fontname (name)
      char *name;
 {
   if (!set_font_and_size (name, (int) font_size))
-    fprintf(ostrm, "warning: font `%s' not found.\n", user_font_name);
+    fprintf(stderr, "warning: font `%s' not found.\n", user_font_name);
   return 0;
 }
 
@@ -269,7 +268,7 @@ fontsize (points)
 {
   font_size = points;
   if (!set_font_and_size (user_font_name, (int) font_size))
-    fprintf(ostrm, "warning: font `%s' at size %d not found.\n",
+    fprintf(stderr , "warning: font `%s' at size %d not found.\n",
 	    user_font_name, points);
   return 0;
 }

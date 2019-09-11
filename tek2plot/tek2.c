@@ -131,7 +131,7 @@ read_plot (in_stream, buffer, buffer_length)
 		}
 	    }
 	    break;
-	  case '\033':
+	  case '\033':          /* ESC */
 	    {
 	      byte_read = read_byte (in_stream);
 	      switch (byte_read)
@@ -238,6 +238,18 @@ read_plot (in_stream, buffer, buffer_length)
 		      }
 		  }
 		  break;
+		case '[':
+		  {
+                    if ((read_byte (in_stream) == '?') &&
+                        (read_byte (in_stream) == '3') &&
+                        (read_byte (in_stream) == '8') &&
+                        (read_byte (in_stream) == 'h'))
+                    {
+                      break;
+                    } else {
+                      fprintf (stderr, "Unrecognized escape code ignored.\n");
+                    }
+                  }
 		}
 	    }
 	    break;
@@ -465,7 +477,7 @@ main (argc, argv)
       int k;
       if (!show_version)
 	display_version ();
-      for (k = 0; copy_notice[k] != '\0'; k++) {
+      for (k = 0; copy_notice[k][0] != '\0'; k++) {
 	(void) fputs (copy_notice[k], stderr);
       }
       closepl ();

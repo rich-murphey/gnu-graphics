@@ -141,7 +141,7 @@ static enum
    The field `has_arg' is 1 if the option takes an argument,
    2 if it takes an optional argument.  */
 
-struct option *_getopt_long_options;
+const struct option *_getopt_long_options;
 
 int _getopt_long_only = 0;
 
@@ -233,7 +233,7 @@ exchange (argv)
 int
 getopt (argc, argv, optstring)
      int argc;
-     char **argv;
+     char *const*argv;
      CONST char *optstring;
 {
   optarg = 0;

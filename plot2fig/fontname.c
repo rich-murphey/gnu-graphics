@@ -19,6 +19,8 @@
    desired current font and sets the current font to that name. */
 
 #include "sys-defines.h"
+#define  _REGEX_RE_COMP
+#include <regex.h>
 #include "libplot.h"
 #include "extern.h"
 

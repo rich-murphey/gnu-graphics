@@ -1,5 +1,5 @@
 # This is the Makefile for graph, a program which generates plot files.
-defines = # -DSTDC_HEADERS -DHAVE_VOIDPTR -ansi
+defines = -DSTDC_HEADERS
 #CC = gcc
 #COPTS = -g -Wall
 CC = cc

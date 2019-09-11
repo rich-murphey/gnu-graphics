@@ -1,4 +1,4 @@
-# This is the Makefile for xplot, an X11 plot file previewer.
+  # This is the Makefile for xplot, an X11 plot file previewer.
 # You may have to edit LDLIBS or CFLAGS to indicate the paths to
 # your X11 libs and includes if your compiler does not find them
 # by default.
@@ -15,7 +15,8 @@ GETOPT=../getopt
 #CC=gcc
 #CFLAGS=-g -DDEBUG -DNOSTDHDRS -fstrength-reduce -fpcc-struct-return -fwritable-strings
 CC=cc
-CFLAGS=-O -DDEBUG
+CFLAGS=-O -DSTDC_HEADERS
+#CFLAGS=-O -DDEBUG
 #----------------------------------------------------------------
 # The toplevel make file uses these.
 .PHONY: all install clean realclean

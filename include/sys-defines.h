@@ -3,6 +3,7 @@
 #include <math.h>
 
 #ifdef STDC_HEADERS
+#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #else
