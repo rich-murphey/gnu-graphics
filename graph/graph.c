@@ -301,7 +301,7 @@ main (argc, argv)
 	  break;
 	case 'm':		/* Line-style		*/
 	  if (isdigit(*optarg) || (*optarg == '-'))
-	    linemode_index = atoi (optarg);
+	    linemode_index = atoi (optarg) - 1;
 	  else
 	    {
 	      fprintf (stderr,

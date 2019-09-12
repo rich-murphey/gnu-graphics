@@ -10,33 +10,45 @@ independent plot file format](https://www.unix.com/man-page/v7/5/plot/).  This a
 simplifies developing support for new output devices and integration with desktop
 publishing software.
 
-The program `graph` reads ascii or binary numeric data and writes a stream of device
+The program `graph` reads ASCII or binary numeric data and writes a stream of device
 independent plotting commands.  The various `plot` programs read plotting commands to
 display plot files on X windows, postscript printers, desktop publishing systems such as
-LaTeX or [Interviews](http://ivtools.sourceforge.net/ivtools/interviews.html), and other
+LaTeX or [ivtools](https://github.com/vectaport/ivtools-1.2), and other
 compatible output devices.
 
-`graph` reads both ascii and binary data files and writes a plot
+`graph` reads both ASCII and binary data files and writes a plot
 file with or without axes and labels.  You can specify labels and ranges
 for the axes, and you can set the sizes and position of the plot on the
 page.  Each invocation of graph produces a plot with single set of axes
 and data.  You can place an arbitrary number of plots on the page by
 concatenating the plot output of several invocations.
 
-`plot2ps` is a utility for converting plot files into PostScript.
+`plot2ps` is a utility for converting plot files into Postscript.
 The `plot2ps` utility reads plotting commands from named files or
-the standard input and writes PostScript to the standard output.  You
-can then print the PostScript output on a printer, or edit it using the
+the standard input and writes Postscript to the standard output.  You
+can then print the Postscript output on a printer, or edit it using the
 [idraw](http://ivtools.sourceforge.net/ivtools/idraw.html) graphics editor.
 You can also easily include the output in LaTeX documents using `dvips` 
 and the LaTeX command `psfig`.
 
-## Acknowlegements
+## Install
+
+This will download, build, regression test, and install Gnu Graphics.
+
+``` shell
+git clone https://github.com/rich-murphey/gnu-graphics.git
+cd gnu-graphics
+./configure
+make all
+make install
+```
+
+## Acknowledgements
 
 Rich Murphey wrote graph, plot2ps, plot2fig, plot2tek, tek2plot,
-spline, double, the C language API, the texinfo manual, the build
+spline, double, the C language API, this documentatuion, the build
 and packaging methods and regression tests. He wrote them in 1990
-to produce graphics for for his doctoral disseration. Murphey
+to produce graphics for for his doctoral dissertation. Murphey
 assigned the copyright to the [Free Software
 Foundation](http://www.fsf.org/).
 
@@ -44,13 +56,15 @@ Richard Stallman <Rms@ai.mit.edu> provided valuable feedback such
 as avoiding static limits on file size or dimensional
 attributes, and editorial support for the documentation.  
 
-John Interrante provided the PostScript prologue used in plot2ps.
+John Interrante provided the Postscript prologue from
+[ivtools](https://github.com/vectaport/ivtools-1.2). 
 
 Arthur Smith (Lassp, Cornell University)
 <arthur@helios.tn.cornell.edu> wrote xplot.
 
-David B. Rosen <rosen@bu.edu> wrote the Tek 4014 emulator used in tek2plot to convert
-Tec 4014 plot files to device independent plot files.
+David B. Rosen <rosen@bu.edu> wrote the Tek 4014 emulator,
+tek2plot, used to convert Tek 4014 plot files to device
+independent plot files.
 
 Ray Toy <toy@dino.ecse.rpi.edu> wrote the the statistics
 utilities, including: cor, cusum, gas, hilo, log, lreg, mean, mod,
@@ -64,22 +78,22 @@ David B. Rosen <rosen@bu.edu>, Jeffrey Templon
 
 ## Bug Reports
 
-Issues may be reported on Github at:
+Issues may be reported on GitHub at:
 
 https://github.com/rich-murphey/gnu-graphics/issues
 
-To expidite your bug report, please specify your machine's OS version and compiler
-version.
+To expedite your bug report, please specify your machine's OS
+version and compiler version.
 
 ## graph Examples
 
 Each invocation of `graph` plots data read from stdin or named
-files togeather in a single plot with or without axes and labels.  The
+files together in a single plot with or without axes and labels.  The
 following sections show common usage of `graph`.
 
 ## Simple examples using graph
 
-By default, `graph` reads ascii data from the standard input or
+By default, `graph` reads ASCII data from the standard input or
 files specified on the command line.  `graph` reads pairs of
 values, x and y coordinates:
 
@@ -95,12 +109,12 @@ values, x and y coordinates:
 To plot this data, you might use
 
 ```text
-graph < ascii_data_file |plot
+graph < ASCII_data_file |plot
 ```
 
-where ascii_data_file could contain data similar to the above example.
+where ASCII_data_file could contain data similar to the above example.
 You can replace the command `plot` with `plot2tek` if you have
-a tektronix 4010 compatible graphics terminal, `plot2ps` if you
+a Tektronix 4010 compatible graphics terminal, `plot2ps` if you
 have a postscript compatible printer or previewer, or `xplot` if
 you have an X window system display.
 
@@ -114,7 +128,7 @@ To reduce the change the size of the plot and position it in the middle
 of the display, you could use
 
 ```text
-graph -h .4 -w .4 -r .2 -u .2 < ascii_data_file |plot
+graph -h .4 -w .4 -r .2 -u .2 < ASCII_data_file |plot
 ```
 
 where `h` and `w` are the height and width of the plot and
@@ -124,7 +138,7 @@ positioned.
 You can put symbols at each data point using
 
 ```text
-graph -S 2 .01 < ascii_data_file |plot
+graph -S 2 .01 < ASCII_data_file |plot
 ```
 
 where 2 indicates which symbol to plot, and .01 indicates it's size.
@@ -132,15 +146,25 @@ where 2 indicates which symbol to plot, and .01 indicates it's size.
 You can choose the type of line draw on each curve:
 
 ```text
-graph -m 2 < ascii_data_file |plot
+graph -m 2 < ASCII_data_file |plot
 ```
 
-where 2 indicates what kind of line connects the data points.
+where 2 indicates a dotted line that connects the data points.
+
+Line Type       | -m
+-------------:  | :-----
+no line at all  | 0
+solid           | 1
+dotted          | 2
+shortdashed     | 4
+dotdashed       | 3
+longdashed      | 5
+disconnected    | 6
 
 
 ## The format of input to graph
 
-As mentioned above, by default `graph` reads ascii pairs of values,
+As mentioned above, by default `graph` reads ASCII pairs of values,
 x and y coordinates, from the standard input or files specified on the
 command line.  Optional labels may be placed after each coordinate in
 the data file.  The label ends at the end of the line:
@@ -170,7 +194,7 @@ not need a label.
 4.0  0.3
 ```
 
-You can also break cuves using `-M` option to break lines whenever
+You can also break curves using `-M` option to break lines whenever
 the abscissal values between successive pairs of points decrease.  When
 using `-M`, each continuous curve has monotonicly increasing
 abscissal values.
@@ -204,7 +228,7 @@ point.
 
 There are cases where you will want to superimpose several data sets or
 several plots on top of each other.  If for example, the data sets are
-in seperate files, you can specify each by it's name on the command
+in separate files, you can specify each by it's name on the command
 line.  Since `graph` reads the standard input only if no files are
 named on the command line, you must add the name `--` if you want
 `graph` to read the standard input as well.
@@ -215,8 +239,8 @@ graph data-file-one data-file-two data-file-three |plot
 
 For comparison sake, you might wish to distinguish the data in one set
 from another either by using different symbols at each point or by
-distinguishing the type of line draw.  You can do this by preceeding
-each file name with options affecting the synbol or line style used to
+distinguishing the type of line draw.  You can do this by preceding
+each file name with options affecting the symbol or line style used to
 plot that data.
 
 ```text
@@ -228,11 +252,11 @@ graph -m 1 data-file-one -m 3 data-file-two -S 4 data-file-three |plot
 ```
 
 If you need to superimpose several data sets, but must invoke graph
-seperately for each, you will have to specify the limits of the
+separately for each, you will have to specify the limits of the
 axes.
 
 ```text
-graph -x 0 100 -y -3 3 -S 3 -m -1 < ascii_data_file_1 >> plot_file
+graph -x 0 100 -y -3 3 -S 3 -m -1 < ASCII_data_file_1 >> plot_file
 ```
 
 where `-x 0 100` specifies the limits on the x axis, `-y -3 3`
@@ -242,7 +266,7 @@ draw connecting the points.  You can overlay a second data set on the first
 by using:
 
 ```text
-graph -s -g 0 -x 0 100 -y -3 3 -m 0 < ascii_data_file_1 >> plot_file
+graph -s -g 0 -x 0 100 -y -3 3 -m 0 < ASCII_data_file_1 >> plot_file
 ```
 
 where `-s` avoids erasing the page, `-g 0` avoids drawing the
@@ -253,7 +277,7 @@ specifies that solid lines are draw connecting the points.
 
 The command
 ```text
-graph -h .4 -w .4 -r .1 -u .1 < ascii_data_file_1 >  plot_file
+graph -h .4 -w .4 -r .1 -u .1 < ASCII_data_file_1 >  plot_file
 ```
 
 will put a single box containing the plot in the lower left hand
@@ -261,7 +285,7 @@ quarter of the page.  You can add another plot to the upper left hand
 corner of the page using the command
 
 ```text
-graph -s -h .4 -w .4 -r .1 -u .6 < ascii_data_file_2 >> plot_file
+graph -s -h .4 -w .4 -r .1 -u .6 < ASCII_data_file_2 >> plot_file
 ```
 
 Be sure you use the `-s` option so the the first plot isn't
@@ -270,15 +294,15 @@ erased.
 Likewise you can add plots to the right hand side of the page using
 
 ```text
-graph -s -h .4 -w .4 -r .6 -u .1 < ascii_data_file_3 >> plot_file
-graph -s -h .4 -w .4 -r .6 -u .6 < ascii_data_file_4 >> plot_file
+graph -s -h .4 -w .4 -r .6 -u .1 < ASCII_data_file_3 >> plot_file
+graph -s -h .4 -w .4 -r .6 -u .6 < ASCII_data_file_4 >> plot_file
 ```
 
 The tick marks can be moved inside the box and labels moved to the
 opposite sides using
 
 ```text
-graph -T -.005 < ascii_data_file >> plot_file
+graph -T -.005 < ASCII_data_file >> plot_file
 ```
 
 ## Reading other data formats
@@ -287,9 +311,9 @@ graph -T -.005 < ascii_data_file >> plot_file
 double float format when you use the `-d` option followed by
 `f`, or `d`, respectively.  There are two advantage to using
 binary data: 1) `graph` runs significantly faster because the
-computational overhead for converting data from ascii to binary is
+computational overhead for converting data from ASCII to binary is
 eliminated, and 2) the input files can be significantly smaller than the
-ascii format would be.  Double float is the fastest format to read,
+ASCII format would be.  Double float is the fastest format to read,
 while short integer is the most space conservative.  If you have very
 large data sets, using a binary format can reduce storage and runtime
 costs.
@@ -378,11 +402,11 @@ axis.
 the y axis.
 ###### -d `data-format`  | +data-format `data-format`
 This specifies what format the input data is in.  Note labels can be
-used only in ascii format input files.
+used only in ASCII format input files.
 
 |data-format| description|
 |--:|:---|
-| a or A | ascii data |
+| a or A | ASCII data |
 | i or I | binary integer data |
 | s or S | binary short integer data |
 | f or F | binary float data |
@@ -476,7 +500,7 @@ coordinates in an ASCII file, you can use:
 graph <asciiDataFile | plot2ps | lpr -Plw
 ```
 
-To create a simple PostScript figure you can use:
+To create a simple Postscript figure you can use:
 
 ```text
 echo 0 0 1 1 2 0 | spline | graph | plot2ps > test.ps
@@ -512,11 +536,11 @@ specified by the `open` command are used to recognize byte order
 by `plot2ps`.  If these sizes are recognized in byte reversed
 order, `plot2ps` adjusts accordingly.  These sizes include
 504x504, 2048x2048 (versatek plotters), 2100x2100,
-3120x3120(tektronix 4010 terminals) and 4096x4096 (gsi 300
+3120x3120(Tektronix 4010 terminals) and 4096x4096 (gsi 300
 terminals).
 
 The remaining command line options may be used specify an alternate
-PostScript prologue and to print the licensing information.
+Postscript prologue and to print the licensing information.
 
 Input plot files names may be specified anywhere on the command line.
 If no file names are specified, or the name `-` is specified, the
@@ -527,7 +551,7 @@ that file.
 ###### -H  | +help
 The help option prints a summary of command line syntax for
 `plot2ps`, a list of the font names (the standard builtin
-PostScript fonts), and version, copyright and warranty information.
+Postscript fonts), and version, copyright and warranty information.
 Specifying this options causes plot2ps to ignore files on the standard
 input.  You can specify a file on the standard input explicitly with
 the option `-` if you want it to read the standard input as
@@ -543,13 +567,13 @@ Some sizes are supported better than others under X windows.  The
 standard sizes distributed with X windows are 8, 10, 12, 14, 18, and
 24 points.  Text at these point sizes will display correctly in the
 `idraw` editor.  Other font sizes will print correctly on a
-PostScript device such as the laserwriter, but may not appear at the
+Postscript device such as the laser writer, but may not appear at the
 correct size in the `idraw` editor.
 ###### -font `name` | -fo `name`
 The font name option specifies the name of the default font for all
 text appearing in the plot.  `plot2ps -help` prints a listing of
 the font names on the standard output.  These names include the
-available builtin fonts on standard PostScript printers.
+available builtin fonts on standard Postscript printers.
 ###### -high-byte-first | -h
 The high-byte-first option specifies explicitly that the higher order
 byte of each signed, two byte integer occurs first in the file.  It
@@ -565,12 +589,10 @@ The low-byte-first option specifies explicitly that the lower order
 byte of each signed, two byte integer occurs first in the file.  It
 disables determination of byte order from the file itself.
 ###### -prologue `filename` | -p `filename`
-The prologue option specifies the name of an alternate PostScript
-prologue `filename` to be used in place of the default
-`idraw` prologue.  The prologue declares procedures used to draw
-each graphic object.  The default prologue was generously provided by
-John Interante and is a part of the InterViews distribution, version
-2.5.
+The prologue option specifies the name of an alternate Postscript prologue `filename` to
+be used in place of the default `idraw` prologue.  The prologue declares procedures used
+to draw each graphic object.  The default prologue was generously provided by John
+Interrante from [ivtools](https://github.com/vectaport/ivtools-1.2).
 ###### -copying | -warranty
 The copying and warranty options print a copy of the GNU General
 Public License on the standard error output.  Included is conditions
@@ -693,7 +715,7 @@ Then, run transfig on the figure and latex on the document:
 ```
 
 To edit a plot of data arranged in ordered pairs of x and y coordinates in
-an ascii file, one can use:
+an ASCII file, one can use:
 
 ```text
 % graph <asciiDataFile | plot2fig >file.fig
@@ -707,7 +729,7 @@ an ascii file, one can use:
 files and/or the standard input and produces `Fig` compatible code
 on it's standard output.  This output file can be edited with the fig
 (Facility for Interactive Generation of figures) graphics editor.  The
-output can subsequently be converted to pictex, PostScript, latex, epic,
+output can subsequently be converted to pictex, Postscript, latex, epic,
 eepic, and tpic languages using the `transfig` translator.
 
 Any unrecognized options on the command line are assumed to be input
@@ -767,7 +789,7 @@ out the plot file.  By default the byte order is host dependent.
 The font name option specifies the name of the default font for all
 text appearing in the plot.  `plot -help` prints a listing of
 the font names on the standard output.  These names include the
-available builtin fonts on standard PostScript printers.
+available builtin fonts on standard Postscript printers.
 ###### -h  | +high-byte-first
 The high-byte-first option specifies explicitly that the higher order
 byte of each signed, two byte integer occurs first in the file.  It
@@ -777,12 +799,11 @@ The low-byte-first option specifies explicitly that the lower order
 byte of each signed, two byte integer occurs first in the file.  It
 disables determination of byte order from the file itself.
 ###### -p `filename`  | +prologue `filename`
-The prologue option specifies the name of an alternate PostScript
+The prologue option specifies the name of an alternate Postscript
 prologue `filename` to be used in place of the default
 `idraw` prologue.  The prologue declares procedures used to draw
-each graphic object.  The default prologue was generously provided by
-John Interante and is a part of the InterViews distribution, version
-2.5.
+each graphic object.  The default prologue was provided by
+John Interrante from [ivtools](https://github.com/vectaport/ivtools-1.2).
 ###### +copying  | +C  | +warranty  | +W
 The copying and warranty options print a copy of the GNU General
 Public License on the standard error output.  Included is conditions
@@ -808,7 +829,7 @@ the previous example in a page of text.
 \title{Title of the article.}
 \author{The Author's name}
 \maketitle
-This is an example of how to include PostScript figures in LaTeX documents.
+This is an example of how to include Postscript figures in LaTeX documents.
 \begin{figure}[h]
 \centerline{\psfig{figure=test.ps,height=3in}}
 \caption{Here is a description of the figure which will appear below it.}
@@ -830,7 +851,7 @@ to format and print the example text.
 
 ## Options to psfig for Including Figures
 
-`psfig` is a LaTeX command used to insert a PostScript figure
+`psfig` is a LaTeX command used to insert a Postscript figure
 into a document.
 
 `psfig` can be used to insert `plot2ps` generated PostScript
@@ -855,13 +876,13 @@ arguments for the `psfig` command:
 * `=` must be present.  This option is useful for including PostScript figures which use the size of the clipping path to size themselves.
 
 
-## A perl script for use with psfig
+## A Perl script for use with psfig
 
-`atend.pl` is a perl script which moves the bounding box comment
+`atend.pl` is a Perl script which moves the bounding box comment
 from the trailer to the header.  Although either is legal, most document
 preparation software, such as `psfig`, will only accept bounding
 box comments in the header.  If you use `psfig` and the
-`-bbox` option togeather, run `atend.pl` on the output of
+`-bbox` option together, run `atend.pl` on the output of
 `plot2ps` before importing the graphics using `psfig`.
 
 `atend.pl` can be used as a filter:
@@ -888,20 +909,17 @@ of PostScript figures into LaTeX documents.
 ## How to Get idraw
 
 The `idraw` utility mentioned previously is an interactive
-graphics editor which is distributed with InterViews.
-InterViews is available via anonymous ftp from
-`interviews.stanford.edu` in the file
-@file{InterViews/2.5.tar.Z}.
+graphics editor which is part of
+[ivtools](https://github.com/vectaport/ivtools-1.2).
 
 ## How to Get ghostscript
 
 Ghostscript is a previewer which is intended to be compatible with the
 PostScript language.  It supports several output devices including the X
-window system and ega displays.  Version 2.0 is suitable for previewing
-LaTeX documents with imbedded encapsulated PostScript figures, the type
+window system and EGA displays.  Version 2.0 is suitable for previewing
+LaTeX documents with embedded encapsulated PostScript figures, the type
 of PostScript figures generated by plot2ps and idraw.  It is available
-via anonymous ftp from `prep.ai.mit.edu` - Look for
-@file{pub/gnu/ghostscript.tar.Z}.
+via 'apt install ghostscript'.
 
 ## libps, a Library of Plot Functions
 
@@ -951,8 +969,8 @@ placing the bottom center or top of the label even with the current y
 coordinate.  `*label` is a string containing the label.  The
 current point is moved to follow the end of the text.
 
-@xref{fontname} on how to change the default font.
-@xref{fontsize} on how to change the font size.
+See 'fontname' on how to change the default font.
+See 'fontsize' on how to change the font size.
 
 ##### int `arc` (int `x`, int `y`, int `x0`, int `y0`, int `x1`, int `y1`)
 
@@ -1043,7 +1061,7 @@ vertically with respect to the current coordinate.
 (`x1`, `y1`) and ending (`x2`, `y2`) points of a line.
 The current point becomes (`x2`, `y2`).
 
-@xref{linemod} for how to specify the style or pattern of line.
+See 'linemod' for how to specify the style or pattern of line.
 
 ##### int `linemod` (char `*s`)
 
