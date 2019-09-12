@@ -1,13 +1,14 @@
-## Gnu Graph and Plot
+## Gnu Graphics
 
-GNU Graphics is a work-alike open-source replacement for the 'graph' and 'plot' commands
-of [Bell Labs V7 Unix](https://www.unix.com/man-page/v7/1G/graph/).  They conform to the
-[Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy) of modular individual
-tools that do one thing well, and are composable to accomplish more complex tasks.  V7
-Unix defines a plot file format that is the interface between 'graph' and 'plot', the
-[device independent plot file format](https://www.unix.com/man-page/v7/5/plot/).  This
-approach simplifies developing support for new output devices and integration with
-desktop publishing software.
+GNU Graphics is a set of command line 2D 'graph' and 'plot' tools. They are a work-alike
+open-source replacement for those in [Bell Labs V7
+Unix](https://www.unix.com/man-page/v7/1G/graph/).  They conform to the [Unix
+philosophy](https://en.wikipedia.org/wiki/Unix_philosophy) of modular individual tools
+that do one thing well, and are composable to accomplish more complex tasks.  V7 Unix
+defines a plot file format that is the interface between 'graph' and 'plot', the [device
+independent plot file format](https://www.unix.com/man-page/v7/5/plot/).  This approach
+simplifies developing support for new output devices and integration with desktop
+publishing software.
 
 The program `graph` reads ascii or binary numeric data and writes a stream of device
 independent plotting commands.  The various `plot` programs read plotting commands to
