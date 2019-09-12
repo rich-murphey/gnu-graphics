@@ -46,7 +46,8 @@ idraw, ivtools, LaTex and Ghostscript. For example, one may
 generate figures using plot2ps, edit them using idraw, include
 the figures in LaTeX documents, generate printer-ready final
 postscript using LaTeX, and preview the final output using
-GhostScript.
+GhostScript.  This is what Rich Murphey used to write his PhD
+thesis, and was the motivation for GNU Graphics.
 
 [idraw](http://ivtools.sourceforge.net/ivtools/idraw.html) is a
 vector graphics editor for X windows that can edit the output of
