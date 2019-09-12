@@ -65,7 +65,7 @@ texlive-latex-recommended`.
 
 ## Install
 
-This will download, build, regression test, and install Gnu Graphics.
+This will download, build, test, and install Gnu Graphics.
 
 ``` shell
 git clone https://github.com/rich-murphey/gnu-graphics.git
