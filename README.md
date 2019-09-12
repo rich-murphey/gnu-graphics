@@ -1,6 +1,6 @@
 ## Gnu Graphics
 
-GNU Graphics is a set of command line 2D 'graph' and 'plot' tools. They are a work-alike
+GNU Graphics is a set of command line 2D 'graph' and 'plot' utilities. They are a work-alike
 open-source replacement for those in [Bell Labs V7
 Unix](https://www.unix.com/man-page/v7/1G/graph/).  They conform to the [Unix
 philosophy](https://en.wikipedia.org/wiki/Unix_philosophy) of modular individual tools
