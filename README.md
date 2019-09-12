@@ -3,7 +3,7 @@
 GNU Graphics are command line utilities that produces graphs of
 1 or 2 dimensional data.
 
-    cat data | statistics | graph | plot | printer
+    cat data | statistics | graph | plot | lpr
 
 Graph and plot are a work-alike open-source replacement for those
 in [Bell Labs V7 Unix](https://www.unix.com/man-page/v7/1G/graph/).  
