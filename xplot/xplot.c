@@ -3,6 +3,8 @@
 Murphey <Rich@rice.edu>.*/
 
 #include "sys-defines.h"
+#include <ctype.h>
+#include <math.h>
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
 #include <X11/Shell.h>
@@ -12,6 +14,7 @@ Murphey <Rich@rice.edu>.*/
 
 #include "libplot.h"
 #include "getopt.h"
+#include "config.h"
 
 int fork_flag = 1;		/* nonzero means fork before exit. */
 #ifdef DEBUG
@@ -121,7 +124,7 @@ display_version ()
     (void) fprintf (stderr, "\
 %s version %s, by Arthur Smith <arthur@helios.tn.cornell.edu>, modified by\n\
 Rich Murphey <Rich@rice.edu>.  %s comes with ABSOLUTELY NO WARRANTY.\n",
-		    progname, VERS, progname);
+		    progname, PACKAGE_VERSION, progname);
 }
 
 /* Long options we recognize */
@@ -304,11 +307,9 @@ int openpl ()
   XtRealizeWidget (toplevel);
   dpy = XtDisplay(toplevel);
 				/* get the size of the window */
-  XtSetArg(wargs[0], XtNwidth, 0);
-  XtSetArg(wargs[1], XtNheight, 0);
+  XtSetArg(wargs[0], XtNwidth, &win_width);
+  XtSetArg(wargs[1], XtNheight, &win_height);
   XtGetValues(toplevel, wargs, TWO);
-  win_width = wargs[0].value;
-  win_height = wargs[1].value;
   if ((xmax + 1 - xmin)!=0)
     xfactor = ((double) win_width)/(xmax + 1 - xmin);
   else

@@ -17,10 +17,10 @@
 /* This file is the main routine for graph. */
 
 #include "sys-defines.h"
+#include <ctype.h>
 #include "getopt.h"
 #include "libplot.h"
 #include "extern.h"
-#include "../COPYING"
 
 #define	ARG_NONE	0
 #define	ARG_REQUIRED	1
@@ -59,7 +59,6 @@ struct option long_options[] =
   {"fontname",		ARG_REQUIRED,	NULL, 'f' << 8},
   {"margin",		ARG_REQUIRED,	NULL, 'm' << 8},
   {"copying",		ARG_NONE,	NULL, 'c' << 8},
-  {"warranty",		ARG_NONE,	NULL, 'w' << 8},
   {"high-byte-first",	ARG_NONE,	NULL, 'H' << 8},
   {"low-byte-first",	ARG_NONE,	NULL, 'L' << 8},
   {NULL, 0, 0, 0}
@@ -124,7 +123,7 @@ display_version ()
 graph version %s, Copyright (C) 1989 Free Software Foundation, Inc.\n\
 graph comes with ABSOLUTELY NO WARRANTY; type `graph +warranty' for\n\
 details.  This is free software, and you are welcome to redistribute it.\n\
-Type `graph +copying' to view the copying conditions.\n\n", VERS);
+Type `graph +copying' to view the copying conditions.\n\n", PACKAGE_VERSION);
 }
 
 int
@@ -552,13 +551,6 @@ main (argc, argv)
 
   if ((show_usage > 0) || (errcnt > 0))
     usage ();
-
-  if (show_copying)
-    {
-      int k;
-      for (k = 0; *copy_notice[k] != '\0'; k++)
-	fputs (copy_notice[k], stderr);
-    }
 
   if (errcnt > 0)
     exit (1);

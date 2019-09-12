@@ -22,14 +22,28 @@
  */
 
 #include <stdio.h>
-#include <varargs.h>
-
+#include "config.h"
 extern char *progname;
 
 #ifndef	lint
 static char RCSID[] = "@(#) $Id: message.c,v 1.2 90/09/10 12:48:23 toy Exp $";
 #endif
 
+#ifdef STDC_HEADERS 
+
+#include <stdarg.h>
+void
+message (char *fmt, ...)
+{
+  va_list argp;
+  fprintf (stderr, "%s:  ", progname);
+  va_start(argp, fmt);
+  vfprintf(stderr, fmt, argp);
+  va_end(argp);
+}
+
+#else
+#include <varargs.h>
 void
 message (va_alist)
      va_dcl
@@ -43,3 +57,5 @@ message (va_alist)
   (void) fprintf (stderr, "%s:  ", progname);
   (void) vfprintf (stderr, format, argp);
 }
+
+#endif

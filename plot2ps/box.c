@@ -2,7 +2,7 @@
    library. It draws a box given the coordinates of the diagonal corners, x0,y0
    and x1,y1 */
 
-#include "plot3.h"
+#include "libplot.h"
 
 int
 box (x0, y0, x1, y1)

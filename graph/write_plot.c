@@ -17,6 +17,7 @@
 /* This file is the main routine for graph. */
 
 #include "sys-defines.h"
+#include <math.h>
 #include "libplot.h"
 #include "extern.h"
 

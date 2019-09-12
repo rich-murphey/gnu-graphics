@@ -173,8 +173,8 @@ main (argc, argv)
    * the given files.
    */
 
-  low = HUGE;
-  high = -HUGE;
+  low = HUGE_VAL;
+  high = -HUGE_VAL;
 
   if (optind == argc)
     {

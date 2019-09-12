@@ -77,8 +77,8 @@ All of these utilities, as well as the plot file format and plot
 library, are discussed in the following sections.@refill
 
 This documentation is under revision.  Any comments, suggestions, or
-additions would greatly benifit GNU users.  Please mail them to either
-@samp{bug-gnu-utils@@prep.ai.mit.edu} or @samp{Rich@@Rice.edu}.@refill
+additions would greatly benifit GNU users.  Please mail them to 
+@samp{Rich@@Murphey.org}.@refill
 
 * PostScript is a trademark of Adobe Systems Incorporated.
 
@@ -1423,19 +1423,23 @@ which describes how to specify justification.@refill
 @node Acknowledgements, Function Index, files, Top
 @section Acknowledgements
 
-Rich Murphey <Rich@@Rice.edu> wrote the first version of the graph,
-plot2tek, plot2ps and tek2plot and the documentation.  Richard Stallman
-<Rms@@ai.mit.edu> further directed development of the programs and
-editorial support for the documentation.  John Interrante generously
-provided the PostScript prologue and helpful comments on the
-program.@refill
+Rich Murphey wrote graph, plot2ps, plot2fig, plot2tek, tek2plot, spline, double, the C
+language API, the texinfo manual, build, packaging and regression tests. He wrote them
+in 1990 to produce graphics for for his doctoral disseration on cardiac
+electrophysiology. Murphey assigned the copyright to the Free Software Foundation.
+
+Richard Stallman <Rms@@ai.mit.edu> contributed feedback about development and editorial
+support for the documentation.  John Interrante provided the prologue used for
+postscript output and helpful comments on the program.@refill
 
 Arthur Smith (Lassp, Cornell University) <arthur@@helios.tn.cornell.edu>
-has generously provided his code for the xplot utility.@refill
+provided the xplot utility.@refill
 
-Ray Toy <toy@@dino.ecse.rpi.edu> provided code for graph and tek 4011
-and rewrote the tick mark spacing code, incorporated gnu getopt and
-provided the statistics package.@refill
+David B. Rosen <rosen@bu.edu> wrote the tec 4014 emulator used for conversion from
+tec 4014 plotting commands to device independent plotting commands.
+
+Ray Toy <toy@@dino.ecse.rpi.edu> contrikbuted a rewrite of the tick mark spacing code,
+incorporated gnu getopt, and provided the statistics package.@refill
 
 David B. Rosen <rosen@@bu.edu>, jeffrey templon
 <templon@@copper.ucs.indiana.edu> and David W. Forslund

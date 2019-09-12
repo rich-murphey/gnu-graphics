@@ -1,11 +1,9 @@
-#include <stdio.h>
-#include <ctype.h>
-#include <math.h>
+#include "../config.h"
 
 #ifdef STDC_HEADERS
 #include <unistd.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #else
 #ifdef	USG
 #include <string.h>
@@ -32,5 +30,6 @@ extern void *realloc();
 #include <malloc.h>
 #endif /* NO_MALLOC_H */
 
-
 #endif	/* STDC_HEADERS */
+#include <ctype.h>
+#include <math.h>

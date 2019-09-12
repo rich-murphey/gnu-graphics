@@ -1,4 +1,4 @@
-/*
+ /*
  * $Header: /files1/home/toy/src/stat/RCS/total.c,v 1.5 90/09/01 17:15:13 toy Exp $
  * NAME
  *	total - sum total of vectors

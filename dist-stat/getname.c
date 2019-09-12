@@ -49,16 +49,16 @@ extern char *strlwr (char *s);
 #endif
 
 #if	defined(__STDC__) || defined(__GNUC__)
-char *
+const char *
 get_my_name (char *argv, const char *def_name)
 #else
-char *
+const char *
 get_my_name (argv, def_name)
      char *argv;		/* argv[0] in main	 */
      char *def_name;		/* Default name		 */
 #endif
 {
-  char *name;
+  const char *name;
 
   if (argv == NULL)
     {

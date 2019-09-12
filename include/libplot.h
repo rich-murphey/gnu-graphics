@@ -16,6 +16,7 @@ preserved on all copies.  */
 
 #ifndef _libplot_defines_
 #define _libplot_defines_ 1
+#include <stdio.h>
 
 /* This elides the argument prototypes if the compiler does not
    supprort them. The name protarg is chosen in hopes that it will not

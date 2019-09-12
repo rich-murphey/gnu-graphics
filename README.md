@@ -1,21 +1,20 @@
-## Gnu Graphics
+## Gnu Graph and Plot
 
-GNU Graphics is a workalike open-source replacement for the
-[Bell Labs Seventh Edition Unix OS plotting utilities](https://www.unix.com/man-page/v7/1G/graph/).
-The 'graph' and 'plot' commands conform to the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)
-of minimalist, modular commands that can be combined to accomplish more complex tasks.
-Seventh Edition Unix defined an interface betwwen them, the [device independent
-plot file format](https://www.unix.com/man-page/v7/5/plot/), and an 
-[API for generating plot files](https://www.unix.com/man-page/v7/3X/plot/).
-This approach simplifies developing support for new output devices and
-integration with desktop publishing software.
+GNU Graphics is a an interoperable open-source replacement for the [Bell Labs V7 Unix
+plotting utilities](https://www.unix.com/man-page/v7/1G/graph/).  The 'graph' and 'plot'
+commands conform to the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)
+of simple single-purpose commands that are composable to accomplish more complex tasks.
+V7 Unix defines an interface betwwen them, the [device independent plot file
+format](https://www.unix.com/man-page/v7/5/plot/), and [utilities for conversion to
+device formats](https://www.unix.com/man-page/v7/3X/plot/).  This approach simplifies
+developing support for new output devices and integration with desktop publishing
+software.
 
-The program `graph` reads data files and writes a stream of
-commands in a device independent GNU plot file.  The various
-`plot` programs provide display plot files on X windows,
-postscript printers, desktop publishing systems such as LaTeX or
-[Interviews](http://ivtools.sourceforge.net/ivtools/interviews.html), 
-and other compatible output devices.
+The program `graph` reads ascii or binary numeric data and writes a stream of device
+independent plotting commands.  The various `plot` programs read plotting commands to
+display plot files on X windows, postscript printers, desktop publishing systems such as
+LaTeX or [Interviews](http://ivtools.sourceforge.net/ivtools/interviews.html), and other
+compatible output devices.
 
 `graph` reads both ascii and binary data files and writes a plot
 file with or without axes and labels.  You can specify labels and ranges
@@ -34,36 +33,46 @@ and the LaTeX command `psfig`.
 
 ## Acknowlegements
 
-Rich Murphey is the original author of GNU Graphics. He developed it in
-1990 to produce graphics for for his doctoral disseration. 
-He wrote the the suite of commands, including graph,
-plot2tek, plot2ps, tek2plot, plot2fig, the C language API, the
-documentation, build, packaging and regression testing.
-He assigned the copyright to the 
-[Free Software Foundation](http://www.fsf.org/), 
-and years later, it was later extended and renamed GNU Plotutils.  
+Rich Murphey wrote graph, plot2ps, plot2fig, plot2tek, tek2plot,
+spline, double, the C language API, the texinfo manual, the build
+and packaging methods and regression tests. He wrote them in 1990
+to produce graphics for for his doctoral disseration. Murphey
+assigned the copyright to the [Free Software
+Foundation](http://www.fsf.org/).
 
-Richard Stallman <Rms@ai.mit.edu> provided valuable feedback
-such as avoiding static limits on file size or dimensional
+Richard Stallman <Rms@ai.mit.edu> provided valuable feedback such
+as avoiding static limits on file size or dimensional
 attributes, and editorial support for the documentation.  
 
-plot2ps was designed to interoperate with the [Interviews]([Interviews](http://ivtools.sourceforge.net/ivtools/interviews.html))
-vector graphics edtitor and its other graphics production tools.
-Interviews author John Interrante provided the PostScript
-prologue and feedback.
+plot2ps was designed to interoperate with the
+[Interviews]([Interviews](http://ivtools.sourceforge.net/ivtools/interviews.html)),
+a vector graphics edtitor and associated tools.  Interviews author
+John Interrante provided the PostScript prologue.
 
-Arthur Smith (Lassp, Cornell University) <arthur@helios.tn.cornell.edu>
-has generously provided his code for the xplot utility.
+Arthur Smith (Lassp, Cornell University)
+<arthur@helios.tn.cornell.edu> wrote xplot.
 
-Ray Toy <toy@dino.ecse.rpi.edu> provided code for graph and tek 4011
-and rewrote the tick mark spacing code, incorporated gnu getopt and
-provided the statistics package.
+David B. Rosen <rosen@bu.edu> wrote the Tek 4014 emulator used to  convert 
+Tec 4014 plot files to device independent plot files.
 
-David B. Rosen <rosen@bu.edu>, jeffrey templon
+Ray Toy <toy@dino.ecse.rpi.edu> wrote the the statistics
+utilities, including: cor, cusum, gas, hilo, log, lreg, mean, mod,
+pair, power, prod, qsort, rand, rank, root, round, siline, total,
+var, atob, btoa and abs. Ray also rewrote the tick mark spacing
+code in graph and incorporated gnu getopt.
+
+David B. Rosen <rosen@bu.edu>, Jeffrey Templon
 <templon@copper.ucs.indiana.edu> and David W. Forslund
 <dwf%hope.ACL@lanl.gov> tested alpha versions.
 
-'Gnu Graphics was later extended and renamed 'Gnu Plotutils'.
+## Bug Reports
+
+Issues may be reported on Github at:
+
+https://github.com/rich-murphey/gnu-graphics/issues
+
+To expidite your bug report, please specify your machine's OS version and compiler
+version.
 
 ## graph Examples
 

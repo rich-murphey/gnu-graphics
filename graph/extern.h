@@ -1,4 +1,4 @@
-/* plot, unix plot file to graphics device translators.
+ /* plot, unix plot file to graphics device translators.
    Copyright (C) 1989 Free Software Foundation, Inc.
 
    plot is distributed in the hope that it will be useful, but WITHOUT

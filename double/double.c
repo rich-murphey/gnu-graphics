@@ -16,24 +16,11 @@
    should be in a file named COPYING.  Among other things, the copyright
    notice and this notice must be preserved on all copies.  */
 
+#include "sys-defines.h"
 #include <stdio.h>
+#include <sys/file.h>
 #include <ctype.h>
 #include <math.h>
-
-#ifdef STDC_HEADERS
-#include <string.h>
-#include <stdlib.h>
-#else
-#ifdef	USG
-#include <string.h>
-#include <malloc.h>
-#else
-#include <strings.h>
-#include <malloc.h>
-#endif	/* USG */
-#endif	/* STDC_HEADERS */
-
-#include <sys/file.h>
 
 char *help_message="\n\
 double - a utility for converting, scaling, cutting and pasting unformatted\n\
