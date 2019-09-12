@@ -1,7 +1,7 @@
 ## Gnu Graphics
 
 GNU Graphics are command line utilities that produces graphs of
-1 or 2 dimensional data.
+2D data.
 
     cat data | graph | plot | lpr
 
