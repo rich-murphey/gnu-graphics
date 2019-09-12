@@ -1,4 +1,4 @@
-/* This program, plot, translates a GNU plot file into device specific output.
+ /* This program, plot, translates a GNU plot file into device specific output.
    Copyright (C) 1989 Free Software Foundation, Inc.
 
 Plot is distributed in the hope that it will be useful, but WITHOUT
@@ -317,7 +317,7 @@ display_version ()
 %s version %s, Copyright (C) 1989 Free Software Foundation, Inc.\n\
 This software comes with ABSOLUTELY NO WARRANTY.\n\
 See the file COPYING for details.\n",
-		    progname, PACKAGE_VERSION, progname);
+		    progname, PACKAGE_VERSION);
 }
 
 /* Long options we recognize */
@@ -352,6 +352,7 @@ display_help ()
       else
 	fprintf (stderr, "]");
     }
+  fprintf (stderr, "\n");
 }
 
 
@@ -362,7 +363,7 @@ main (argc, argv)
 {
   int option;
   int opt_index;
-  int errcnt;			/* errors encountered */
+  int errcnt = 0;			/* errors encountered */
   int show_version = 0;		/* remember to show version message */
   int show_usage = 0;		/* remember whether to output usage message. */
   int named_input = 0;		/* count named plot files on command line. */
@@ -380,7 +381,7 @@ main (argc, argv)
 
   openpl ();
 
-while ((option = getopt_long (argc, argv, "-F:HVf:hlsu", long_options, &opt_index)) != EOF) {
+  while ((option = getopt_long (argc, argv, "-F:HVf:hlsu", long_options, &opt_index)) != EOF) {
       if (option == 0)
 	option = long_options[opt_index].val;
 
@@ -453,7 +454,6 @@ while ((option = getopt_long (argc, argv, "-F:HVf:hlsu", long_options, &opt_inde
       closepl ();
       exit (errcnt > 0 ? 1 : 0);
     }
-
 
   if (optind < argc)
     {

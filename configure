@@ -8376,10 +8376,6 @@ _lt_linker_boilerplate=`cat conftest.err`
 $RM -r conftest*
 
 
-## CAVEAT EMPTOR:
-## There is no encapsulation within the following macros, do not change
-## the running order or otherwise move them around unless you know exactly
-## what you are doing...
 if test -n "$compiler"; then
 
 lt_prog_compiler_no_builtin_flag=
@@ -12187,7 +12183,6 @@ CC=$lt_save_CC
 ac_config_headers="$ac_config_headers config.h:config.hin"
 
 ac_config_files="$ac_config_files Makefile graph/Makefile libgetopt/Makefile libplot/Makefile tek2plot/Makefile xplot/Makefile dist-stat/Makefile double/Makefile plot2fig/Makefile plot2plot/Makefile plot2ps/Makefile plot2tek/Makefile test/Makefile"
-
 
 for ac_func in floor
 do :

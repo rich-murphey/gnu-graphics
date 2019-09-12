@@ -31,7 +31,6 @@ plot2ps/Makefile
 plot2tek/Makefile
 test/Makefile
 ])
-AC_CONFIG_MACRO_DIRS([m4])
 AC_CHECK_FUNCS([floor])
 AC_CHECK_FUNCS([isascii])
 AC_CHECK_FUNCS([memset])

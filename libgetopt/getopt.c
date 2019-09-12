@@ -1,4 +1,4 @@
-/* Getopt for GNU.
+ /* Getopt for GNU.
    Copyright (C) 1987, 1989, 1990 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
@@ -234,7 +234,7 @@ int
 getopt (argc, argv, optstring)
      int argc;
      char *const*argv;
-     CONST char *optstring;
+     const char *optstring;
 {
   optarg = 0;
 
@@ -346,11 +346,11 @@ getopt (argc, argv, optstring)
 	  || (_getopt_long_only && argv[optind][0] == '-'))
     )
     {
-      CONST struct option *p;
+      const struct option *p;
       char *s = nextchar;
       int exact = 0;
       int ambig = 0;
-      CONST struct option *pfound = 0;
+      const struct option *pfound = 0;
       int indfound;
 
       while (*s && *s != '=')

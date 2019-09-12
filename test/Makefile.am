@@ -1,7 +1,8 @@
 # This is the make file for the regression tests
+all : test
 test : graph.test tek2plot.test plot2tek.test plot2ps.test plot2fig.test plot2plot.test
 
-.PHONY : clean test expected.output
+.PHONY : clean clean-local test expected.output
 
 expected.output : Makefile \
 graph.expected.output tek2plot.expected.output \
@@ -94,7 +95,7 @@ plot2plot.expected.output :
     ../plot2tek/plot2tek ../plot2ps/plot2ps :
 	cd ..; make all
 
-clean :
+clean-local :
 	-rm *.test *.diff spline.dat spline.tek spline.plt *~
 
 look : graph.test tek2plot.test plot2ps.test plot2fig.test plot2plot.test

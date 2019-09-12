@@ -185,7 +185,7 @@ main (argc, argv)
   b_length = 128;		/* allocate the input buffer */
   b = (char*) malloc (b_length);
 
-  while ((option = getopt_long (argc, argv, "CDHNVWf:g:hlx:", long_options, &opt_index)) != EOF) {
+  while ((option = getopt_long (argc, argv, "-CDHNVWf:g:hlx:", long_options, &opt_index)) != EOF) {
       if (option == 0)
 	option = long_options[opt_index].val;
 
