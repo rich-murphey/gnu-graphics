@@ -453,12 +453,12 @@ graph.test : spline.plt graph.expected.output
 	@echo
 
 spline.plt : ../plot2plot/plot2plot ../graph/graph
-	-../graph/graph -bM -a 10 100 -f 12 -g 2 -d a -m 1 -S 2 .02 -T \
+	-../graph/graph -bM -a 10 100 -f 12 -g 2 -d a -m 2 -S 2 .02 -T \
             .03 -L "top label" -X "x label" -Y "y label" -u .1 -r .1 \
             -w .8 -h .8 -x 100 1100 -y 0 1 <spline.y.dat >spline.plt
 
 graph.expected.output :
-	-../graph/graph -bM -a 10 100 -f 12 -g 2 -d a -m 1 -S 2 .02 -T \
+	-../graph/graph -bM -a 10 100 -f 12 -g 2 -d a -m 2 -S 2 .02 -T \
             .03 -L "top label" -X "x label" -Y "y label" -u .1 -r .1 \
             -w .8 -h .8 -x 100 1100 -y 0 1 <spline.y.dat \
             | ../plot2plot/plot2plot +output-as-ascii >graph.expected.output
