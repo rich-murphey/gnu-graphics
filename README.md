@@ -151,17 +151,6 @@ graph -m 2 < ASCII_data_file |plot
 
 where 2 indicates a dotted line that connects the data points.
 
-Line Type       | -m
--------------:  | :-----
-no line at all  | 0
-solid           | 1
-dotted          | 2
-shortdashed     | 4
-dotdashed       | 3
-longdashed      | 5
-disconnected    | 6
-
-
 ## The format of input to graph
 
 As mentioned above, by default `graph` reads ASCII pairs of values,
@@ -380,15 +369,15 @@ fractional size of the symbol with respect to the height and width of
 the plot.  Note that you can specify symbols to be drawn without any line
 connecting them by specifying the option `-m -1`.
 
-|symbol_number|description|
-|----:|:---|
-| -1 | no symbol at all |
-| 0 | plus sign (+) |
-| 1 | cross (x) |
-| 2 | star (*) |
-| 3 | box |
-| 4 | diamond |
-| 5 | circle |
+| symbol_number | description      |
+|--------------:|:-----------------|
+|            -1 | no symbol at all |
+|             0 | plus sign (+)    |
+|             1 | cross (x)        |
+|             2 | star (*)         |
+|             3 | box              |
+|             4 | diamond          |
+|             5 | circle           |
 
 ###### -T `tick_size`  | +ticksize `tick_size`
 (float, default .01) `tick_size` is the fractional size of the tick
@@ -404,13 +393,13 @@ the y axis.
 This specifies what format the input data is in.  Note labels can be
 used only in ASCII format input files.
 
-|data-format| description|
-|--:|:---|
-| a or A | ASCII data |
-| i or I | binary integer data |
-| s or S | binary short integer data |
-| f or F | binary float data |
-| d or D | binary double data |
+| data-format | description               |
+|------------:|:--------------------------|
+|      a or A | ASCII data                |
+|      i or I | binary integer data       |
+|      s or S | binary short integer data |
+|      f or F | binary float data         |
+|      d or D | binary double data        |
 
 Debugging information, including the data read in, is sent to the
 standard error output.
@@ -418,13 +407,13 @@ standard error output.
 (integer, default 1) `grid_style` specifies the type of box framing
 the plot and whether grid lines are drawn inside the box.
 
-|grid_style| description|
-|----:|:---|
-| 0 | no box around plot, no axes, no labels. |
-| 1 | box containing a grid and axes with tick marks and labels. |
-| 2 | box around plot, tick marks around the box and labels. |
-| 3 | box around plot, ticks on left and lower sides only and labels. |
-| 4 | axes intersect at the origin without a box or grid. |
+| grid_style | description                                                     |
+|-----------:|:----------------------------------------------------------------|
+|          0 | no box around plot, no axes, no labels.                         |
+|          1 | box containing a grid and axes with tick marks and labels.      |
+|          2 | box around plot, tick marks around the box and labels.          |
+|          3 | box around plot, ticks on left and lower sides only and labels. |
+|          4 | axes intersect at the origin without a box or grid.             |
 
 ###### -h `height`  | +height-plot `height`
 (float, default 0.8) `height` specifies the fractional height of the
@@ -439,15 +428,15 @@ plot.
 (integer, default 0) `line_mode` specifies the mode (or style) of
 lines drawn between data points.
 
-|line_mode| description |
-|----:|:---|
-| -1 | no line at all |
-| 0 | solid |
-| 1 | dotted |
-| 2 | shortdashed |
-| 3 | dotdashed |
-| 4 | longdashed |
-| 5 | disconnected |
+| line_mode | description    |
+|----------:|:---------------|
+|         0 | no line at all |
+|         1 | solid          |
+|         2 | dotted         |
+|         3 | shortdashed    |
+|         4 | dotdashed      |
+|         5 | longdashed     |
+|         6 | disconnected   |
 
 ###### -r `right`  | +right-margin-posn `right`
 (float, default 0.1) Move the plot to the right by a fractional amount
