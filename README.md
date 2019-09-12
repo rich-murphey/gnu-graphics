@@ -44,15 +44,12 @@ Richard Stallman <Rms@ai.mit.edu> provided valuable feedback such
 as avoiding static limits on file size or dimensional
 attributes, and editorial support for the documentation.  
 
-plot2ps was designed to interoperate with the
-[Interviews]([Interviews](http://ivtools.sourceforge.net/ivtools/interviews.html)),
-a vector graphics edtitor and associated tools.  Interviews author
-John Interrante provided the PostScript prologue.
+John Interrante provided the PostScript prologue used in plot2ps.
 
 Arthur Smith (Lassp, Cornell University)
 <arthur@helios.tn.cornell.edu> wrote xplot.
 
-David B. Rosen <rosen@bu.edu> wrote the Tek 4014 emulator used to  convert 
+David B. Rosen <rosen@bu.edu> wrote the Tek 4014 emulator used in tek2plot to convert
 Tec 4014 plot files to device independent plot files.
 
 Ray Toy <toy@dino.ecse.rpi.edu> wrote the the statistics
