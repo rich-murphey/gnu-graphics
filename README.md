@@ -20,11 +20,11 @@ of vector graphics devices such as pen plotters and Tektronix
 4014 displays. Use of this format provides interoperability with
 other V7 Unix systems and their output devices.
 
-The program `graph` reads ASCII or binary numeric data and writes
-a stream of device independent plotting commands.  The various
-`plot` programs read plotting commands and display plot files on
-X windows, postscript printers, desktop publishing systems such
-as LaTeX or ivtools, and other compatible output devices.
+The program `graph` reads numeric data and writes device
+independent plotting commands.  The various `plot` programs read
+plotting commands and display plot files on X windows, or
+generate figures that can be edited and inserted into LaTeX
+documents.
 
 `graph` reads either ASCII or binary data files and writes a plot
 file with or without axes and labels.  You can specify labels and ranges
