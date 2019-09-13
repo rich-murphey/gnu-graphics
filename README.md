@@ -39,7 +39,7 @@ the standard input and writes Postscript to the standard output.
 You can then print the Postscript output on a printer, or edit it
 using the
 [idraw](http://ivtools.sourceforge.net/ivtools/idraw.html)
-graphics editor.  You can also easily include the output in LaTeX
+graphics editor.  One can also include the output in LaTeX
 documents using `dvips` and the LaTeX command `psfig`.
 
 ## Software that works with GNU Graphics
