@@ -1,21 +1,24 @@
 ## Gnu Graphics
 
-GNU Graphics are command line utilities that produces graphs of
+GNU Graphics are command line utilities that produce graphs of
 2D data.
 
     cat data | graph | plot | lpr
 
-Graph and plot are a work-alike open-source replacement for those
-in [Bell Labs V7 Unix](https://www.unix.com/man-page/v7/1G/graph/).  
+`graph` and `plot` are work-alike open-source replacements of
+[Bell Labs V7 Unix](https://www.unix.com/man-page/v7/1G/graph/)
+utilities.  They conform to the [Unix
+philosophy](https://en.wikipedia.org/wiki/Unix_philosophy) of
+simple modular components that combine to carry out more complex
+tasks.  This approach simplifies developing support for new
+devices and integration with other systems.
 
-They conform to the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)
-of modular individual commands that do one thing well, and are
-composable to accomplish more complex tasks.  V7 Unix defines a
-plot file format that is the interface between 'graph' and
-'plot', the [device independent plot file
-format](https://www.unix.com/man-page/v7/5/plot/).  This approach
-simplifies developing support for new output devices and
-integration with desktop publishing software.
+The V7 Unix [device independent plot file
+format](https://www.unix.com/man-page/v7/5/plot/) is the
+interface between 'graph' and 'plot'. It mirrors the capability
+of vector graphics devices such as pen plotters and Tektronix
+4014 displays. Use of this format provides interoperability with
+other V7 Unix systems and their output devices.
 
 The program `graph` reads ASCII or binary numeric data and writes
 a stream of device independent plotting commands.  The various
@@ -23,9 +26,9 @@ a stream of device independent plotting commands.  The various
 X windows, postscript printers, desktop publishing systems such
 as LaTeX or ivtools, and other compatible output devices.
 
-`graph` reads both ASCII and binary data files and writes a plot
+`graph` reads either ASCII or binary data files and writes a plot
 file with or without axes and labels.  You can specify labels and ranges
-for the axes, and you can set the sizes and position of the plot on the
+for the axes, and you can set the size and place of the plot on the
 page.  Each invocation of graph produces a plot with single set of axes
 and data.  You can place an arbitrary number of plots on the page by
 concatenating the plot output of several invocations.
@@ -43,16 +46,19 @@ documents using `dvips` and the LaTeX command `psfig`.
 
 GNU Graphics can be used for Desktop publishing, together with
 idraw, ivtools, LaTex and Ghostscript. For example, one may
-generate figures using plot2ps, edit them using idraw, include
-the figures in LaTeX documents, generate printer-ready final
+generate figures using graph and plot2ps, edit them using idraw,
+include the figures in LaTeX documents, generate printer-ready
 postscript using LaTeX, and preview the final output using
-GhostScript.  This is what Rich Murphey used to write his PhD
-thesis, and was the motivation for GNU Graphics.
+GhostScript.  This is what Murphey used to write his PhD thesis,
+and it motivated writing GNU Graphics.
 
 [idraw](http://ivtools.sourceforge.net/ivtools/idraw.html) is a
 vector graphics editor for X windows that can edit the output of
 `plot2ps`. It is part of
-[ivtools](https://github.com/vectaport/ivtools-1.2).
+[ivtools](https://github.com/vectaport/ivtools-1.2). [Downloadable
+binaries for
+linux](http://ivtools.sourceforge.net/ivtools/download.html) are
+available.
 
 [Ghostscript](https://en.wikipedia.org/wiki/Ghostscript) is a
 PostScript previewer.  It is available via 'apt install
@@ -78,9 +84,8 @@ make install
 ## Acknowledgements
 
 Rich Murphey wrote graph, plot2ps, plot2fig, plot2tek, tek2plot,
-spline, double, the C language API, this documentation, the build
-and packaging methods and regression tests. He wrote them in 1990
-to produce graphics for for his doctoral dissertation. Murphey
+spline, double, the C language API, this documentation, the
+build and packaging methods and regression tests. Murphey
 assigned the copyright to the [Free Software
 Foundation](http://www.fsf.org/).
 
@@ -94,8 +99,8 @@ John Interrante provided the Postscript prologue from
 Arthur Smith (Lassp, Cornell University)
 <arthur@helios.tn.cornell.edu> wrote xplot.
 
-David B. Rosen <rosen@bu.edu> wrote the Tek 4014 emulator,
-tek2plot, used to convert Tek 4014 plot files to device
+David B. Rosen <rosen@bu.edu> wrote the Tektronix 4014 emulator,
+tek2plot, used to convert Tektronix 4014 plot files to device
 independent plot files.
 
 Ray Toy <toy@dino.ecse.rpi.edu> wrote the the statistics
@@ -107,6 +112,7 @@ code in graph and incorporated gnu getopt.
 David B. Rosen <rosen@bu.edu>, Jeffrey Templon
 <templon@copper.ucs.indiana.edu> and David W. Forslund
 <dwf%hope.ACL@lanl.gov> tested alpha versions.
+
 
 ## Bug Reports
 
@@ -181,7 +187,7 @@ You can choose the type of line draw on each curve:
 graph -m 2 < ASCII_data_file |plot
 ```
 
-where 2 indicates a dotted line that connects the data points.
+where -m 2 specifies a dotted line that connects the data points.
 
 ## The format of input to graph
 
@@ -269,7 +275,7 @@ graph -S 1 data-file-one -S 3 data-file-two -S 4 data-file-three |plot
 ```
 or
 ```text
-graph -m 1 data-file-one -m 3 data-file-two -S 4 data-file-three |plot
+graph -m 1 data-file-one -m 2 data-file-two -S 4 data-file-three |plot
 ```
 
 If you need to superimpose several data sets, but must invoke graph
@@ -277,21 +283,21 @@ separately for each, you will have to specify the limits of the
 axes.
 
 ```text
-graph -x 0 100 -y -3 3 -S 3 -m -1 < ASCII_data_file_1 >> plot_file
+graph -x 0 100 -y -3 3 -S 3 -m 0 < ASCII_data_file_1 >> plot_file
 ```
 
 where `-x 0 100` specifies the limits on the x axis, `-y -3 3`
 specifies the limits on the y axis, `-S 2` specifies a box to be
-drawn at each point, and `-m -1` specifies that no line is to be
+drawn at each point, and `-m 0` specifies that no line is to be
 draw connecting the points.  You can overlay a second data set on the first
 by using:
 
 ```text
-graph -s -g 0 -x 0 100 -y -3 3 -m 0 < ASCII_data_file_1 >> plot_file
+graph -s -g 0 -x 0 100 -y -3 3 -m 1 < ASCII_data_file_1 >> plot_file
 ```
 
 where `-s` avoids erasing the page, `-g 0` avoids drawing the
-axis, tick marks and labels which were drawn previously, and `-m 0`
+axis, tick marks and labels which were drawn previously, and `-m 1`
 specifies that solid lines are draw connecting the points.
 
 ## How to put multiple plots on one page
@@ -399,7 +405,7 @@ the data. `symbol_number` specifies the shape of the symbol
 according to the following table and `symbol_size` specifies the
 fractional size of the symbol with respect to the height and width of
 the plot.  Note that you can specify symbols to be drawn without any line
-connecting them by specifying the option `-m -1`.
+connecting them using `-m 0` to speicify no line.
 
 | symbol_number | description      |
 |--------------:|:-----------------|
@@ -457,18 +463,18 @@ generally used.
 (string, default blank) `top_label` is a label placed above the
 plot.
 ###### -m `line_mode`  | +linestyle `line_mode`
-(integer, default 0) `line_mode` specifies the mode (or style) of
+(integer, default 1) `line_mode` specifies the mode (or style) of
 lines drawn between data points.
 
-| line_mode | description    |
-|----------:|:---------------|
-|         0 | no line at all |
-|         1 | solid          |
-|         2 | dotted         |
-|         3 | shortdashed    |
-|         4 | dotdashed      |
-|         5 | longdashed     |
-|         6 | disconnected   |
+| line_mode | description     |
+|----------:|:----------------|
+|         0 | no line at all  |
+|         1 | solid (default) |
+|         2 | dotted          |
+|         3 | shortdashed     |
+|         4 | dotdashed       |
+|         5 | longdashed      |
+|         6 | disconnected    |
 
 ###### -r `right`  | +right-margin-posn `right`
 (float, default 0.1) Move the plot to the right by a fractional amount
@@ -1160,5 +1166,3 @@ and a description of the command and data.
 * `S`: The fontsize command is followed by an signed, two byte integer containing the size in printers points of all subsequent text. This is equivalent to the `fontsize` function.
 * `t`: The label command is followed by a newline terminated string contains a label which is printed at the current point.  It is left justified and centered vertically with respect to the current point.  The current point is then set at the end of the text. This is equivalent to the `label` function.
 * `T`: The adjusted label command is followed by two characters which indicate the horizontal and vertical justification respectively and a newline terminated string containing the label.  The label is drawn with the specified justification and the current point is set at the end of the text.  This is equivalent to the `alabel` function which describes how to specify justification.
-
-
