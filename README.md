@@ -110,8 +110,9 @@ code in graph and incorporated gnu getopt.
 
 David B. Rosen <rosen@bu.edu>, Jeffrey Templon
 <templon@copper.ucs.indiana.edu> and David W. Forslund
-<dwf%hope.ACL@lanl.gov> tested alpha versions.
-
+<dwf%hope.ACL@lanl.gov> tested alpha versions.  Robert
+L. Masterson provided bug reports and feedback on
+interoperability issues in V0.18.
 
 ## Bug Reports
 
