@@ -43,7 +43,7 @@ read_number (stream, data_spec, value)
   switch (data_spec)
     {
     case ASCII_DATA:
-      rc = fscanf (stream, "%f ", value);
+      rc = fscanf (stream, " %f", value);
       if (rc == EOF) rc = 0;
       break;
     case INT_DATA:
@@ -64,6 +64,46 @@ read_number (stream, data_spec, value)
     }
 
   return rc;
+}
+
+char
+peek_char (in_stream)
+     FILE *in_stream;
+{
+    char lookahead = getc (in_stream);
+    ungetc (lookahead, in_stream);
+    return lookahead;
+}
+
+char *
+read_label (in_stream)
+     FILE *in_stream;
+{
+    if (peek_char(in_stream) == '\r')
+        getc (in_stream);       /* skip RETURN char */
+    if (peek_char(in_stream) == '\n')
+        return 0;               /* no label */
+
+    char *s;
+    const int input_string_length = 1024;
+    char input_string[input_string_length];
+    s = fgets (input_string, input_string_length, in_stream);
+    if (s == 0)
+        return 0;               /* error encountered */
+    if (*s == 0)
+        return 0;               /* empty string */
+    int len = strlen(input_string);
+    char *begin = input_string;
+    /* remove leading and trailing " if present */
+    if ((input_string[0] == '"') &&
+        (input_string[len-1] == '"'))
+    {
+        input_string[len-1] = '\0';  /* remove trailing " */
+        begin = &input_string[1];
+    }
+    s = (char *) do_malloc (strlen (begin));
+    strcpy (s, begin);
+    return s;
 }
 
 /* read_file reads a file of coordinates and labels from a specified
@@ -97,7 +137,6 @@ read_file (in_stream, p, length, no_of_points, auto_abscissa,
   double abscissa;		/* counter for auto_abscissa */
   int first_point;
 
-  first_point = *no_of_points;	/* break at first point */
   abscissa = x_start;
   input_string_length = 1024;
   input_string = (char *) do_malloc (input_string_length);
@@ -130,115 +169,27 @@ read_file (in_stream, p, length, no_of_points, auto_abscissa,
 	  else
 	    no_read = read_number (in_stream, data_spec, &(*p)[*no_of_points].x);
 	  if (no_read == 0 && data_spec == ASCII_DATA)
-            break;           /* Note: need study this */
-#if 0
-	    {
-	      char *newline;
-
-	      fgets (input_string, input_string_length, in_stream);
-	      newline = strchr(input_string, '\n');
-	      if (newline != NULL)
-		*newline = '\0';
-	      (void) fprintf (stderr,
-			      "%s:  error reading x coordinate at `%s'.\n",
-			      progname, input_string);
-	      exit (-1);
-	    }
-#endif
+            break;
 	}
       if (transpose_axes)
 	no_read = read_number (in_stream, data_spec, &(*p)[*no_of_points].x);
       else
 	no_read = read_number (in_stream, data_spec, &(*p)[*no_of_points].y);
       if (no_read == 0 && data_spec == ASCII_DATA)
-	{
-	  char *s;
-	  fgets (input_string, input_string_length, in_stream);
-	  s = strchr (input_string, '\n');
-	  if (s) *s = '\0';
-	  fprintf (stderr, "%s:  error reading y coordinate at `%s'.\n",
-		   progname, input_string);
-	  exit (-1);
-	}
+        break;
 
       /* If we are reading ascii data, look for a label as well. */
       if (data_spec != ASCII_DATA)
 	(*p)[*no_of_points].string = default_label;
       else
 	{
-	  lookahead = getc (in_stream);
-	  ungetc (lookahead, in_stream);
-	  if (isdigit (lookahead)
-	      || (lookahead == EOF)
-	      || (lookahead == '.')
-	      || (lookahead == '+')
-	      || (lookahead == '-'))
-	    {
-	      (*p)[*no_of_points].string = default_label;
-	    }
-	  else
-	    {
-	      int i = 0, again = 0, quoted = 0;
-	      char last_char;
-
-	      if (lookahead == '"')
-		{
-		  quoted = 1;
-		  getc (in_stream);	/* skip double quote */
-		}
-	      else
-		quoted = 0;
-
-	      do
-		{
-		  last_char = getc (in_stream);
-		  input_string[i] = last_char;
-		  if (i >= (input_string_length - 1))
-		    {
-		      input_string_length *= 2;
-		      input_string = (char *) do_realloc
-			(input_string, input_string_length * sizeof (char *));
-		    }
-		  if (last_char == '\\') /* backquote is the escape char */
-		    {
-		      last_char = getc (in_stream);
-		      input_string[i] = last_char;
-		      last_char = 0;	/* ignore the last char
-					   since it was escaped */
-		    }
-		  i++;
-		  if (quoted)
-		    {
-		      if (last_char != '"')
-			again = 1;
-		      else
-			again = 0;
-		    }
-		  else
-		    {
-		      switch (last_char)
-			{
-			case ' ':
-			case '\t':
-			case '\n':
-			case '\v':
-			case '\f':
-			  again = 0;
-			  break;
-			default:
-			  again = 1;
-			}
-		    }
-	      } while (again && (last_char != EOF));
-
-	      input_string[i - 1] = '\0'; /* replace termination with null */
-	      (*p)[*no_of_points].string
-		= (char *) do_malloc (strlen (input_string));
-	      strcpy ((*p)[*no_of_points].string, input_string);
-	    }
+          (*p)[*no_of_points].string = read_label(in_stream);
 	}
       (*p)[*no_of_points].symbol = symbol_index;
-      if (no_of_points)
+
+      if (*no_of_points == 0) /* break the line at the first point */
+        (*p)[first_point].linemode = -1;
+      else
 	{
 	  if (   m_break_flag
 	      && ((*p)[*no_of_points-1].x > (*p)[*no_of_points].x))
@@ -250,12 +201,9 @@ read_file (in_stream, p, length, no_of_points, auto_abscissa,
 	  else
 	    (*p)[*no_of_points].linemode = linemode;
 	}
-      if (no_read > 0)
-	(*no_of_points)++;
+      (*no_of_points)++;
     }
 
-  if (*no_of_points > first_point) /* break the line at the first point */
-    (*p)[first_point].linemode = -1;
   free (input_string);
   return *no_of_points;
 }
