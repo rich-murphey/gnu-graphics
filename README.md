@@ -55,10 +55,9 @@ and it motivated writing GNU Graphics.
 [idraw](http://ivtools.sourceforge.net/ivtools/idraw.html) is a
 vector graphics editor for X windows that can edit the output of
 `plot2ps`. It is part of
-[ivtools](https://github.com/vectaport/ivtools-1.2). [Downloadable
-binaries for
-linux](http://ivtools.sourceforge.net/ivtools/download.html) are
-available.
+[ivtools](https://github.com/vectaport/ivtools-1.2). Downloadable
+binaries for linux are available
+[here](http://ivtools.sourceforge.net/ivtools/download.html).
 
 [Ghostscript](https://en.wikipedia.org/wiki/Ghostscript) is a
 PostScript previewer.  It is available via 'apt install
