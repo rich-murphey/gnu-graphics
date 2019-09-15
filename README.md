@@ -99,7 +99,7 @@ Arthur Smith (Lassp, Cornell University)
 <arthur@helios.tn.cornell.edu> wrote xplot.
 
 David B. Rosen <rosen@bu.edu> wrote tek2plot and plot2tek
-supporing Tektronix 4014.
+supporting Tektronix 4014.
 
 Ray Toy <toy@dino.ecse.rpi.edu> wrote the the statistics
 utilities, including: cor, cusum, gas, hilo, log, lreg, mean, mod,
@@ -404,7 +404,7 @@ the data. `symbol_number` specifies the shape of the symbol
 according to the following table and `symbol_size` specifies the
 fractional size of the symbol with respect to the height and width of
 the plot.  Note that you can specify symbols to be drawn without any line
-connecting them using `-m 0` to speicify no line.
+connecting them using `-m 0` to specify no line.
 
 | symbol_number | description      |
 |--------------:|:-----------------|
