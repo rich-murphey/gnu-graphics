@@ -83,11 +83,10 @@ make install
 
 ## Acknowledgements
 
-Rich Murphey wrote graph, plot2ps, plot2fig, plot2tek, tek2plot,
-spline, double, the C language API, this documentation, the
-build and packaging methods and regression tests. Murphey
-assigned the copyright to the [Free Software
-Foundation](http://www.fsf.org/).
+Rich Murphey wrote graph, plot2ps, plot2fig, spline, double,
+the C language API, this documentation, the build and packaging
+methods and regression tests. Murphey assigned the copyright to
+the [Free Software Foundation](http://www.fsf.org/).
 
 Richard Stallman <Rms@ai.mit.edu> provided valuable feedback such
 as avoiding static limits on file size or dimensional
@@ -99,9 +98,8 @@ John Interrante provided the Postscript prologue from
 Arthur Smith (Lassp, Cornell University)
 <arthur@helios.tn.cornell.edu> wrote xplot.
 
-David B. Rosen <rosen@bu.edu> wrote the Tektronix 4014 emulator,
-tek2plot, used to convert Tektronix 4014 plot files to device
-independent plot files.
+David B. Rosen <rosen@bu.edu> wrote tek2plot and plot2tek
+supporing Tektronix 4014.
 
 Ray Toy <toy@dino.ecse.rpi.edu> wrote the the statistics
 utilities, including: cor, cusum, gas, hilo, log, lreg, mean, mod,
