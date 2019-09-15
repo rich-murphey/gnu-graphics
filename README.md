@@ -1,7 +1,8 @@
 ## Gnu Graphics
 
-GNU Graphics are command line utilities that produce graphs of
-2D data.
+GNU Graphics is a set of command line utilities that produce
+line and scatter charts for certain printers, displays and
+desktop publishing software.
 
     cat data | graph | plot | lpr
 
