@@ -825,6 +825,19 @@ none SetP
 2 MLine
 End
 
+Begin %I Text
+%I cfg Black
+0 0 0 SetCFg
+%I f *helvetica-medium-r*-12-*
+/Helvetica 12 SetF
+%I t
+[ 1 0 0 1 127.375 215.866  ] concat
+%I
+[
+( begin)
+] Text
+End
+
 Begin %I MLine
 %I b 65535
 0 0 0 [  ] 0 SetB
@@ -873,23 +886,6 @@ none SetP
 %I 2
 714 580
 650 468
-2 MLine
-End
-
-Begin %I MLine
-%I b 34952
-0 0 0 [ 1 7 1 7 ] 17 SetB
-%I cfg Black
-0 0 0 SetCFg
-%I cbg White
-1 1 1 SetCBg
-%I p
-none SetP
-%I t
-[ 0.186768 0 0 0.186768 0 112 ] concat
-%I 2
-682 524
-709 619
 2 MLine
 End
 
@@ -7623,6 +7619,19 @@ none SetP
 3384 619
 3412 524
 2 MLine
+End
+
+Begin %I Text
+%I cfg Black
+0 0 0 SetCFg
+%I f *helvetica-medium-r*-12-*
+/Helvetica 12 SetF
+%I t
+[ 1 0 0 1 637.251 215.866  ] concat
+%I
+[
+( end)
+] Text
 End
 
 Begin %I MLine

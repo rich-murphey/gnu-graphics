@@ -25,8 +25,8 @@
    spec indicates how to read the number.  read_number returns 0 upon
    end of file or error.  */
 
-int
-read_number (stream, data_spec, value)
+float 
+read_binary_number (stream, data_spec, value)
      FILE *stream;
      data_type data_spec;
      float *value;
@@ -42,10 +42,6 @@ read_number (stream, data_spec, value)
 
   switch (data_spec)
     {
-    case ASCII_DATA:
-      rc = fscanf (stream, " %f", value);
-      if (rc == EOF) rc = 0;
-      break;
     case INT_DATA:
       rc = fread ((VOIDPTR *) & int_val, sizeof (int_val), 1, stream);
       *value = (float) int_val;
@@ -62,7 +58,33 @@ read_number (stream, data_spec, value)
       *value = (float) double_val;
       break;
     }
+  if (rc == 0)
+      *value = 0.;
+  return rc;
+}
 
+int
+read_number (stream, data_spec, value)
+     FILE *stream;
+     data_type data_spec;
+     float *value;
+{
+  int rc;			/* Return code		*/
+  short short_val;		/* Holds short value	*/
+  int int_val;			/* Holds int value	*/
+  double double_val;		/* Holds double value	*/
+
+  /*
+   * Read the data according to the given data spec
+   */
+
+  if (data_spec == ASCII_DATA)
+  {
+      rc = fscanf (stream, " %f", value);
+      if (rc == EOF) rc = 0;
+  } else {
+      rc = read_binary_number (stream, data_spec, value);
+  }
   return rc;
 }
 
@@ -82,7 +104,7 @@ read_label (in_stream)
     if (peek_char(in_stream) == '\r')
         getc (in_stream);       /* skip RETURN char */
     if (peek_char(in_stream) == '\n')
-        return 0;               /* no label */
+        return 0;               /* end of line indicates there is no label */
 
     char *s;
     const int input_string_length = 1024;
@@ -92,16 +114,19 @@ read_label (in_stream)
         return 0;               /* error encountered */
     if (*s == 0)
         return 0;               /* empty string */
-    int len = strlen(input_string);
     char *begin = input_string;
-    /* remove leading and trailing " if present */
-    if ((input_string[0] == '"') &&
-        (input_string[len-1] == '"'))
-    {
-        input_string[len-1] = '\0';  /* remove trailing " */
-        begin = &input_string[1];
+    char *end = &input_string[strlen(input_string)-1];
+
+    if (*begin == ' ') begin++; /* skip leading space */
+    if (*end == '\n') end--;
+    if (*end == '\r') end--;
+    if ((*begin == '"') &&
+        (*end == '"'))
+    {    /* remove leading and trailing " if present */
+        begin++;
+        *end-- = 0;
     }
-    s = (char *) do_malloc (strlen (begin));
+    s = (char *) do_malloc (end - begin + 1);
     strcpy (s, begin);
     return s;
 }
@@ -141,7 +166,7 @@ read_file (in_stream, p, length, no_of_points, auto_abscissa,
   input_string_length = 1024;
   input_string = (char *) do_malloc (input_string_length);
 
-  while (!feof (in_stream) && (no_read > 0))
+  while (!feof (in_stream))
     {
       /*
        * Grow the buffer if needed
@@ -169,7 +194,8 @@ read_file (in_stream, p, length, no_of_points, auto_abscissa,
 	  else
 	    no_read = read_number (in_stream, data_spec, &(*p)[*no_of_points].x);
 	  if (no_read == 0 && data_spec == ASCII_DATA)
-            break;
+              /* xxx log error, no_of_points */
+              break;
 	}
       if (transpose_axes)
 	no_read = read_number (in_stream, data_spec, &(*p)[*no_of_points].x);

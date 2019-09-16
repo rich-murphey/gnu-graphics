@@ -91,10 +91,6 @@ plot2plot.test : ../plot2plot/plot2plot plot2plot.expected.output spline.plt
 plot2plot.expected.output :
 	-../plot2plot/plot2plot +output-as-ascii  <spline.plt >plot2plot.expected.output
 #----------------------------------------------------------------
-../graph/graph ../tek2plot/tek2plot ../xplot/xplot ../plot2plot/plot2plot \
-    ../plot2tek/plot2tek ../plot2ps/plot2ps :
-	cd ..; make all
-
 clean-local :
 	-rm *.test *.diff spline.dat spline.tek spline.plt *~
 
