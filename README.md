@@ -18,7 +18,7 @@ The V7 Unix [device independent plot file
 format](https://www.unix.com/man-page/v7/5/plot/) is the
 interface between 'graph' and 'plot'. It mirrors the capability
 of vector graphics devices such as pen plotters and Tektronix
-4014 displays. Use of this format provides interoperability with
+4010 displays. Use of this format provides interoperability with
 other V7 Unix systems and their output devices.
 
 The program `graph` reads numeric data and writes device
@@ -99,7 +99,7 @@ Arthur Smith (Lassp, Cornell University)
 <arthur@helios.tn.cornell.edu> wrote xplot.
 
 David B. Rosen <rosen@bu.edu> wrote tek2plot and plot2tek
-supporting Tektronix 4014.
+supporting Tektronix 4010.
 
 Ray Toy <toy@dino.ecse.rpi.edu> wrote the the statistics
 utilities, including: cor, cusum, gas, hilo, log, lreg, mean, mod,

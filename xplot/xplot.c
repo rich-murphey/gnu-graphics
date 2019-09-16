@@ -13,7 +13,6 @@ Murphey <Rich@rice.edu>.*/
 #include <X11/Xaw/Command.h>
 
 #include "libplot.h"
-#include "getopt.h"
 #include "config.h"
 
 int fork_flag = 1;		/* nonzero means fork before exit. */

@@ -95,4 +95,10 @@
 #  define true 1
 #endif
 
+#ifdef HAVE_GETOPT_H
+#  include <getopt.h>
+#else
+#  include "getopt.h"
+#endif
+
 #endif

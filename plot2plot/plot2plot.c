@@ -21,7 +21,6 @@ preserved on all copies.  */
 
 #include "sys-defines.h"
 #include "libplot.h"
-#include "getopt.h"
 
 /* Long options we recognize */
 

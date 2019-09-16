@@ -18,7 +18,6 @@
 
 #include "sys-defines.h"
 #include <ctype.h>
-#include "getopt.h"
 #include "libplot.h"
 #include "extern.h"
 

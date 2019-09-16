@@ -23,7 +23,6 @@ notice and this notice must be preserved on all copies.  */
 #include "sys-defines.h"
 #include <ctype.h>
 #include "libplot.h"
-#include "getopt.h"
 
 enum plot_instruction
 {

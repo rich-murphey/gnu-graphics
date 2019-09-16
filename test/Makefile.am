@@ -11,7 +11,7 @@ plot2fig.expected.output plot2plot.expected.output
 	chmod -w $^
 #----------------------------------------------------------------
 graph.test : spline.plt graph.expected.output
-	-../plot2plot/plot2plot +output-as-ascii <spline.plt >graph.test
+	-../plot2plot/plot2plot -o <spline.plt >graph.test
 	@echo
 	@echo -n The regression test for graph ""
 	-@cmp -s graph.expected.output graph.test && echo PASSED. \
@@ -27,7 +27,7 @@ graph.expected.output :
 	-../graph/graph -bM -a 10 100 -f 12 -g 2 -d a -m 2 -S 2 .02 -T \
             .03 -L "top label" -X "x label" -Y "y label" -u .1 -r .1 \
             -w .8 -h .8 -x 100 1100 -y 0 1 <spline.y.dat \
-            | ../plot2plot/plot2plot +output-as-ascii >graph.expected.output
+            | ../plot2plot/plot2plot -o >graph.expected.output
 
 #----------------------------------------------------------------
 tek2plot.test: ../tek2plot/tek2plot tek2plot.expected.output spline.tek
@@ -81,7 +81,7 @@ plot2fig.expected.output :
 	-../plot2fig/plot2fig <spline.plt >plot2fig.expected.output
 
 plot2plot.test : ../plot2plot/plot2plot plot2plot.expected.output spline.plt
-	-../plot2plot/plot2plot +output-as-ascii <spline.plt >plot2plot.test
+	-../plot2plot/plot2plot -o <spline.plt >plot2plot.test
 	@echo
 	@echo -n The regression test for plot2plot ""
 	-@cmp -s plot2plot.expected.output plot2plot.test && echo PASSED. \
@@ -89,7 +89,7 @@ plot2plot.test : ../plot2plot/plot2plot plot2plot.expected.output spline.plt
 	@echo
 
 plot2plot.expected.output :
-	-../plot2plot/plot2plot +output-as-ascii  <spline.plt >plot2plot.expected.output
+	-../plot2plot/plot2plot -o  <spline.plt >plot2plot.expected.output
 #----------------------------------------------------------------
 clean-local :
 	-rm *.test *.diff spline.dat spline.tek spline.plt *~
