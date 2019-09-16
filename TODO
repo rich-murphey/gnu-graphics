@@ -3,16 +3,11 @@ and the tasks left to be accomplished.
 
 don't permute options in xplot.
 
-add DEFS to top level Makefile to pass flags to each subdir Makefile.
-
 -geometry in xplot?  How do we ignore options using getopt?
 
 reduce all file names to 14 characters or less. (e.g. expected.output !!)
 
----------------------------------------------------------------- Paul
-add makedepend targets to Makefiles in sub directories.  Then add
-sys-depend.h dependency.
-
+---------------------------------------------------------------- 
 
 Vaughan <vaughan%cadillac.cad.mcc.com@mcc.com> suggests making graph
 read interactively from a pipe and write plotting commands
@@ -39,8 +34,6 @@ write a replacement for spline.
 
 graph: Add better clipping (see Cohen-sutherland clipping algorithm,
 p72 of Berger's computer graphics).
-
-Does plot2ps need any seperate include files besides include/libplot.h?
 
 add an option to specify whether output plot files contain high byte
 first of low byte first. (done for graph and xplot)
