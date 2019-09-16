@@ -2,6 +2,7 @@
 
 ## sudo apt install -y autoconf libtool
 ## libtoolize --force
+
 ## make maintainer-clean
 ## aclocal
 ## autoheader
@@ -12,6 +13,12 @@
 ## ./configure
 ## make clean
 ## make all
+
+## git clone https://github.com/rich-murphey/gnu-graphics.git
+## cd gnu-graphics
+## ./configure
+## make all
+## make install
 
 AC_INIT([GNU_Graphics],[0.18],[rich@murphey.org])
 AM_INIT_AUTOMAKE([-Wall])

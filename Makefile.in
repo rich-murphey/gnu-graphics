@@ -87,8 +87,6 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@BUILD_GETOPT_TRUE@am__append_1 = 
-@BUILD_GETOPT_FALSE@am__append_2 = libgetopt
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -158,8 +156,7 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 CSCOPE = cscope
-DIST_SUBDIRS = libplot libgetopt dist-stat graph xplot tek2plot double \
-	plot2fig plot2plot plot2ps plot2tek test
+DIST_SUBDIRS = $(SUBDIRS)
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/config.hin AUTHORS \
 	COPYING ChangeLog INSTALL NEWS README TODO ar-lib compile \
 	config.guess config.sub depcomp install-sh ltmain.sh missing
@@ -329,9 +326,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = libplot $(am__append_1) $(am__append_2) dist-stat libplot \
-	graph xplot tek2plot double plot2fig plot2plot plot2ps \
-	plot2tek test
+SUBDIRS = libplot libgetopt dist-stat libplot graph xplot tek2plot double plot2fig plot2plot plot2ps plot2tek test
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

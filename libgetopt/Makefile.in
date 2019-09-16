@@ -94,7 +94,7 @@ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-DIST_COMMON = $(srcdir)/Makefile.am $(include_HEADERS) \
+DIST_COMMON = $(srcdir)/Makefile.am $(am__include_HEADERS_DIST) \
 	$(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -130,7 +130,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libgetopt_la_LIBADD =
-am_libgetopt_la_OBJECTS = getopt.lo getopt1.lo
+am__libgetopt_la_SOURCES_DIST = getopt.c getopt1.c
+@BUILD_GETOPT_TRUE@am_libgetopt_la_OBJECTS = getopt.lo getopt1.lo
 libgetopt_la_OBJECTS = $(am_libgetopt_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -139,6 +140,7 @@ am__v_lt_1 =
 libgetopt_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libgetopt_la_LDFLAGS) $(LDFLAGS) -o $@
+@BUILD_GETOPT_TRUE@am_libgetopt_la_rpath = -rpath $(libdir)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -175,12 +177,13 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(libgetopt_la_SOURCES)
-DIST_SOURCES = $(libgetopt_la_SOURCES)
+DIST_SOURCES = $(am__libgetopt_la_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+am__include_HEADERS_DIST = ../include/getopt.h
 HEADERS = $(include_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -327,11 +330,11 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-lib_LTLIBRARIES = libgetopt.la
-libgetopt_la_SOURCES = getopt.c getopt1.c
-libgetopt_la_LDFLAGS = -version-info 0:0:0
-include_HEADERS = ../include/getopt.h
-AM_CPPFLAGS = -I$(srcdir)/../include
+@BUILD_GETOPT_TRUE@lib_LTLIBRARIES = libgetopt.la
+@BUILD_GETOPT_TRUE@libgetopt_la_SOURCES = getopt.c getopt1.c
+@BUILD_GETOPT_TRUE@libgetopt_la_LDFLAGS = -version-info 0:0:0
+@BUILD_GETOPT_TRUE@include_HEADERS = ../include/getopt.h
+@BUILD_GETOPT_TRUE@AM_CPPFLAGS = -I$(srcdir)/../include
 all: all-am
 
 .SUFFIXES:
@@ -402,7 +405,7 @@ clean-libLTLIBRARIES:
 	}
 
 libgetopt.la: $(libgetopt_la_OBJECTS) $(libgetopt_la_DEPENDENCIES) $(EXTRA_libgetopt_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libgetopt_la_LINK) -rpath $(libdir) $(libgetopt_la_OBJECTS) $(libgetopt_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libgetopt_la_LINK) $(am_libgetopt_la_rpath) $(libgetopt_la_OBJECTS) $(libgetopt_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

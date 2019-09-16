@@ -98,7 +98,7 @@
 #ifdef HAVE_GETOPT_H
 #  include <getopt.h>
 #else
-#  include "getopt.h"
+#  include "../libgetopt/getopt.h"
 #endif
 
 #endif
